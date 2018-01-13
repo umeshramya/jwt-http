@@ -1,0 +1,32 @@
+{
+  "name": "jwt-http",
+  "version": "0.0.1",
+  "description": "This is jwt for security of web application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "jwt",
+    "security",
+    "auth"
+  ],
+  "author": "Dr Umesh R Bilagi",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^9.3.0",
+    "typescript": "^2.6.2"
+  },
+  "dependencies": {
+    "crypto-js": "^3.1.9-1",
+    "user-groups-roles": "^1.0.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/umeshramya/jwt-http.git"
+  },
+  "bugs": {
+    "url": "https://github.com/umeshramya/jwt-http/issues"
+  },
+  "homepage": "https://github.com/umeshramya/jwt-http#readme"
+}

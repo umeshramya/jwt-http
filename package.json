@@ -13,10 +13,7 @@
   ],
   "author": "Dr Umesh R Bilagi",
   "license": "MIT",
-  "devDependencies": {
-    "@types/node": "^9.3.0",
-    "typescript": "^2.6.2"
-  },
+  "devDependencies": {},
   "dependencies": {
     "crypto-js": "^3.1.9-1",
     "user-groups-roles": "^1.0.4"

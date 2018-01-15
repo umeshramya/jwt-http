@@ -1,16 +1,41 @@
-var curCrypt = require("crypto-js");
+var exports = module.exports = {};
+var Http = require("http");
+module.exports.httpMsgs = require("./src/http/httpMsgs");
+//  var httpMsgs = require("./src/http/httpMsgs");
+var port = 9000;
 
-function encode_base64(rawStr){
-    var wordArray = curCrypt.enc.Utf8.parse(rawStr);
-    var result = curCrypt.enc.Base64.stringify(wordArray);
-    return result;
+module.exports.http  = Http.createServer(function(req,res){
+    if(req.method== "GET"){
+        for (let index = 0; index < getOBJ.length; index++) {
+            if(req.url === getOBJ[index][0]){
+                getOBJ[index][1](req, res);
+            }
+            
+        }
 
+
+
+    }else if(req.method=="POST"){
+
+    }else{
+        httpMsgs.send405(req,res);
+
+    }
+
+}).listen(port);
+
+console.log ("server is listing at port " + port);
+
+
+let getOBJ=[];
+module.exports.getMethod = function (url, callback){
+    getOBJ.push([url, callback]);
 }
 
-function decode_base64(encStr){
-    var wordArray = curCrypt.enc.Base64.parse(encStr);
-    var result = wordArray.toString(curCrypt.enc.Utf8);
-    return result;
-}
+// function getMethod (url, callback){
+//     getOBJ.push([url, callback]);
+// }
 
-
+// getMethod("/umesh", function(req, res){
+//     httpMsgs.sendJSON(req, res,{"uemsh": "ramya"});
+// })

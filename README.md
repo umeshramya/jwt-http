@@ -16,7 +16,7 @@ This return data in JSON format and also accept data in JSON format
 var app = require("jwt-http");
 ```
 
-## GET method rputing
+## GET method routing
 ```
 // routing
 app.getMethod("/umesh", function(req, res){

@@ -5,6 +5,7 @@ var exports = module.exports = {};//export set up
 =================================================================
 */ 
 var Http = require("http");//http require
+var util = require('util');
 var queryString = require("querystring");//querystring require
 module.exports.httpMsgs = require("./src/http/httpMsgs");//httpMsgs require for sending  responce for export pupose
 var httpMsgs = require("./src/http/httpMsgs");//httpMsgs require for local purpose
@@ -14,7 +15,7 @@ var httpMsgs = require("./src/http/httpMsgs");//httpMsgs require for local purpo
                 MODULE WIDE VARIABLES
 =================================================================
 */ 
-var port = 9000;//port numner
+var port = 8017;//port numner
 var currentURL = "";//this stores the last url accesed;
 var getOBJ=[]; // this strores all get routes declred by consumer app
 var postOBJ=[];// this strors all post routes declred by consumer app
@@ -31,7 +32,7 @@ module.exports.http  = Http.createServer(function(req,res){
         
         for (let index = 0; index < getOBJ.length; index++) {
             curGetOBJ = new RegExp (getOBJ[index][0]);
-            if(curGetOBJ.test(currentURL)){
+            if(currentURL.match(curGetOBJ) == currentURL){
                 getOBJ[index][1](req, res);
                 foundURL= true;
             }
@@ -92,9 +93,24 @@ module.exports.getURL= function(){
             GET RELEVENT METHODS
 ===========================================
 */ 
-module.exports.queryExpression = "\\?[\\w+\\=\\w+\\&]+";//add this to url in case of regular expression
+module.exports.queryExpression = function(){
+    /*
+        this need to add to url for allowing adding query string 
+        for example "/emp"+ app.queryExpression (in the consumer modules);
+    */ 
+    return "\\?[\\w+\\=\\w+\\&]+";
+}
 
 module.exports.getMethod = function (url, callback){
+    /*
+        this adds array of getOBJ 
+    */ 
+    // code to prevent entry of duplicate url
+    for (let index = 0; index < getOBJ.length; index++) {
+        if(getOBJ[index][0] == url){
+            throw new Error(util.format("This url \"%s\" already exist, so duplication is not allowed", url));
+        }   
+    }
     getOBJ.push([url, callback]);   
 }
 
@@ -115,6 +131,11 @@ module.exports.getParsedQuery = function (){
 =============================
 */ 
 module.exports.postMethod = function(url, callback){
+    for (let index = 0; index < postOBJ.length; index++) {
+        if(postOBJ[index][0] == url){
+            throw new Error(util.format("This url \"%s\" already exist, so duplication is not allowed", url));
+        }   
+    }
     postOBJ.push([url, callback]);
 }
 

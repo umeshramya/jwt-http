@@ -54,7 +54,7 @@ module.exports.http  = Http.createServer(function(req,res){
             req.on('data', function(data){
                 reqBody  += data
                 if(reqBody.length > 1e7){//limiting size of data to less than 10mb
-                    httpMsgs.send413(req, res);
+                    httpMsgs.send413(req,res);
                 }
             });
 
@@ -98,7 +98,8 @@ module.exports.queryExpression = function(){
         this need to add to url for allowing adding query string 
         for example "/emp"+ app.queryExpression (in the consumer modules);
     */ 
-    return "\\?[\\w+\\=\\w+\\&]+";
+    // return "\\?[\\w+\\=\\w+\\&]+"; //old regular exporession
+    return "((\\?|\\&)\\w+\\=\\w+)+"
 }
 
 module.exports.getMethod = function (url, callback){

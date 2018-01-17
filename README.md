@@ -20,7 +20,7 @@ This return data in JSON format and also accept data in JSON format
 ```
 // routing
     app.getMethod("/umesh", function(req, res){
-        app.httpMsgs.sendJSON(req, res, {
+        app.HTTPMsgs.sendJSON(req, res, {
             name : "Umesh Bilagi",
             age : 47,
             sex : "male"
@@ -28,7 +28,7 @@ This return data in JSON format and also accept data in JSON format
     });
 
     app.getMethod("/ramya" , function(req, res){
-        app.httpMsgs.sendJSON(req, res, {
+        app.HTTPMsgs.sendJSON(req, res, {
             name : "Ramya Bilagi",
             age : 35,
             sex : "female"

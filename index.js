@@ -1,14 +1,15 @@
 var exports = module.exports = {};//export set up
 /* 
-================================================================
+=================================================================
             REQUIRED MODULES
 =================================================================
 */ 
 var Http = require("http");//http require
 var util = require('util');
 var queryString = require("querystring");//querystring require
-module.exports.httpMsgs = require("./src/http/httpMsgs");//httpMsgs require for sending  responce for export pupose
+// module.exports.httpMsgs = require("./src/http/httpMsgs");//httpMsgs require for sending  responce for export pupose
 var httpMsgs = require("./src/http/httpMsgs");//httpMsgs require for local purpose
+module.exports.HTTPMsgs = httpMsgs;
 
 /*
 =================================================================
@@ -45,21 +46,26 @@ module.exports.http  = Http.createServer(function(req,res){
 
         // POST method
     }else if(req.method=="POST"){
-        var curPostOBJ;
-        var reqBody;
+        var curPostOBJ;// current postOBJ array inside array of postOBJ
+        var reqBody ='';//this us reqbody sent
+        var reqBodySize = true;//this var for checking the req body size 
     for (let index = 0; index < postOBJ.length; index++) {
         curPostOBJ = new RegExp(postOBJ[index][0]);
-        if(curPostOBJ.test(currentURL)){
+         if(curPostOBJ.test(currentURL)){
             
             req.on('data', function(data){
                 reqBody  += data
                 if(reqBody.length > 1e7){//limiting size of data to less than 10mb
                     httpMsgs.send413(req,res);
+                    reqBodySize = false;
                 }
             });
 
             req.on("end", function(){
-                postOBJ[index][1](req, res, reqBody);
+                if (reqBodySize){
+                    postOBJ[index][1](req, res, reqBody);
+                }
+                
             })
             
             foundURL = true
@@ -139,4 +145,3 @@ module.exports.postMethod = function(url, callback){
     }
     postOBJ.push([url, callback]);
 }
-

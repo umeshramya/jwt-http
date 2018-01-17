@@ -12,29 +12,40 @@ This return data in JSON format and also accept data in JSON format
 
 ## Requiring the jwt-http
 ```
-// require jet-http
-var app = require("jwt-http");
+    // require jet-http
+    var app = require("jwt-http");
 ```
 
 ## GET method routing
 ```
 // routing
-app.getMethod("/umesh", function(req, res){
-    app.httpMsgs.sendJSON(req, res, {
-        name : "Umesh Bilagi",
-        age : 47,
-        sex : "male"
+    app.getMethod("/umesh", function(req, res){
+        app.httpMsgs.sendJSON(req, res, {
+            name : "Umesh Bilagi",
+            age : 47,
+            sex : "male"
+        });
     });
-});
 
-app.getMethod("/ramya" , function(req, res){
-    app.httpMsgs.sendJSON(req, res, {
-        name : "Ramya Bilagi",
-        age : 35,
-        sex : "female"
+    app.getMethod("/ramya" , function(req, res){
+        app.httpMsgs.sendJSON(req, res, {
+            name : "Ramya Bilagi",
+            age : 35,
+            sex : "female"
+        });
     });
-});
 ```
+## POST method routing
+```
+    app.postMethod("/mypost", function(req, res, reqBody){
+        var data= JSON.parse(reqBody);//reqBody is data received
+        // now use posted data as per need
+        // after processing, if data need to send back to client
+        var processed_data = {"Processed" : "result"}
+        app.HTTPMsgs.sendJSON(req, res, processed_data);   
+    });
+```
+
 ---
 ## httpMsgs
 req and res are request and responce objects

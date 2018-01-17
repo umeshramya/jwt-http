@@ -14,6 +14,7 @@ This return data in JSON format and also accept data in JSON format
 ```
     // require jet-http
     var app = require("jwt-http");
+    app.setPort(8002); //this sets the port number and also listens the server at specified port
 ```
 
 ## GET method routing
@@ -71,3 +72,7 @@ Requested page not availeble
 
 #### httpMsgs.send413 = function(req, res)
 Requesting for large data, not supported.
+
+## To do
+1. JWT
+2. user-groups-roles

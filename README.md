@@ -74,5 +74,5 @@ Requested page not availeble
 Requesting for large data, not supported.
 
 ## To do
-1. JWT
+1. JWT still need to fix encryption and validation compatable with online tools
 2. user-groups-roles

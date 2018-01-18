@@ -7,9 +7,19 @@ var exports = module.exports = {};//export set up
 var Http = require("http");//http require
 var util = require('util');
 var queryString = require("querystring");//querystring require
+
 // module.exports.httpMsgs = require("./src/http/httpMsgs");//httpMsgs require for sending  responce for export pupose
 var httpMsgs = require("./src/http/httpMsgs");//httpMsgs require for local purpose
 module.exports.HTTPMsgs = httpMsgs;
+
+
+var jwt = require("./src/jwt/jwt");
+module.exports.JWT = jwt;
+
+
+var roles = require("user-groups-roles");
+module.exports.ROLES = roles;
+
 
 /*
 =================================================================
@@ -149,3 +159,10 @@ module.exports.postMethod = function(url, callback){
     }
     postOBJ.push([url, callback]);
 }
+
+/*
+        ========================
+            JWT RELEVENT 
+        ========================
+
+*/ 

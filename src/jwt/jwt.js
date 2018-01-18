@@ -2,7 +2,7 @@ var curCrypt = require("crypto-js");
 var secretKey='PasswordPradyu';//defualt secret key change this in  your application
 
 var encode_base64 = function(rawStr) {//converts raw string 
-    var wordArray = curCrypt.enc.Utf8.parse(rawStr);
+    var wordArray = curCrypt.enc.Utf8.parse(JSON.stringify(rawStr));
     var result = curCrypt.enc.Base64.stringify(wordArray);
     return result;
 }
@@ -21,17 +21,16 @@ exports.setSecretKey = function(secret){
     */ 
     secretKey = secret;
 }
-var createJWT = function (payload) {
+var createJWT = function (payload, header = {"alg": "HS256", "typ": "JWT" }) {
     var secret = secretKey;// this accesed from modulewide secrete key
-    var header = {
-        "typ": "JWT",
-        "alg": "HS256"
-    };
     var base64Header = encode_base64(header);
     var base64Payload = encode_base64(payload);
+    
     var signeture = encrypt(base64Header + "." + base64Payload, secret);
-    var base64Signeture = curCrypt.enc.Base64.stringify(signeture);
-    return base64Header.base64Payload.base64Signeture;
+    // var base64Signeture = curCrypt.enc.Base64.stringify(signeture);
+    var base64Signeture = encode_base64(signeture);
+
+    return base64Header + "." + base64Payload + "." + base64Signeture;
 }
 
 exports.createJWT = createJWT;
@@ -39,22 +38,17 @@ exports.createJWT = createJWT;
 
 exports.validateJWT= function(jwt){
     // this method validates the JWT recived
-    var headerIndex = jwt.indexOf(".", 0);
-    var payloadIndex = jwt.indexOf(".", jwt.indexOf);
+    var jwtArray = jwt.split(".");
+    var headerDecoded = decode_base64(jwtArray[0]);
+    var payloadDecoded = decode_base64(jwtArray[1]);
+    var checkJWT = createJWT(JSON.parse(payloadDecoded), JSON.parse(headerDecoded));
+    console.log(checkJWT);
 
-    var headerEncoded = jwt.substr(0,headerIndex);//encoded
-    var payloadEncoded = jwt.substr(headerIndex, payloadIndex);// encoded
-    var signeture = jwt.substr(payloadIndex, jwt.length);// this encrypted 
-
-    var payloadDecoded = decode_base64(payloadEncoded); // this decoded message
-
-    //encrypt and encode the payload and compare for validity 
-    var checkJWT =createJWT(payloadDecoded);
-     if(checkJWT === jwt){
-         return payloadDecoded;
-     }else{
-         return false;
-     }
-
+    if(checkJWT == jwt){
+        return payloadDecoded;
+    }else{
+        return false
+    }
+    
 }
 

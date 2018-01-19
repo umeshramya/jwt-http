@@ -46,7 +46,42 @@ This return data in JSON format and also accept data in JSON format
         app.HTTPMsgs.sendJSON(req, res, processed_data);   
     });
 ```
+## Middlewere
+1. if the midddle were returns false then `res.end()` will be trigered stops the  further process next function or middlewere
+2. `privious` variable stores the object returned by previous which can be used by next middlewere this can chained to next function to by just returning it
+3. *Middle were are to writen before routes declaration starts*
 
+###  Middle for all routes 
+```   
+    app.http.use(function(req, res, previous){
+    
+        //do the process of middle were here
+        console.log("general middle were");
+        return previous
+    });
+```
+### Middle were for selected routes
+```
+    //write middle were as function 
+    var curMiddlewere = funtion(req, res, previous){
+        //code of selected middle were
+        console.log("seleted middle were");
+        return previous;
+    }
+
+    //route using middle were
+    app.getMethod("/umesh", curMiddlewere, function(req, res, previous){
+        //code to send sendjson
+        app.HTTPMsgs.sendJSON(req, res, {
+            name : "Umesh Bilagi",
+            age : 47,
+            sex : "male"
+        });
+        console.log(previous);//this is from previous middile were
+    });
+
+    
+```
 ---
 ## httpMsgs
 req and res are request and responce objects

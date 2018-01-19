@@ -29,13 +29,19 @@ module.exports.ROLES = roles;
 var currentURL = "";//this stores the last url accesed;
 var getOBJ=[]; // this strores all get routes declred by consumer app
 var postOBJ=[];// this strors all post routes declred by consumer app
+/*
+=======================================
+             HTTP Server
+=======================================
+*/ 
 
-// method to creat http server
 var server = Http.createServer(function(req,res){
     currentURL = req.url;// setting current url
     //foundURL is by false if requested URL gets matched then it is set true
     // useful for 404 status
-    var foundURL = false;
+    var foundURL = false;// this variable stores the
+    var previous = true // this variable is for checking weather to call next method in (Middle were)
+    
     // GET method
     if(req.method== "GET"){
         var curGetOBJ;
@@ -43,8 +49,14 @@ var server = Http.createServer(function(req,res){
         for (let index = 0; index < getOBJ.length; index++) {
             curGetOBJ = new RegExp (getOBJ[index][0]);
             if(curGetOBJ.test(currentURL)){
-                getOBJ[index][1](req, res);
-                foundURL= true;
+                    foundURL= true;
+                for (let i = 1; i < getOBJ[index].length; i++) {
+                     previous = getOBJ[index][i](req, res, previous);
+                    if(previous == false){
+                        res.end();//end the responce in case of breaking the loop
+                        break;
+                    }
+                }
             }
         }
 
@@ -72,7 +84,15 @@ var server = Http.createServer(function(req,res){
 
                 req.on("end", function(){
                     if (reqBodySize){
-                        postOBJ[index][1](req, res, reqBody);
+                        for (let i = 1; i < getOBJ[index].length; i++) {
+                            previous = postOBJ[index][1](req, res, reqBody, previous);
+                           if(previous == false){
+                               res.end();//end the responce in case of breaking the loop
+                               break;
+                           }
+                       }
+                    
+                        
                     }
                     
                 })
@@ -122,7 +142,7 @@ module.exports.queryExpression = function(){
     
 }
 
-module.exports.getMethod = function (url, callback){
+module.exports.getMethod = function (url, ...callbacks){
     /*
         this adds array of getOBJ 
     */ 
@@ -132,7 +152,15 @@ module.exports.getMethod = function (url, callback){
             throw new Error(util.format("This url \"%s\" already exist, so duplication is not allowed", url));
         }   
     }
-    getOBJ.push([url, callback]);   
+    var curGetOBJ=[url];
+    for (let index = 0; index < middleWere.length; index++) {
+        curGetOBJ.push(middleWere[index]);        
+    }
+    for (let index = 0; index < callbacks.length; index++) {
+        curGetOBJ.push(callbacks[index]);
+        
+    }
+    getOBJ.push(curGetOBJ);
 }
 
 
@@ -151,18 +179,33 @@ module.exports.getParsedQuery = function (){
     POST RELEVENT METHODS
 =============================
 */ 
-module.exports.postMethod = function(url, callback){
+module.exports.postMethod = function(url, ...callbacks){
     for (let index = 0; index < postOBJ.length; index++) {
         if(postOBJ[index][0] == url){
             throw new Error(util.format("This url \"%s\" already exist, so duplication is not allowed", url));
         }   
     }
-    postOBJ.push([url, callback]);
-}
+    var curGetOBJ=[url];
+    for (let index = 0; index < middleWere.length; index++) {
+        curGetOBJ.push(middleWere[index]);        
+    }
 
-/*
-        ========================
-            JWT RELEVENT 
-        ========================
+    for (let index = 0; index < callbacks.length; index++) {
+        curGetOBJ.push(callbacks[index]);
+        
+    }
+    getOBJ.push(curGetOBJ);
 
-*/ 
+    }
+
+    /*
+    =========================
+        MIDDLEWERE
+    =========================
+    */ 
+
+    var middleWere = [];
+    module.exports.use= function(mWere){
+        // ADD GENERAL MIDDLE WERE
+        middleWere.push(mWere);
+    }

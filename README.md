@@ -48,7 +48,7 @@ This return data in JSON format and also accept data in JSON format
 ```
 ## Middlewere
 1. if the midddle were returns false then `res.end()` will be trigered stops the  further process next function or middlewere
-2. `privious` variable stores the object returned by previous which can be used by next middlewere this can chained to next function to by just returning it
+2. `previous` variable stores the object returned by previous which can be used by next middlewere this can chained to next function to by just returning it
 3. *Middle were are to writen before routes declaration starts*
 
 ###  Middle for all routes 

@@ -82,6 +82,28 @@ This return data in JSON format and also accept data in JSON format
 
     
 ```
+## Login Code useing middlewere
+**Login route and its middle were has to be First route before any middle were or route declered**
+```
+    
+    var loginMiddilewere = function(req, res, reqBody, previous){
+        var user = reqBody.user;
+        var password = reqBody.password;
+        var login = false;
+
+        // code to check login if successfull then call app.JWT.createJWT 
+        if(login){
+            return app.JWT.createJWT({"user" : reqBody.user});
+        }else{
+            return false;
+        }
+    }
+
+    app.postMethod("/login", loginMiddilewere, function(req, res, reqBody, previous){
+        app.HTTPMsgs.sendJSON(req, res, {"jwt": previous});
+    });
+```
+
 ---
 ## httpMsgs
 req and res are request and responce objects

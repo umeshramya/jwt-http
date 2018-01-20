@@ -29,6 +29,7 @@ module.exports.ROLES = roles;
 var currentURL = "";//this stores the last url accesed;
 var getOBJ=[]; // this strores all get routes declred by consumer app
 var postOBJ=[];// this strors all post routes declred by consumer app
+
 /*
 =======================================
              HTTP Server

@@ -131,5 +131,6 @@ Requested page not availeble
 Requesting for large data, not supported.
 
 ## To do
-1. JWT still need to fix encryption and validation compatable with online tools
-2. user-groups-roles
+1. Need to fix bug at route "/" this is causing error.
+2. JWT still need to fix encryption and validation compatable with online tools
+3. user-groups-roles

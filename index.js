@@ -10,8 +10,10 @@ var queryString = require("querystring");//querystring require
 
 // module.exports.httpMsgs = require("./src/http/httpMsgs");//httpMsgs require for sending  responce for export pupose
 var httpMsgs = require("./src/http/httpMsgs");//httpMsgs require for local purpose
-module.exports.HTTPMsgs = httpMsgs;
+var httpFiles = require("./src/http/httpFiles"); //this is for files sending like html css and javascript for front end development
 
+module.exports.HTTPMsgs = httpMsgs;
+module.exports.HTTPFiles = httpFiles;
 
 var jwt = require("./src/jwt/jwt");
 module.exports.JWT = jwt;
@@ -73,8 +75,7 @@ var server = Http.createServer(function(req,res){
         var reqBodySize = true;//this var for checking the req body size 
         for (let index = 0; index < postOBJ.length; index++) {
             curPostOBJ = new RegExp(postOBJ[index][0]);
-            if(curPostOBJ.test(currentURL)){
-                
+            if(curPostOBJ.test(currentURL)){                
                 req.on('data', function(data){
                     reqBody  += data
                     if(reqBody.length > 1e7){//limiting size of data to less than 10mb
@@ -186,16 +187,16 @@ module.exports.postMethod = function(url, ...callbacks){
             throw new Error(util.format("This url \"%s\" already exist, so duplication is not allowed", url));
         }   
     }
-    var curGetOBJ=[url];
+    var curPostOBJ=[url];
     for (let index = 0; index < middleWere.length; index++) {
-        curGetOBJ.push(middleWere[index]);        
+        curPostOBJ.push(middleWere[index]);        
     }
 
     for (let index = 0; index < callbacks.length; index++) {
-        curGetOBJ.push(callbacks[index]);
+        curPostOBJ.push(callbacks[index]);
         
     }
-    getOBJ.push(curGetOBJ);
+    postOBJ.push(curPostOBJ);
 
     }
 

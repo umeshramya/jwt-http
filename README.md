@@ -82,6 +82,40 @@ This return data in JSON format and also accept data in JSON format
 
     
 ```
+
+## Front end 
+Front end assets also are to be routed in order to be included in html pages
+
+```
+var fs = require("fs"); //fs modukle is needed in routs
+//route for index.html 
+app.getMethod("/index", function(req, res, previous){
+    fs.readFile("./front-end/index.html", null, function(err, data){
+        if(err){
+            app.HTTPMsgs.send404(req, res);
+        }else{
+            res.writeHead(200, {"Content-Type" : "text/html"});
+            res.write(data);
+            res.end();
+        }
+    });
+   
+});
+
+//code to include index.html assets that is front.js in this case
+app.getMethod("/front.js",  function(req, res, previous){
+    fs.readFile("./front.js", null, function(err, data){
+    if(err){
+        app.HTTPMsgs.send404(req, res);
+    }else{
+        res.writeHead(200, {"Content-Type" : "text/javascript"});
+        res.write(data);
+        res.end();
+    }
+});
+});
+```
+
 ## Login Code useing middlewere
 **Login route and its middle were has to be First route before any middle were or route declered**
 ```

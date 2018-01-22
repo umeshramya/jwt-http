@@ -42,7 +42,7 @@ This return data in JSON format and also accept data in JSON format
 ## GET method routing
 ```
 // routing
-    app.getMethod("/umesh", function(req, res){
+    app.getMethod("/umesh", true,function(req, res){
         app.HTTPMsgs.sendJSON(req, res, JSON.stringify(({
             name : "Umesh Bilagi",
             age : 47,
@@ -50,7 +50,7 @@ This return data in JSON format and also accept data in JSON format
         }));
     });
 
-    app.getMethod("/ramya" , function(req, res){
+    app.getMethod("/ramya" , true,function(req, res){
         app.HTTPMsgs.sendJSON(req, res, JSON.stringify({
             name : "Ramya Bilagi",
             age : 35,
@@ -60,7 +60,7 @@ This return data in JSON format and also accept data in JSON format
 ```
 ## POST method routing
 ```
-    app.postMethod("/mypost", function(req, res, reqBody){
+    app.postMethod("/mypost", true,function(req, res, reqBody){
         var data= JSON.parse(reqBody);//reqBody is data received
         // now use posted data as per need
         // after processing, if data need to send back to client
@@ -75,7 +75,7 @@ This return data in JSON format and also accept data in JSON format
 
 ###  Middle for all routes 
 ```   
-    app.http.use(function(req, res, previous){
+    app.use(function(req, res, previous){
     
         //do the process of middle were here
         console.log("general middle were");
@@ -92,7 +92,8 @@ This return data in JSON format and also accept data in JSON format
     }
 
     //route using middle were
-    app.getMethod("/umesh", curMiddlewere, function(req, res, previous){
+    //second option in this set false so general middle were is not used but specific middlewere can be used
+    app.getMethod("/umesh", false, curMiddlewere, function(req, res, previous){
         //code to send sendjson
         app.HTTPMsgs.sendJSON(req, res, {
             name : "Umesh Bilagi",
@@ -110,20 +111,14 @@ Front end assets also are to be routed in order to be included in html pages
 
 ```
 //html
-app.getMethod("/index", function(req, res, previous){
-    app.HTTPFiles.sendHtmlFile(req, res,  __dirname + "/index.html");
-});
+app.sendFile("/index","text/html", __dirname + "/index.html");
 
 //javascript
-app.getMethod("/front", function(req, res, previous){
-    app.HTTPFiles.sendJavascriptFile(req, res, __dirname + "/front.js")
-});
+app.sendFile("/index","text/javascript", __dirname + "/javascript");
 
 //css
-app.getMethod("/style", function(req, res, previous){
-    app.HTTPFiles.sendCssFile(req, res, __dirname + "/style.js");
+app.sendFile("/index","text/css", __dirname + "/style.css");
 
-});
 ```
 
 ## Login Code useing middlewere

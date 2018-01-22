@@ -7,6 +7,7 @@ var exports = module.exports = {};//export set up
 var Http = require("http");//http require
 var util = require('util');
 var queryString = require("querystring");//querystring require
+var fs = require("fs");
 
 // module.exports.httpMsgs = require("./src/http/httpMsgs");//httpMsgs require for sending  responce for export pupose
 var httpMsgs = require("./src/http/httpMsgs");//httpMsgs require for local purpose
@@ -144,9 +145,10 @@ module.exports.queryExpression = function(){
     
 }
 
-module.exports.getMethod = function (url, ...callbacks){
+var getMethod = function (url,  UseMiddileWere = true,...callbacks){
     /*
         this adds array of getOBJ 
+        UseMiddileWere boolen is for app.use (middlewere) this boolen by defulat is set to true  if set false it does not use middle were
     */ 
     // code to prevent entry of duplicate url
     for (let index = 0; index < getOBJ.length; index++) {
@@ -155,15 +157,20 @@ module.exports.getMethod = function (url, ...callbacks){
         }   
     }
     var curGetOBJ=[url];
-    for (let index = 0; index < middleWere.length; index++) {
-        curGetOBJ.push(middleWere[index]);        
+    if(UseMiddileWere){// ads to routes only if UseMiddlewere boolen set to true
+        for (let index = 0; index < middleWere.length; index++) {
+            curGetOBJ.push(middleWere[index]);        
+        }
     }
+
     for (let index = 0; index < callbacks.length; index++) {
         curGetOBJ.push(callbacks[index]);
         
     }
     getOBJ.push(curGetOBJ);
 }
+
+module.exports.getMethod= getMethod;
 
 
 module.exports.getParsedQuery = function (){
@@ -181,15 +188,19 @@ module.exports.getParsedQuery = function (){
     POST RELEVENT METHODS
 =============================
 */ 
-module.exports.postMethod = function(url, ...callbacks){
+var postMethod = function(url,  UseMiddileWere = true ,...callbacks){
     for (let index = 0; index < postOBJ.length; index++) {
         if(postOBJ[index][0] == url){
             throw new Error(util.format("This url \"%s\" already exist, so duplication is not allowed", url));
         }   
     }
     var curPostOBJ=[url];
-    for (let index = 0; index < middleWere.length; index++) {
-        curPostOBJ.push(middleWere[index]);        
+
+    if(UseMiddileWere){
+        for (let index = 0; index < middleWere.length; index++) {
+            curPostOBJ.push(middleWere[index]);        
+        }
+
     }
 
     for (let index = 0; index < callbacks.length; index++) {
@@ -200,14 +211,51 @@ module.exports.postMethod = function(url, ...callbacks){
 
     }
 
+    module.exports.postMethod = postMethod;
+
     /*
     =========================
         MIDDLEWERE
     =========================
     */ 
 
-    var middleWere = [];
+    var middleWere = [];// this array of app.use middlewere
     module.exports.use= function(mWere){
         // ADD GENERAL MIDDLE WERE
         middleWere.push(mWere);
     }
+
+/*
+    ==========================
+        Frontend file getmethods
+    ===========================
+*/ 
+
+
+var sendFile = function(url,contentType , path){
+    /*
+        This is method for serving files to front end . html, javascript, css, jpeg, png etc
+        This method uses getmethod bypasses middlewere
+        makes asychronous file read from module httpFiles.js
+        url :- url to beused to call from front end
+        contentType :- type of content html, css, javascript
+        path :- actual file folder where the file exist
+
+    */ 
+
+    getMethod(url, false, function(req, res){
+        fs.readFile(path, null, function(err, data){
+            if(err){
+                send404(req, res);
+            }else{
+                res.writeHead(200, {"Content-Type" : contentType});
+                res.write(data);
+                res.end();
+            }
+    
+        });
+    });
+
+}
+
+module.exports.sendFile = sendFile;

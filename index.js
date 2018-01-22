@@ -40,6 +40,9 @@ var postOBJ=[];// this strors all post routes declred by consumer app
 */ 
 
 var server = Http.createServer(function(req,res){
+    
+
+    try {  
     currentURL = req.url;// setting current url
     //foundURL is by false if requested URL gets matched then it is set true
     // useful for 404 status
@@ -51,7 +54,7 @@ var server = Http.createServer(function(req,res){
         var curGetOBJ;
         
         for (let index = 0; index < getOBJ.length; index++) {
-            curGetOBJ = new RegExp (getOBJ[index][0]);
+            curGetOBJ = new RegExp (getOBJ[index][0]);//this is url from the array
             if(curGetOBJ.test(currentURL)){
                     foundURL= true;
                 for (let i = 1; i < getOBJ[index].length; i++) {
@@ -87,8 +90,10 @@ var server = Http.createServer(function(req,res){
 
                 req.on("end", function(){
                     if (reqBodySize){
-                        for (let i = 1; i < getOBJ[index].length; i++) {
-                            previous = postOBJ[index][1](req, res, reqBody, previous);
+                        for (let i = 1; i < postOBJ[index].length; i++) {
+                            req.body = reqBody
+                            previous = postOBJ[index][i](req, res, previous);
+        
                            if(previous == false){
                                res.end();//end the responce in case of breaking the loop
                                break;
@@ -113,6 +118,11 @@ var server = Http.createServer(function(req,res){
         httpMsgs.send405(req,res);
 
     }
+
+} catch (error) {
+    httpMsgs.send500(req, res, "Bad HTTP request "  + error.message);
+        
+}
 
 });
 
@@ -145,26 +155,26 @@ module.exports.queryExpression = function(){
     
 }
 
-var getMethod = function (url,  UseMiddileWere = true,...callbacks){
+var getMethod = function (url,  UseMiddleWere = true,...callbacks){
     /*
         this adds array of getOBJ 
         UseMiddileWere boolen is for app.use (middlewere) this boolen by defulat is set to true  if set false it does not use middle were
     */ 
     // code to prevent entry of duplicate url
-    for (let index = 0; index < getOBJ.length; index++) {
-        if(getOBJ[index][0] == url){
+    for (let i = 0; i < getOBJ.length; i++) {
+        if(getOBJ[i][0] == url){
             throw new Error(util.format("This url \"%s\" already exist, so duplication is not allowed", url));
         }   
     }
     var curGetOBJ=[url];
-    if(UseMiddileWere){// ads to routes only if UseMiddlewere boolen set to true
-        for (let index = 0; index < middleWere.length; index++) {
-            curGetOBJ.push(middleWere[index]);        
+    if(UseMiddleWere){// ads to routes only if UseMiddlewere boolen set to true
+        for (let j = 0; j < middleWere.length; j++) {
+            curGetOBJ.push(middleWere[j]);        
         }
     }
 
-    for (let index = 0; index < callbacks.length; index++) {
-        curGetOBJ.push(callbacks[index]);
+    for (let k = 0; k < callbacks.length; k++) {
+        curGetOBJ.push(callbacks[k]);
         
     }
     getOBJ.push(curGetOBJ);
@@ -188,23 +198,23 @@ module.exports.getParsedQuery = function (){
     POST RELEVENT METHODS
 =============================
 */ 
-var postMethod = function(url,  UseMiddileWere = true ,...callbacks){
-    for (let index = 0; index < postOBJ.length; index++) {
-        if(postOBJ[index][0] == url){
+var postMethod = function(url,  UseMiddleWere = true ,...callbacks){
+    for (let i = 0; i < postOBJ.length; i++) {
+        if(postOBJ[i][0] == url){
             throw new Error(util.format("This url \"%s\" already exist, so duplication is not allowed", url));
         }   
     }
     var curPostOBJ=[url];
 
-    if(UseMiddileWere){
-        for (let index = 0; index < middleWere.length; index++) {
-            curPostOBJ.push(middleWere[index]);        
+    if(UseMiddleWere){
+        for (let j = 0; j < middleWere.length; j++) {
+            curPostOBJ.push(middleWere[j]);        
         }
 
     }
 
-    for (let index = 0; index < callbacks.length; index++) {
-        curPostOBJ.push(callbacks[index]);
+    for (let k = 0; k < callbacks.length; k++) {
+        curPostOBJ.push(callbacks[k]);
         
     }
     postOBJ.push(curPostOBJ);
@@ -259,3 +269,6 @@ var sendFile = function(url,contentType , path){
 }
 
 module.exports.sendFile = sendFile;
+
+
+// kept for testing purpose

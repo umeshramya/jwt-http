@@ -10,6 +10,7 @@ recomended architure is
 dir: app
     dir:backend
         files/dir:routes //of backend usinf HTTPMsgs
+        dir:model database connection and bussiness loging
     dir:frontend
         file/dir:HTML
         file/dir:routes // This routes for front and objects like html css and front javascript files

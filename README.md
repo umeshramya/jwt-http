@@ -114,10 +114,10 @@ Front end assets also are to be routed in order to be included in html pages
 app.sendFile("/index","text/html", __dirname + "/index.html");
 
 //javascript
-app.sendFile("/index","text/javascript", __dirname + "/javascript");
+app.sendFile("/bundle.js","text/javascript", __dirname + "/javascript");
 
 //css
-app.sendFile("/index","text/css", __dirname + "/style.css");
+app.sendFile("/styles","text/css", __dirname + "/style.css");
 
 ```
 

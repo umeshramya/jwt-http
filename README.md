@@ -4,7 +4,6 @@ This is http frame work for developing rest api and also front end
 backend responce by json 
 front serves browesers
 
-
 ```
 recomended architure is 
 dir: app
@@ -62,7 +61,7 @@ This return data in JSON format and also accept data in JSON format
 ## POST method routing
 ```
     app.postMethod("/mypost", true,function(req, res, reqBody){
-        var data= JSON.parse(reqBody);//reqBody is data received
+        var data= querystring.parse(req.body);//reqBody is data received
         // now use posted data as per need
         // after processing, if data need to send back to client
         var processed_data = JSON.stringify({"Processed" : "result"})
@@ -131,10 +130,10 @@ app.renderHTML(url, path);
 1. url is route 
 2. path is actual place of file
 ```
- //url for below  
+ //url for index.html see below
  http://localhost:9000/index?name=umesh&age=45&sex=male&occ=doctor
 
- //route for  below html 
+ //route for  index.html see belwow
  app.renderHTML("/index" + app.queryExpression() , __dirname + "/index.html");
 
 // below is index.html page 

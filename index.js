@@ -279,22 +279,21 @@ var renderHTML = function (url, path){
             if(err){
                 send404(req, res);
             }else{
-                var parsedQuery = getLastParsedQuery();// this get json object with latest paresed query string
-                var keys = Object.keys(parsedQuery);
-                var patt;
-              
-                var key ='';
-                var renderData = data.toString();
+                var parsedQuery = getLastParsedQuery();// this get json object with latest parsed query string
+                var keys = Object.keys(parsedQuery);// stores the keys of json object as array
+                var patt; //this store the regular expression 
+                var key ='';// single key from keys array
+                var renderData = data.toString();// converts data recived form reading file to tostring and asign to renderData 
                 for (let index = 0; index < keys.length; index++) {
+                    // looping through keys array to replace {{args}} in renderData string
                     key = keys[index];
                     var regular = "{{" + key +  "}}";
-                    var patt = new RegExp(regular, "g");
-                    renderData = renderData.replace(patt, parsedQuery[key]);
-                }          
-
-                res.writeHead(200, {"Content-Type" : "text/html"});
-                res.write(renderData);
-                res.end();
+                    var patt = new RegExp(regular, "g");// create regular expression
+                    renderData = renderData.replace(patt, parsedQuery[key]);// pass it renderData to replace all by looping all keys 
+                }
+                res.writeHead(200, {"Content-Type" : "text/html"});//write head
+                res.write(renderData);//write html string
+                res.end();//end res
             }
     
         });

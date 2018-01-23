@@ -109,6 +109,10 @@ This return data in JSON format and also accept data in JSON format
 
 ## Front end 
 Front end assets also are to be routed in order to be included in html pages
+app.sendFile(url, contentType ,path);
+1. url is route 
+2. contentType is Content-Type i.e text/html, text/javascript, text/css
+2. path is actual place of file
 
 ```
 //html
@@ -119,6 +123,36 @@ app.sendFile("/bundle.js","text/javascript", __dirname + "/javascript");
 
 //css
 app.sendFile("/styles","text/css", __dirname + "/style.css");
+
+```
+
+## Render HTML using inbult templeting engine
+app.renderHTML(url, path);
+1. url is route 
+2. path is actual place of file
+```
+ //url for below  
+ http://localhost:9000/index?name=umesh&age=45&sex=male&occ=doctor
+
+ //route for  below html 
+ app.renderHTML("/index" + app.queryExpression() , __dirname + "/index.html");
+
+// below is index.html page 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>{{name}}</h1>
+    <h1>{{age}}</h1>
+    <h1>{{sex}}</h1>
+    <h1>{{occ}}</h1>
+</body>
+</html>
 
 ```
 

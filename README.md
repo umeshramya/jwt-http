@@ -1,10 +1,8 @@
 # jwt-http
 # Under developement
-This is http frame work for developing rest api and also front end 
-backend responce by json 
-front serves browesers
-
-
+This is http frame work for developing rest api (back end) and also front end 
+Rest api backend responces are served by JSON.
+This is a light frame work unopinated supports the middlewere for adding functionlites
 ```
 recomended architure is 
 dir: app
@@ -23,24 +21,21 @@ dir: app
 ```
 
 ***for backend routes advise is /backend/\*\* so that frontend routes do not conflict***
-    
-This return data in JSON format and also accept data in JSON format
 
 ## Feutures
 1. JWT
 2. user, roles and permssions
 3. http
 
-# Under development
 
-## Requiring the jwt-http
+### Requiring the jwt-http
 ```
     // require jet-http
     var app = require("jwt-http");
     app.setPort(8002); //this sets the port number and also listens the server at specified port
 ```
 
-## GET method routing
+### GET method routing
 ```
 // routing
     app.getMethod("/umesh", true,function(req, res){
@@ -61,29 +56,34 @@ This return data in JSON format and also accept data in JSON format
 ```
 ## POST method routing
 ```
-    app.postMethod("/mypost", true,function(req, res, reqBody){
-        var data= JSON.parse(reqBody);//reqBody is data received
+    app.postMethod("/mypost", true, function(req, res){
+       //req.body contanes the posted data 
+        var data= querystring.parse(req.body);//use querystring module to parse the data 
+
         // now use posted data as per need
         // after processing, if data need to send back to client
-        var processed_data = JSON.stringify({"Processed" : "result"})
+
+        var processed_data = JSON.stringify(data)
         app.HTTPMsgs.sendJSON(req, res, processed_data);   
     });
 ```
 ## Middlewere
-1. if the midddle were returns false then `res.end()` will be trigered stops the  further process next function or middlewere
-2. `previous` variable stores the object returned by previous which can be used by next middlewere this can chained to next function to by just returning it
-3. *Middle were are to writen before routes declaration starts*
+1. Middlewere are essentially functions. They process and passes the result to next middlewere or final function
+2. middle were can manipulate the req and res. When tthey return a value or values it gets stored in previous argument of next middlewere or final function. 
+3. if the midddle were returns false then `res.end()` will be triger a stop to further process next function or middlewere.
+4. *Middle were are to writen before routes declaration starts*
+5. Middlewere can be classified into two types generic and specific. 
+6. Generic applies all backend routes, unless useMiddleWere argument is set false while getMethod and postMethod is being set.
 
-###  Middle for all routes 
+###  Middle for all routes (Generic)
 ```   
     app.use(function(req, res, previous){
-    
         //do the process of middle were here
         console.log("general middle were");
         return previous
     });
 ```
-### Middle were for selected routes
+### Middle were for selected routes (specific)
 ```
     //write middle were as function 
     var curMiddlewere = funtion(req, res, previous){

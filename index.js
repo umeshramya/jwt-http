@@ -183,8 +183,9 @@ var getMethod = function (url,  UseMiddleWere = true,...callbacks){
 module.exports.getMethod= getMethod;
 
 
-module.exports.getParsedQuery = function (){
+var getLastParsedQuery = function (){
     /*
+    last parsed query
     Ths returns the parsed query string as JSON object
     */ 
     var curURL = currentURL
@@ -192,6 +193,8 @@ module.exports.getParsedQuery = function (){
     var qsString = curURL.substr(queryStringIndex + 1, curURL.length);
     return queryString.parse(qsString);
 }
+
+module.exports.getParsedQuery = getLastParsedQuery
 
 /*
 =============================
@@ -270,5 +273,36 @@ var sendFile = function(url,contentType , path){
 
 module.exports.sendFile = sendFile;
 
+var renderHTML = function (url, path){
+    getMethod(url, false, function(req, res){
+        fs.readFile(path, null, function(err, data){
+            if(err){
+                send404(req, res);
+            }else{
+                var parsedQuery = getLastParsedQuery();// this get json object with latest paresed query string
+                var keys = Object.keys(parsedQuery);
+                var patt;
+              
+                var key ='';
+                var renderData = data.toString();
+                for (let index = 0; index < keys.length; index++) {
+                    key = keys[index];
+                    var regular = "{{" + key +  "}}";
+                    var patt = new RegExp(regular, "g");
+                    renderData = renderData.replace(patt, parsedQuery[key]);
+                }          
 
-// kept for testing purpose
+                res.writeHead(200, {"Content-Type" : "text/html"});
+                res.write(renderData);
+                res.end();
+            }
+    
+        });
+    });
+
+}
+
+module.exports.renderHTML= renderHTML
+
+
+// module.exports.getOBJ = getOBJ;

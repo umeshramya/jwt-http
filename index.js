@@ -9,6 +9,7 @@ var util = require('util');
 var queryString = require("querystring");//querystring require
 var fs = require("fs");
 
+
 // module.exports.httpMsgs = require("./src/http/httpMsgs");//httpMsgs require for sending  responce for export pupose
 var httpMsgs = require("./src/http/httpMsgs");//httpMsgs require for local purpose
 var httpFiles = require("./src/http/httpFiles"); //this is for files sending like html css and javascript for front end development
@@ -29,9 +30,11 @@ module.exports.ROLES = roles;
                 MODULE WIDE VARIABLES
 =================================================================
 */ 
+
 var currentURL = "";//this stores the last url accesed;
 var getOBJ=[]; // this strores all get routes declred by consumer app
 var postOBJ=[];// this strors all post routes declred by consumer app
+var middleWere = [];// this array of app.use middlewere
 
 /*
 =======================================
@@ -183,8 +186,9 @@ var getMethod = function (url,  UseMiddleWere = true,...callbacks){
 module.exports.getMethod= getMethod;
 
 
-module.exports.getParsedQuery = function (){
+var getLastParsedQuery = function (){
     /*
+    last parsed query
     Ths returns the parsed query string as JSON object
     */ 
     var curURL = currentURL
@@ -192,6 +196,8 @@ module.exports.getParsedQuery = function (){
     var qsString = curURL.substr(queryStringIndex + 1, curURL.length);
     return queryString.parse(qsString);
 }
+
+module.exports.getParsedQuery = getLastParsedQuery
 
 /*
 =============================
@@ -223,17 +229,16 @@ var postMethod = function(url,  UseMiddleWere = true ,...callbacks){
 
     module.exports.postMethod = postMethod;
 
-    /*
-    =========================
-        MIDDLEWERE
-    =========================
-    */ 
+/*
+=========================
+    MIDDLEWERE
+=========================
+*/ 
 
-    var middleWere = [];// this array of app.use middlewere
-    module.exports.use= function(mWere){
-        // ADD GENERAL MIDDLE WERE
-        middleWere.push(mWere);
-    }
+module.exports.use= function(mWere){
+    // ADD GENERAL MIDDLE WERE
+    middleWere.push(mWere);
+}
 
 /*
     ==========================
@@ -270,5 +275,32 @@ var sendFile = function(url,contentType , path){
 
 module.exports.sendFile = sendFile;
 
+var renderHTML = function (url, path){
+    getMethod(url, false, function(req, res){
+        fs.readFile(path, null, function(err, data){
+            if(err){
+                send404(req, res);
+            }else{
+                var parsedQuery = getLastParsedQuery();// this get json object with latest parsed query string
+                var keys = Object.keys(parsedQuery);// stores the keys of json object as array
+                var patt; //this store the regular expression 
+                var key ='';// single key from keys array
+                var renderData = data.toString();// converts data recived form reading file to tostring and asign to renderData 
+                for (let index = 0; index < keys.length; index++) {
+                    // looping through keys array to replace {{args}} in renderData string
+                    key = keys[index];
+                    var regular = "{{" + key +  "}}";
+                    var patt = new RegExp(regular, "g");// create regular expression
+                    renderData = renderData.replace(patt, parsedQuery[key]);// pass it renderData to replace all by looping all keys 
+                }
+                res.writeHead(200, {"Content-Type" : "text/html"});//write head
+                res.write(renderData);//write html string
+                res.end();//end res
+            }
+    
+        });
+    });
 
-// kept for testing purpose
+}
+
+module.exports.renderHTML= renderHTML

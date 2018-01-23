@@ -1,8 +1,15 @@
 # jwt-http
 # Under developement
+<<<<<<< HEAD
 This is http frame work for developing rest api (back end) and also front end 
 Rest api backend responces are served by JSON.
 This is a light frame work unopinated supports the middlewere for adding functionlites
+=======
+This is http frame work for developing rest api and also front end 
+backend responce by json 
+front serves browesers
+
+>>>>>>> 68788da1af3aaafab1761c147b818a2d01c6a5f5
 ```
 recomended architure is 
 dir: app
@@ -56,10 +63,8 @@ dir: app
 ```
 ## POST method routing
 ```
-    app.postMethod("/mypost", true, function(req, res){
-       //req.body contanes the posted data 
-        var data= querystring.parse(req.body);//use querystring module to parse the data 
-
+    app.postMethod("/mypost", true,function(req, res, reqBody){
+        var data= querystring.parse(req.body);//reqBody is data received
         // now use posted data as per need
         // after processing, if data need to send back to client
 
@@ -109,6 +114,10 @@ dir: app
 
 ## Front end 
 Front end assets also are to be routed in order to be included in html pages
+app.sendFile(url, contentType ,path);
+1. url is route 
+2. contentType is Content-Type i.e text/html, text/javascript, text/css
+2. path is actual place of file
 
 ```
 //html
@@ -119,6 +128,36 @@ app.sendFile("/bundle.js","text/javascript", __dirname + "/javascript");
 
 //css
 app.sendFile("/styles","text/css", __dirname + "/style.css");
+
+```
+
+## Render HTML using inbult templeting engine
+app.renderHTML(url, path);
+1. url is route 
+2. path is actual place of file
+```
+ //url for index.html see below
+ http://localhost:9000/index?name=umesh&age=45&sex=male&occ=doctor
+
+ //route for  index.html see belwow
+ app.renderHTML("/index" + app.queryExpression() , __dirname + "/index.html");
+
+// below is index.html page 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>{{name}}</h1>
+    <h1>{{age}}</h1>
+    <h1>{{sex}}</h1>
+    <h1>{{occ}}</h1>
+</body>
+</html>
 
 ```
 

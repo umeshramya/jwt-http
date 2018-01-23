@@ -1,15 +1,8 @@
 # jwt-http
 # Under developement
-<<<<<<< HEAD
 This is http frame work for developing rest api (back end) and also front end 
 Rest api backend responces are served by JSON.
 This is a light frame work unopinated supports the middlewere for adding functionlites
-=======
-This is http frame work for developing rest api and also front end 
-backend responce by json 
-front serves browesers
-
->>>>>>> 68788da1af3aaafab1761c147b818a2d01c6a5f5
 ```
 recomended architure is 
 dir: app

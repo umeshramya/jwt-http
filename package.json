@@ -15,7 +15,7 @@
   "license": "MIT",
   "devDependencies": {},
   "dependencies": {
-    "crypto-js": "^3.1.9-1",
+    "jwt-login": "0.0.1",
     "render-html-async": "0.0.3",
     "user-groups-roles": "^1.0.4"
   },

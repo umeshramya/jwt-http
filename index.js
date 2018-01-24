@@ -18,8 +18,8 @@ var httpFiles = require("./src/http/httpFiles"); //this is for files sending lik
 module.exports.HTTPMsgs = httpMsgs;
 module.exports.HTTPFiles = httpFiles;
 
-var jwt = require("./src/jwt/jwt");
-module.exports.JWT = jwt;
+var JWT = require("jwt-login");
+module.exports.JWT = JWT;
 
 
 var roles = require("user-groups-roles");
@@ -55,12 +55,11 @@ var server = Http.createServer(function(req,res){
     
     // GET method
     if(req.method== "GET"){
-        var curGetOBJ;
-        
+        var curGetOBJ;//this stores cur array inside array of getOBJ 
         for (let index = 0; index < getOBJ.length; index++) {
             curGetOBJ = new RegExp (getOBJ[index][0]);//this is url from the array
             if(curGetOBJ.test(currentURL)){
-                    foundURL= true;
+                    foundURL= true;// set the found var to true as url is found
                 for (let i = 1; i < getOBJ[index].length; i++) {
                      previous = getOBJ[index][i](req, res, previous);
                     if(previous == false){
@@ -69,9 +68,14 @@ var server = Http.createServer(function(req,res){
                     }
                 }
             }
+
+            if (foundURL == true){//if true
+                break; // break loop as url is found
+            }
+            
         }
 
-        if(foundURL == false){
+        if(foundURL == false){//if false
             // send 404 message if requested url did not match
             httpMsgs.send404(req,res);
         }
@@ -83,14 +87,15 @@ var server = Http.createServer(function(req,res){
         var reqBodySize = true;//this var for checking the req body size 
         for (let index = 0; index < postOBJ.length; index++) {
             curPostOBJ = new RegExp(postOBJ[index][0]);
-            if(curPostOBJ.test(currentURL)){                
+            if(curPostOBJ.test(currentURL)){
+                foundURL = true;// set this true if url is detected                
                 req.on('data', function(data){
                     reqBody  += data
                     if(reqBody.length > 1e7){//limiting size of data to less than 10mb
                         httpMsgs.send413(req,res);
                         reqBodySize = false;
                     }
-                });
+                });//end req,on('data', function(data))
 
                 req.on("end", function(){
                     if (reqBodySize){
@@ -105,16 +110,19 @@ var server = Http.createServer(function(req,res){
                        }
                     
                         
-                    }
+                    }//end of if (reqBodySize)
                     
-                })
+                })//end of req.on("end", function()
                 
-                foundURL = true
-            }else{
-                // send 404 message if requested url did not match
-                httpMsgs.send404(req,res);
-            }
-                
+            } //end of if(curPostOBJ.test(currentURL))
+            if(foundURL == true){
+                break;//break further excuation of loop 
+            }     
+        }//end of for (let index = 0; index < postOBJ.length; index++)
+
+        if (foundURL == false){
+            // send 404 message if requested url did not match
+            httpMsgs.send404(req,res);
         }
 
     }else{
@@ -320,5 +328,6 @@ var renderHTML = function(url, path){
 }
 
 module.exports.renderHTML= renderHTML;
+
 
 

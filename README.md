@@ -157,22 +157,44 @@ app.renderHTML(url, path);
 ## Login Code useing middlewere
 **Login route and its middle were has to be First route before any middle were or route declered**
 ```
-    
-    var loginMiddilewere = function(req, res, reqBody, previous){
-        var user = reqBody.user;
-        var password = reqBody.password;
-        var login = false;
-
-        // code to check login if successfull then call app.JWT.createJWT 
-        if(login){
-            return app.JWT.createJWT({"user" : reqBody.user});
-        }else{
-            return false;
+    //middlewere for login
+    var loginMiddleWere = function(req, res, previous){
+        try {
+            // var data = queryString.parse(req.body);
+            var data = JSON.parse(req.body);    
+            var user = data.user;
+            var password = data.password;
+            var loginStatus = false;
+            if(util.isString(user) && util.isString(password)){            
+                /*
+                    ====================
+                    //process code check from the database
+                    ====================
+                */ 
+                loginStatus = true //set this only  if succful login occures
+            }else{
+                throw new Error("invalid form of posting")
+            }
+            //loginstatus code
+            if (loginStatus){
+                return user//return the user to be consumed by payload 
+            }else{
+                app.HTTPMsgs.send500(req, res, "Invalid user and password");
+                return false;
+            }
+            
+        } catch (error) {
+            app.HTTPMsgs.send500(req, res, error);
+            return false;//prevent excustation next function
         }
     }
-
-    app.postMethod("/login", loginMiddilewere, function(req, res, reqBody, previous){
-        app.HTTPMsgs.sendJSON(req, res, {"jwt": previous});
+    //route
+    app.postMethod("/login", false, loginMiddleWere, function(req, res, previous){
+        var payload = {"user" : previous, "expDate" : Date + 1};
+        app.JWT.setSecretKey("secret");
+        app.JWT.createJWT(payload);
+        var token = {"token" : app.JWT.createJWT(payload)}
+        app.HTTPMsgs.sendJSON(req, res, token );
     });
 ```
 

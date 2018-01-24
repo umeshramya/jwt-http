@@ -161,11 +161,10 @@ app.renderHTML(url, path);
 ## Login Code useing middlewere
 Login route and its middle were 
 ```
-    //middlewere for login
+    //login middlewere
     var loginMiddleWere = function(req, res, previous){
         try {
-            // var data = queryString.parse(req.body);
-            var data = JSON.parse(req.body);    
+            var data = queryString.parse(req.body);  
             var user = data.user;
             var password = data.password;
             var loginStatus = false;
@@ -188,19 +187,23 @@ Login route and its middle were
             }
             
         } catch (error) {
-            app.HTTPMsgs.send500(req, res, error);
+            // app.HTTPMsgs.send500(req, res, error);
+            app.HTTPMsgs.redirectTemporary(req,res,"/index?name=umesh&age=34");
+
             return false;//prevent excustation next function
         }
     }
-    //route
+
+    //login post route
     app.postMethod("/login", false, loginMiddleWere, function(req, res, previous){
-        var payload = {"user" : previous, "expDate" : Date + 1};
+        var payload = {"user" : previous, "expDate" : Date()};
         app.JWT.setSecretKey("secret");
         app.JWT.createJWT(payload);
-        var token = {"token" : app.JWT.createJWT(payload)}
-        app.HTTPMsgs.sendJSON(req, res, token );
-    });
+        var token = "JWTtoken="   + app.JWT.createJWT(payload)
+        app.cookie.setCookie(req, res, token);
+    });;
 ```
+## Cookie
 
 ---
 ## httpMsgs
@@ -228,8 +231,12 @@ Requested page not availeble
 #### httpMsgs.send413 = function(req, res)
 Requesting for large data, not supported.
 
+
+
 ## To do
 1. Need to fix bug at route "/" this is causing error.
 2. login code for verifying i.e handling header authoriazation bearer code has to be written
 2. JWT still need to fix encryption and validation compatable with online tools
 3. user-groups-roles
+4. complete cookie module
+5. write in readme about 301 307 and 308 httpMsgs module

@@ -11,18 +11,25 @@ var fs = require("fs");
 var render = require("render-html-async");
 
 
-// module.exports.httpMsgs = require("./src/http/httpMsgs");//httpMsgs require for sending  responce for export pupose
+/*
+    ====================================
+    Modules requried with re exports
+    ====================================
+*/
 var httpMsgs = require("./src/http/httpMsgs");//httpMsgs require for local purpose
-var httpFiles = require("./src/http/httpFiles"); //this is for files sending like html css and javascript for front end development
-
 module.exports.HTTPMsgs = httpMsgs;
+
+var httpFiles = require("./src/http/httpFiles"); //this is for files sending like html css and javascript for front end development
 module.exports.HTTPFiles = httpFiles;
 
-var JWT = require("jwt-login");
+var cookie = require("./src/http/cookie/cookie");//this module contains cookie releted functions
+module.exports.cookie = cookie;
+
+var JWT = require("jwt-login");// login module
 module.exports.JWT = JWT;
 
 
-var roles = require("user-groups-roles");
+var roles = require("user-groups-roles");//user-groups-roles
 module.exports.ROLES = roles;
 
 

@@ -1,6 +1,6 @@
 {
   "name": "jwt-http",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "This is jwt for security of web application",
   "main": "index.js",
   "scripts": {

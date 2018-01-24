@@ -132,7 +132,7 @@ app.renderHTML(url, path);
  //url for index.html see below
  http://localhost:9000/index?name=umesh&age=45&sex=male&occ=doctor
 
- //route for  index.html see belwow
+ //route for  index.html see below
  app.renderHTML("/index" + app.queryExpression() , __dirname + "/index.html");
 
 // below is index.html page 
@@ -155,7 +155,7 @@ app.renderHTML(url, path);
 ```
 
 ## Login Code useing middlewere
-**Login route and its middle were has to be First route before any middle were or route declered**
+Login route and its middle were 
 ```
     //middlewere for login
     var loginMiddleWere = function(req, res, previous){

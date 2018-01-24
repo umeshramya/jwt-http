@@ -8,6 +8,7 @@ var Http = require("http");//http require
 var util = require('util');
 var queryString = require("querystring");//querystring require
 var fs = require("fs");
+var render = require("render-html-async");
 
 
 // module.exports.httpMsgs = require("./src/http/httpMsgs");//httpMsgs require for sending  responce for export pupose
@@ -241,9 +242,9 @@ module.exports.use= function(mWere){
 }
 
 /*
-    ==========================
-        Frontend file getmethods
-    ===========================
+==============================
+    Frontend file getmethods
+==============================
 */ 
 
 
@@ -261,7 +262,7 @@ var sendFile = function(url,contentType , path){
     getMethod(url, false, function(req, res){
         fs.readFile(path, null, function(err, data){
             if(err){
-                send404(req, res);
+                httpMsgs.send404(req, res);
             }else{
                 res.writeHead(200, {"Content-Type" : contentType});
                 res.write(data);
@@ -275,32 +276,49 @@ var sendFile = function(url,contentType , path){
 
 module.exports.sendFile = sendFile;
 
-var renderHTML = function (url, path){
-    getMethod(url, false, function(req, res){
-        fs.readFile(path, null, function(err, data){
-            if(err){
-                send404(req, res);
-            }else{
-                var parsedQuery = getLastParsedQuery();// this get json object with latest parsed query string
-                var keys = Object.keys(parsedQuery);// stores the keys of json object as array
-                var patt; //this store the regular expression 
-                var key ='';// single key from keys array
-                var renderData = data.toString();// converts data recived form reading file to tostring and asign to renderData 
-                for (let index = 0; index < keys.length; index++) {
-                    // looping through keys array to replace {{args}} in renderData string
-                    key = keys[index];
-                    var regular = "{{" + key +  "}}";
-                    var patt = new RegExp(regular, "g");// create regular expression
-                    renderData = renderData.replace(patt, parsedQuery[key]);// pass it renderData to replace all by looping all keys 
-                }
-                res.writeHead(200, {"Content-Type" : "text/html"});//write head
-                res.write(renderData);//write html string
-                res.end();//end res
-            }
+// var renderHTML = function (url, path){
+//     getMethod(url, false, function(req, res){
+//         fs.readFile(path, null, function(err, data){
+//             if(err){
+//                 send404(req, res);
+//             }else{
+//                 var parsedQuery = getLastParsedQuery();// this get json object with latest parsed query string
+//                 var keys = Object.keys(parsedQuery);// stores the keys of json object as array
+//                 var patt; //this store the regular expression 
+//                 var key ='';// single key from keys array
+//                 var renderData = data.toString();// converts data recived form reading file to tostring and asign to renderData 
+//                 for (let index = 0; index < keys.length; index++) {
+//                     // looping through keys array to replace {{args}} in renderData string
+//                     key = keys[index];
+//                     var regular = "{{" + key +  "}}";
+//                     var patt = new RegExp(regular, "g");// create regular expression
+//                     renderData = renderData.replace(patt, parsedQuery[key]);// pass it renderData to replace all by looping all keys 
+//                 }
+//                 res.writeHead(200, {"Content-Type" : "text/html"});//write head
+//                 res.write(renderData);//write html string
+//                 res.end();//end res
+//             }
     
+//         });
+//     });
+
+// }
+
+var renderHTML = function(url, path){
+    getMethod(url,false,function(req,res){
+        render.renderHTML(path, currentURL).then(function(renderData){
+            res.writeHead(200, {"Content-Type" : "text/html"});//write head
+            res.write(renderData);//write html string
+            res.end();//end res
+    
+        }).catch(function(message){
+            httpMsgs.send404(req, res);
         });
+
     });
 
 }
 
-module.exports.renderHTML= renderHTML
+module.exports.renderHTML= renderHTML;
+
+

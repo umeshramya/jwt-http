@@ -28,7 +28,6 @@ module.exports.cookie = cookie;
 var JWT = require("jwt-login");// login module
 module.exports.JWT = JWT;
 
-
 var roles = require("user-groups-roles");//user-groups-roles
 module.exports.ROLES = roles;
 
@@ -291,34 +290,6 @@ var sendFile = function(url,contentType , path){
 
 module.exports.sendFile = sendFile;
 
-// var renderHTML = function (url, path){
-//     getMethod(url, false, function(req, res){
-//         fs.readFile(path, null, function(err, data){
-//             if(err){
-//                 send404(req, res);
-//             }else{
-//                 var parsedQuery = getLastParsedQuery();// this get json object with latest parsed query string
-//                 var keys = Object.keys(parsedQuery);// stores the keys of json object as array
-//                 var patt; //this store the regular expression 
-//                 var key ='';// single key from keys array
-//                 var renderData = data.toString();// converts data recived form reading file to tostring and asign to renderData 
-//                 for (let index = 0; index < keys.length; index++) {
-//                     // looping through keys array to replace {{args}} in renderData string
-//                     key = keys[index];
-//                     var regular = "{{" + key +  "}}";
-//                     var patt = new RegExp(regular, "g");// create regular expression
-//                     renderData = renderData.replace(patt, parsedQuery[key]);// pass it renderData to replace all by looping all keys 
-//                 }
-//                 res.writeHead(200, {"Content-Type" : "text/html"});//write head
-//                 res.write(renderData);//write html string
-//                 res.end();//end res
-//             }
-    
-//         });
-//     });
-
-// }
-
 var renderHTML = function(url, path){
     getMethod(url,false,function(req,res){
         render.renderHTML(path, currentURL).then(function(renderData){
@@ -335,6 +306,82 @@ var renderHTML = function(url, path){
 }
 
 module.exports.renderHTML= renderHTML;
+
+/*
+==========================
+Login
+==========================
+
+*/ 
+
+
+
+
+    /*
+        1. write method loginMethod(user, password) this method does database connection has to be wrtten by consumer of this framwork
+        2. call loginMiddleWere as variable not as function;
+        3. set route "/."  by this method setLoginRoute();
+        
+        this method sets the login 
+        uses the modules jwt-login
+        sets the post route "/login"
+        accepts login function or method as arguments. Loginmethod should accept two arguments user and password
+        below is example loginMethod
+        var loginMethod = fucntion(user, password){
+            code for loginMethod goes here
+            if there a succussful login it should return true if not false
+        }
+    */
+    var loginMiddleWere =  loginMiddleWere = function(req, res, previous){
+        try {
+            var data = queryString.parse(req.body);  
+            var user = data.user;
+            var password = data.password;
+            var loginStatus = false;
+            if(util.isString(user) && util.isString(password)){            
+                /*
+                    ====================
+                    //process code check from the database
+                    ====================
+                */ 
+                loginStatus = loginMethod(user, password);
+
+
+            }else{
+                throw new Error("invalid form of posting")
+            }
+            //loginstatus code
+            if (loginStatus){
+                return user//return the user to be consumed by payload 
+            }else{
+                httpMsgs.send500(req, res, "Invalid user and password");
+                return false;
+            }
+            
+        } catch (error) {
+            // httpMsgs.send500(req, res, error);
+            httpMsgs.redirectTemporary(req,res,"/index?name=umesh&age=34");
+
+            return false;//prevent excustation next function
+        }
+    }
+
+exports.loginMiddleWere = loginMiddleWere;
+
+
+var setLoginRoute = function(){
+    //login post route
+    postMethod("/login", false,  loginMiddleWere, function(req, res, previous){
+        var payload = {"user" : previous, "expDate" : Date()};
+        JWT.setSecretKey("secret");
+        JWT.createJWT(payload);
+        var token = "JWTtoken="   + JWT.createJWT(payload)
+        cookie.setCookie(req, res, token);
+    });
+}
+
+exports.setLoginRoute = setLoginRoute;
+
 
 
 

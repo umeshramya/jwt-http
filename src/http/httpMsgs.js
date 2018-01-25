@@ -5,19 +5,26 @@ let contentType ={"Content-Type" : "application/json"}
     ==================
 */
 
-exports.sendJSON = function(req, res, data){
+exports.sendJSON = function(req, res, data, resEnd=true){
     // on succes 
     res.writeHead(200, contentType);
     if(data){
         res.write(JSON.stringify(data));
-    }   
-    res.end();
+    }
+  
+    if(resEnd){         
+        res.end();     
+    }
+     
+
 }
 
-exports.send200 = function(req, res){
+exports.send200 = function(req, res,  resEnd=true){
     // 200
     res.writeHead(200, contentType);
-    res.end();
+    if(resEnd){         
+        res.end();     
+    }
 }
 
 /*
@@ -25,21 +32,27 @@ exports.send200 = function(req, res){
         300  plus status
     ======================
 */
-exports.movedPermently = function(req, res, url){
+exports.movedPermently = function(req, res, url, resEnd=true){
     // redirect temporary
     res.writeHead(301,{Location: url } );  
-    res.end();
+    if(resEnd){         
+        res.end();     
+    }
 }
-exports.redirectTemporary = function(req, res, url){
+exports.redirectTemporary = function(req, res, url,  resEnd=true){
     // redirect temporary
     res.writeHead(301,{Location: url } ); 
-    res.end();
+        if(resEnd){         
+            res.end();     
+        }
 }
 
-exports.redirectPerment = function(req, res, url){
+exports.redirectPerment = function(req, res, url,  resEnd=true){
     // redirect perment
     res.writeHead(301,{Location: url } ); 
-    res.end();
+        if(resEnd){         
+            res.end();     
+        }
 }
 
 
@@ -49,25 +62,31 @@ exports.redirectPerment = function(req, res, url){
     ======================
 */
 
-exports.send404 = function(req, res){
+exports.send404 = function(req, res,  resEnd=true){
     // Requested page not availeble
     res.writeHead(404,"Resource not found", contentType);
     res.write(JSON.stringify({"data" : "Resource not found"}));
-    res.end();
+        if(resEnd){         
+            res.end();     
+        }
 }
 
-exports.send405 = function(req, res){
+exports.send405 = function(req, res,  resEnd=true){
     // Method not supporetd ie. GET, POST others not supported
     res.writeHead(405,"Method not supported", contentType);
     res.write(JSON.stringify({"data" : "Method not supported"}));
-    res.end();
+        if(resEnd){         
+            res.end();     
+        }
 }
 
-exports.send413 = function(req, res){
+exports.send413 = function(req, res,  resEnd=true){
     // Requesting for large data, not supported
     res.writeHead(413, "Request too large", contentType);
     res.write(JSON.stringify({"data" : "Request too large"}));
-    res.end();
+        if(resEnd){         
+            res.end();     
+        }
 }
 
 /*
@@ -76,9 +95,11 @@ exports.send413 = function(req, res){
     ==================
 */ 
 
-exports.send500 = function(req,res,err){
+exports.send500 = function(req, res, err,  resEnd=true){
     // on error
     res.writeHead(500, "Internal error occured", contentType);
     res.write(JSON.stringify({"data" : "Internal error occured: " + err}));
-    res.end();
+        if(resEnd){         
+            res.end();     
+        }
 }

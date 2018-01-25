@@ -313,25 +313,21 @@ Login
 ==========================
 
 */ 
-
-
-
-
-    /*
-        1. write method loginMethod(user, password) this method does database connection has to be wrtten by consumer of this framwork
-        2. call loginMiddleWere as variable not as function;
-        3. set route "/."  by this method setLoginRoute();
-        
-        this method sets the login 
-        uses the modules jwt-login
-        sets the post route "/login"
-        accepts login function or method as arguments. Loginmethod should accept two arguments user and password
-        below is example loginMethod
-        var loginMethod = fucntion(user, password){
-            code for loginMethod goes here
-            if there a succussful login it should return true if not false
-        }
-    */
+/*
+    1. write method by nae loginMethod(user, password) this method does database connection has to be wrtten by consumer of this framwork
+    2. call loginMiddleWere as variable not as function;
+    3. set route "/."  by this method setLoginRoute();
+    
+    this method sets the login 
+    uses the modules jwt-login
+    sets the post route "/login"
+    accepts login function or method as arguments. Loginmethod should accept two arguments user and password
+    below is example loginMethod
+    var loginMethod = fucntion(user, password){
+        code for loginMethod goes here
+        if there a succussful login it should return true if not false
+    }
+*/
     var loginMiddleWere =  loginMiddleWere = function(req, res, previous){
         try {
             var data = queryString.parse(req.body);  

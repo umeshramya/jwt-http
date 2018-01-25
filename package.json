@@ -15,6 +15,7 @@
   "license": "MIT",
   "devDependencies": {},
   "dependencies": {
+    "http-msgs": "0.0.0",
     "jwt-login": "0.0.1",
     "render-html-async": "0.0.3",
     "user-groups-roles": "^1.0.4"

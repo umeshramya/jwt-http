@@ -1,6 +1,6 @@
 # jwt-http
 
-![verson](https://img.shields.io/badge/version-0.0.7-green.svg)
+![verson](https://img.shields.io/badge/version-0.0.8-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellowgreen.svg)
 ![under development](https://img.shields.io/badge/Under-Developement-red.svg)
 
@@ -178,40 +178,32 @@ Login route and its middle were
     }
 app.setLoginRoute(loginMiddleWereMethod);
 ```
+## Assets routes creatation 
+1. `assets` folder conatins the script files, css file or image files
+2. This can contain sub folder inside.
+3. routes generated will be `/style.css` for a file just inside assets folder and for file inside subfolder it will `/subfolder/javascript.js`
+4. Image can also included inside this assets folder
+
+
+```     
+    app.setAssetDirRoutes(__dirname + "/assets");
+
+```
+
 ## Cookie
 
 ---
 ## httpMsgs
-req and res are request and responce objects
+kindly check about this module from this link [htt-msgs](https://www.npmjs.com/package/http-msgs)
 
-#### httpMsgs.sendJSON = function(req, res, data)
-This  send json object back  after with success 
-data = retun data is in JSON format
-
-#### httpMsg.send200 = function(req, res)
-This send only 200 status but not data returned 
-
-#### httpMsgs.send500 = function(req,res,err)
-This sends error status with error messages
-err = this contains error message
-
-#### httpMsgs.send405= function(req, res)
-Method not supporetd i.e request.methods supported
-1. GET
-2. POST
-    
-#### httpMsags.send404= function(req, res)
-Requested page not availeble
-
-#### httpMsgs.send413 = function(req, res)
-Requesting for large data, not supported.
-
+## user-groups-roles
+kindly check about this module from this link [user-groups-roles](https://www.npmjs.com/package/user-groups-roles)
 
 
 ## To do
 1. Need to fix bug at route "/" this is causing error.
-2. login code for verifying i.e handling header authoriazation bearer code has to be written
+2. JwtToken cookie validation on subsequent request
 2. JWT still need to fix encryption and validation compatable with online tools
 3. user-groups-roles
 4. complete cookie module
-5. write in readme about 301 307 and 308 httpMsgs module
+

@@ -8,6 +8,7 @@ var Http = require("http");//http require
 var util = require('util');
 var queryString = require("querystring");//querystring require
 var fs = require("fs");
+var path = require("path");
 var render = require("render-html-async");
 
 
@@ -328,3 +329,48 @@ var setLoginRoute = function(loginMiddlewereMethod){
 
 exports.setLoginRoute = setLoginRoute;
 
+/*
+    ====================================
+    Create Route for assets recusrsively
+    ====================================
+*/ 
+var assetDirpath = "";//this varible stores the assets Dir Path
+var setAssetDirRoutes= function(dir){
+    // dir is complte path sets using __diranme + "/dir"
+    //this function initiates the assets Routes 
+    assetDirpath = dir; //sets the module wide 
+    setAssets(dir);// call the recusrsive method to crwal down the directory tree
+}
+
+module.exports.setAssetDirRoutes = setAssetDirRoutes;
+
+var setAssets = function(dir){
+//this is recusrsive method for drilling the file name
+    var fileNameArray = [];//array for storing filenames with path
+    var fileRouteArry = [];// array for stoirng routes 
+    var fileNameSubStr = '';// this var stores the remaining file path by choping assetDirpath length
+
+    var files = fs.readdirSync(dir)//call the fs module to enlist files/ folder in specified directory
+   
+    for (let index = 0; index < files.length; index++) {// for loop 
+        var next = path.join(dir , files[index]);//asign file/folder to next variable
+
+        if(fs.lstatSync(next).isDirectory()){//check for file or directory
+            
+            setAssets(next);//if directory call the recurssively
+
+        }else{// push to array
+            fileNameSubStr =  next.substr(assetDirpath.length, next.length);
+
+            //replace all forword slashes "/ " by backward for pupose of routes
+            // push to array route and file name array
+            fileRouteArry.push(fileNameSubStr.replace(/\\/g, "/"));
+            fileNameArray.push(next);
+        }
+    }
+    // call send file method to generate get method routes from loop
+    for (let i = 0; i < fileNameArray.length; i++) {
+        sendFile(fileRouteArry[i], "", fileNameArray[i]);
+    }
+   
+}

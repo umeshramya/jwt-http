@@ -162,47 +162,21 @@ app.renderHTML(url, path);
 ## Login Code useing middlewere
 Login route and its middle were 
 ```
-    //login middlewere
-    var loginMiddleWere = function(req, res, previous){
-        try {
-            var data = queryString.parse(req.body);  
-            var user = data.user;
-            var password = data.password;
-            var loginStatus = false;
-            if(util.isString(user) && util.isString(password)){            
-                /*
-                    ====================
-                    //process code check from the database
-                    ====================
-                */ 
-                loginStatus = true //set this only  if succful login occures
-            }else{
-                throw new Error("invalid form of posting")
-            }
-            //loginstatus code
-            if (loginStatus){
-                return user//return the user to be consumed by payload 
-            }else{
-                app.HTTPMsgs.send500(req, res, "Invalid user and password");
-                return false;
-            }
-            
-        } catch (error) {
-            // app.HTTPMsgs.send500(req, res, error);
-            app.HTTPMsgs.redirectTemporary(req,res,"/index?name=umesh&age=34");
 
-            return false;//prevent excustation next function
+    var loginMiddleWereMethod = function(req, res, previous){
+        var data = queryString.parse(req.body);
+        var user = data.user;
+        var password = data.password;
+        var login; // processs the code from database and using user and password set to true if succusful
+        if(login){
+            return true
+        }else{
+            app.HTTPMsgs.send500(req, res, "invalid user and password", false);
+            return false
         }
-    }
 
-    //login post route
-    app.postMethod("/login", false, loginMiddleWere, function(req, res, previous){
-        var payload = {"user" : previous, "expDate" : Date()};
-        app.JWT.setSecretKey("secret");
-        app.JWT.createJWT(payload);
-        var token = "JWTtoken="   + app.JWT.createJWT(payload)
-        app.cookie.setCookie(req, res, token);
-    });;
+    }
+app.setLoginRoute(loginMiddleWereMethod);
 ```
 ## Cookie
 

@@ -11,12 +11,13 @@ var fs = require("fs");
 var render = require("render-html-async");
 
 
+
 /*
     ====================================
     Modules requried with re exports
     ====================================
 */
-var httpMsgs = require("./src/http/httpMsgs");//httpMsgs require for local purpose
+var httpMsgs = require("http-msgs");//httpMsgs require for local purpose
 module.exports.HTTPMsgs = httpMsgs;
 
 var httpFiles = require("./src/http/httpFiles"); //this is for files sending like html css and javascript for front end development
@@ -307,64 +308,17 @@ module.exports.renderHTML= renderHTML;
 
 /*
 ==========================
-Login
+    Login
 ==========================
 
 */ 
-/*
-    1. write method by nae loginMethod(user, password) this method does database connection has to be wrtten by consumer of this framwork
-    2. call loginMiddleWere as variable not as function;
-    3. set route "/."  by this method setLoginRoute();
-    
-    this method sets the login 
-    uses the modules jwt-login
-    sets the post route "/login"
-    accepts login function or method as arguments. Loginmethod should accept two arguments user and password
-    below is example loginMethod
-    var loginMethod = fucntion(user, password){
-        code for loginMethod goes here
-        if there a succussful login it should return true if not false
-    }
-*/
-var loginMiddleWere =  loginMiddleWere = function(req, res, previous){
-    try {
-        var data = queryString.parse(req.body);  
-        var user = data.user;
-        var password = data.password;
-        var loginStatus = false;
-        if(util.isString(user) && util.isString(password)){            
-            /*
-                ====================
-                //process code check from the database
-                ====================
-            */ 
-            loginStatus = loginMethod(user, password);
 
 
-        }else{
-            throw new Error("invalid form of posting")
-        }
-        //loginstatus code
-        if (loginStatus){
-            return user//return the user to be consumed by payload 
-        }else{
-            httpMsgs.send500(req, res, "Invalid user and password");
-            return false;
-        }
-        
-    } catch (error) {
-        httpMsgs.send500(req, res, error);
-        return false;//prevent excustation next function
-    }
-}
-
-exports.loginMiddleWere = loginMiddleWere;
-
-
-var setLoginRoute = function(){
+var setLoginRoute = function(loginMiddlewereMethod){
     //login post route
-    postMethod("/login", false,  loginMiddleWere, function(req, res, previous){
-        var payload = {"user" : previous, "expDate" : Date()};
+    postMethod("/login", false, loginMiddlewereMethod, function(req, res, previous){
+        
+        var payload = {"user" : queryString.parse(req.body).user, "expDate" : Date()};
         JWT.setSecretKey("secret");
         JWT.createJWT(payload);
         var token = "JWTtoken="   + JWT.createJWT(payload)
@@ -373,3 +327,4 @@ var setLoginRoute = function(){
 }
 
 exports.setLoginRoute = setLoginRoute;
+

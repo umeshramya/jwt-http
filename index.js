@@ -19,10 +19,7 @@ var render = require("render-html-async");
     ====================================
 */
 var httpMsgs = require("http-msgs");//httpMsgs require for local purpose
-module.exports.HTTPMsgs = httpMsgs;
-
-var httpFiles = require("./src/http/httpFiles"); //this is for files sending like html css and javascript for front end development
-module.exports.HTTPFiles = httpFiles;
+module.exports.httpMsgs = httpMsgs;
 
 var cookie = require("./src/http/cookie/cookie");//this module contains cookie releted functions
 module.exports.cookie = cookie;
@@ -192,33 +189,18 @@ module.exports.use= function(mWere){
 
 /*
 ===========================================
-            GET RELEVENT METHODS
+            // GET RELEVENT METHODS
 ===========================================
 */ 
 
-var getMethod = function (url,  UseMiddleWere = true,...callbacks){
+var getMethod = function (url,  UseMiddleWere = true, ...callbacks){
     /*
         this adds array of getOBJ 
         UseMiddileWere boolen is for app.use (middlewere) this boolen by defulat is set to true  if set false it does not use middle were
     */ 
-    // code to prevent entry of duplicate url
-    for (let i = 0; i < getOBJ.length; i++) {
-        if(getOBJ[i][0] == url){
-            throw new Error(util.format("This url \"%s\" already exist, so duplication is not allowed", url));
-        }   
-    }
-    var curGetOBJ=[url];
-    if(UseMiddleWere){// ads to routes only if UseMiddlewere boolen set to true
-        for (let j = 0; j < middleWere.length; j++) {
-            curGetOBJ.push(middleWere[j]);        
-        }
-    }
+    var reqMethod = require("./src/http/absReqMethod").reqMethod
+    reqMethod(url,UseMiddleWere,getOBJ,middleWere, ...callbacks);
 
-    for (let k = 0; k < callbacks.length; k++) {
-        curGetOBJ.push(callbacks[k]);
-        
-    }
-    getOBJ.push(curGetOBJ);
 }
 
 module.exports.getMethod= getMethod;
@@ -230,29 +212,16 @@ module.exports.getMethod= getMethod;
 =============================
 */ 
 var postMethod = function(url,  UseMiddleWere = true ,...callbacks){
-    for (let i = 0; i < postOBJ.length; i++) {
-        if(postOBJ[i][0] == url){
-            throw new Error(util.format("This url \"%s\" already exist, so duplication is not allowed", url));
-        }   
-    }
-    var curPostOBJ=[url];
+    /*
+        this adds array of getOBJ 
+        UseMiddileWere boolen is for app.use (middlewere) this boolen by defulat is set to true  if set false it does not use middle were
+    */ 
+    var reqMethod = require("./src/http/absReqMethod").reqMethod
+    reqMethod(url,UseMiddleWere,postOBJ,middleWere, ...callbacks);
 
-    if(UseMiddleWere){
-        for (let j = 0; j < middleWere.length; j++) {
-            curPostOBJ.push(middleWere[j]);        
-        }
+}
 
-    }
-
-    for (let k = 0; k < callbacks.length; k++) {
-        curPostOBJ.push(callbacks[k]);
-        
-    }
-    postOBJ.push(curPostOBJ);
-
-    }
-
-    module.exports.postMethod = postMethod;
+module.exports.postMethod = postMethod;
 
 
 /*

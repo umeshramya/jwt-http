@@ -21,7 +21,7 @@ var render = require("render-html-async");
 var httpMsgs = require("http-msgs");//httpMsgs require for local purpose
 module.exports.httpMsgs = httpMsgs;
 
-var cookie = require("./src/http/cookie/cookie");//this module contains cookie releted functions
+var cookie = require("./src/http/cookie");//this module contains cookie releted functions
 module.exports.cookie = cookie;
 
 var JWT = require("jwt-login");// login module
@@ -29,6 +29,9 @@ module.exports.JWT = JWT;
 
 var roles = require("user-groups-roles");//user-groups-roles
 module.exports.ROLES = roles;
+
+var httpjs = require("./src/http/http");//thss module for http
+var reqMet = require("./src/http/reqMethod")// this is for getMethod and postMethod
 
 
 /*
@@ -48,86 +51,19 @@ var middleWere = [];// this array of app.use middlewere
 =======================================
 */ 
 
+
+
 var server = Http.createServer(function(req,res){
     try {  
         currentURL = req.url;// setting current url
-        //foundURL is by false if requested URL gets matched then it is set true
-        // useful for 404 status
-        var foundURL = false;// this variable stores the
-        var previous = true // this variable is for checking weather to call next method in (Middle were)
-        
         // GET method
         if(req.method== "GET"){
-            var curGetOBJ;//this stores cur array inside array of getOBJ 
-            for (let index = 0; index < getOBJ.length; index++) {
-                curGetOBJ = new RegExp (getOBJ[index][0]);//this is url from the array
-                if(curGetOBJ.test(currentURL)){
-                        foundURL= true;// set the found var to true as url is found
-                    for (let i = 1; i < getOBJ[index].length; i++) {
-                        previous = getOBJ[index][i](req, res, previous);
-                        if(previous == false){
-                            res.end();//end the responce in case of breaking the loop
-                            break;
-                        }
-                    }
-                }
-
-                if (foundURL == true){//if true
-                    break; // break loop as url is found
-                }
-                
-            }
-
-            if(foundURL == false){//if false
-                // send 404 message if requested url did not match
-                httpMsgs.send404(req,res);
-            }
+            httpjs.httpGet(req,res, currentURL,getOBJ,httpMsgs);
 
             // POST method
         }else if(req.method=="POST"){
-            var curPostOBJ;// current postOBJ array inside array of postOBJ
-            var reqBody ='';//this us reqbody sent
-            var reqBodySize = true;//this var for checking the req body size 
-            for (let index = 0; index < postOBJ.length; index++) {
-                curPostOBJ = new RegExp(postOBJ[index][0]);
-                if(curPostOBJ.test(currentURL)){
-                    foundURL = true;// set this true if url is detected                
-                    req.on('data', function(data){
-                        reqBody  += data
-                        if(reqBody.length > 1e7){//limiting size of data to less than 10mb
-                            httpMsgs.send413(req,res);
-                            reqBodySize = false;
-                        }
-                    });//end req,on('data', function(data))
-
-                    req.on("end", function(){
-                        if (reqBodySize){
-                            for (let i = 1; i < postOBJ[index].length; i++) {
-                                req.body = reqBody
-                                previous = postOBJ[index][i](req, res, previous);
+            httpjs.httpPOst(req,res, currentURL,postOBJ,httpMsgs);
             
-                            if(previous == false){
-                                res.end();//end the responce in case of breaking the loop
-                                break;
-                            }
-                        }
-                        
-                            
-                        }//end of if (reqBodySize)
-                        
-                    })//end of req.on("end", function()
-                    
-                } //end of if(curPostOBJ.test(currentURL))
-                if(foundURL == true){
-                    break;//break further excuation of loop 
-                }     
-            }//end of for (let index = 0; index < postOBJ.length; index++)
-
-            if (foundURL == false){
-                // send 404 message if requested url did not match
-                httpMsgs.send404(req,res);
-            }
-
         }else{
             // unsaported method
             httpMsgs.send405(req,res);
@@ -198,8 +134,8 @@ var getMethod = function (url,  UseMiddleWere = true, ...callbacks){
         this adds array of getOBJ 
         UseMiddileWere boolen is for app.use (middlewere) this boolen by defulat is set to true  if set false it does not use middle were
     */ 
-    var reqMethod = require("./src/http/absReqMethod").reqMethod
-    reqMethod(url,UseMiddleWere,getOBJ,middleWere, ...callbacks);
+    
+    reqMet.reqMethod(url,UseMiddleWere,getOBJ,middleWere, ...callbacks);
 
 }
 
@@ -216,8 +152,8 @@ var postMethod = function(url,  UseMiddleWere = true ,...callbacks){
         this adds array of getOBJ 
         UseMiddileWere boolen is for app.use (middlewere) this boolen by defulat is set to true  if set false it does not use middle were
     */ 
-    var reqMethod = require("./src/http/absReqMethod").reqMethod
-    reqMethod(url,UseMiddleWere,postOBJ,middleWere, ...callbacks);
+    
+    reqMet.reqMethod(url,UseMiddleWere,postOBJ,middleWere, ...callbacks);
 
 }
 
@@ -314,7 +250,7 @@ var setAssetDirRoutes= function(dir){
 module.exports.setAssetDirRoutes = setAssetDirRoutes;
 
 var setAssets = function(dir){
-//this is recusrsive method for drilling the file name
+    //this is recusrsive method for drilling the file name
     var fileNameArray = [];//array for storing filenames with path
     var fileRouteArry = [];// array for stoirng routes 
     var fileNameSubStr = '';// this var stores the remaining file path by choping assetDirpath length

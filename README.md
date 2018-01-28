@@ -206,7 +206,7 @@ app.getMethod("/ramya",true, app.validate_login, function (req, res, previous){
 
 ## Cookie
 This is part of httpMsgs has two methods set and get cookies .
-from this link [htt-msgs](https://www.npmjs.com/package/http-msgs)
+from this link [http-msgs](https://www.npmjs.com/package/http-msgs)
 ) 
 ```
 httpMsgs.getCookie
@@ -216,7 +216,7 @@ httpMsgs.setCookie
 
 ---
 ## httpMsgs
-kindly check about this module from this link [htt-msgs](https://www.npmjs.com/package/http-msgs)
+kindly check about this module from this link [http-msgs](https://www.npmjs.com/package/http-msgs)
 
 ## user-groups-roles
 kindly check about this module from this link [user-groups-roles](https://www.npmjs.com/package/user-groups-roles)

@@ -2,13 +2,17 @@
     This file deals with cookies
 */ 
 var queryString = require("querystring");
-var setCookie = function(req, res, cookieString ){
+var setCookie = function(req, res, data, cookieString, resEnd = true){
     // this sets new cookie 
-    res.writeHead(200, {
+    res.writeHead( 200, {
         'Set-Cookie': cookieString,
-        'Content-Type': 'text/plain'
+        // 'Content-Type': 'text/plain'
       });
-      res.end();
+    res.write(data);
+    if(resEnd){
+        res.end();
+    }
+    
    
 }
 exports.setCookie =setCookie;

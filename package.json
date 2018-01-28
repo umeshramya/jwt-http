@@ -1,6 +1,6 @@
 {
   "name": "jwt-http",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "This is jwt for security of web application",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,7 @@
   "license": "MIT",
   "devDependencies": {},
   "dependencies": {
-    "http-msgs": "0.0.2",
+    "http-msgs": "0.0.3",
     "jwt-login": "0.0.1",
     "render-html-async": "0.0.5",
     "user-groups-roles": "^1.0.4"

@@ -205,7 +205,13 @@ app.getMethod("/ramya",true, app.validate_login, function (req, res, previous){
 ```
 
 ## Cookie
-This module has two methods set and get cookies presently not for use there need to fix bug regarding res.end() for subsequsent res
+This is part of httpMsgs has two methods set and get cookies .
+check [http-mmsgs](git+https://github.com/umeshramya/http-msgs.git)
+) 
+```
+httpMsgs.getCookie
+httpMsgs.setCookie
+```
 
 
 ---

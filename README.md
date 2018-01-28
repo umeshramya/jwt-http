@@ -1,6 +1,6 @@
 # jwt-http
 
-![verson](https://img.shields.io/badge/version-0.0.9-green.svg)
+![verson](https://img.shields.io/badge/version-0.0.10-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellowgreen.svg)
 ![under development](https://img.shields.io/badge/Under-Developement-red.svg)
 
@@ -206,7 +206,7 @@ app.getMethod("/ramya",true, app.validate_login, function (req, res, previous){
 
 ## Cookie
 This is part of httpMsgs has two methods set and get cookies .
-check [http-mmsgs](git+https://github.com/umeshramya/http-msgs.git)
+from this link [htt-msgs](https://www.npmjs.com/package/http-msgs)
 ) 
 ```
 httpMsgs.getCookie

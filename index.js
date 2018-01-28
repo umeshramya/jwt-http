@@ -22,7 +22,7 @@ var httpMsgs = require("http-msgs");//httpMsgs require for local purpose
 module.exports.httpMsgs = httpMsgs;
 
 var cookie = require("./src/http/cookie");//this module contains cookie releted functions
-module.exports.cookie = cookie;
+// module.exports.cookie = cookie; //bug to be fixed for res.end()
 
 var JWT = require("jwt-login");// login module
 module.exports.JWT = JWT;
@@ -228,11 +228,29 @@ var setLoginRoute = function(loginMiddlewereMethod){
         JWT.setSecretKey("secret");
         JWT.createJWT(payload);
         var token = "JWTtoken="   + JWT.createJWT(payload)
-        cookie.setCookie(req, res, token);
+        cookie.setCookie(req, res, token);//res.end() is triggerd by setcooke method       
+        
     });
 }
 
 exports.setLoginRoute = setLoginRoute;
+
+
+// validate_login middle were
+var validate_login = function(req, res, previous){
+    var JWTtoken = cookie.getCookie(req, res, "JWTtoken");
+    if(util.isUndefined(JWTtoken)){
+        return false
+    }else{
+        var valid_jwt = JWT.validateJWT(JWTtoken);
+        if (valid_jwt == false){
+            return false
+        }else{
+            req.jwt = valid_jwt;
+        }
+    }
+}  
+exports.validate_login = validate_login; 
 
 /*
     ====================================

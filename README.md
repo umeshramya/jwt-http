@@ -177,6 +177,20 @@ Login route and its middle were
 
     }
 app.setLoginRoute(loginMiddleWereMethod);
+
+
+//validate  login use in bulit in middle were `validate_login`
+//return false in case of failure and return payload if succusful paylod is present in previous var
+it contains {"user":"username","expDate":"Sun Jan 28 2018 10:45:08 GMT+0530 (India Standard Time)"}
+
+app.getMethod("/ramya",true, app.validate_login, function (req, res, previous){
+        app.httpMsgs.sendJSON(req, res, ({
+            name : "Ramya Bilagi",
+            age : 35,
+            sex : "female"
+        }));
+        
+    });
 ```
 ## Assets routes creatation 
 1. `assets` folder conatins the script files, css file or image files
@@ -191,6 +205,8 @@ app.setLoginRoute(loginMiddleWereMethod);
 ```
 
 ## Cookie
+This module has two methods set and get cookies presently not for use there need to fix bug regarding res.end() for subsequsent res
+
 
 ---
 ## httpMsgs
@@ -202,8 +218,8 @@ kindly check about this module from this link [user-groups-roles](https://www.np
 
 ## To do
 1. Need to fix bug at route "/" this is causing error.
-2. JwtToken cookie validation on subsequent request
+2. Need to fix the bug in setCookie method of cookies. 'res.end()' 
 2. JWT still need to fix encryption and validation compatable with online tools
 3. user-groups-roles
-4. complete cookie module
+
 

@@ -8,6 +8,11 @@ var reqMethod = function(url, UseMiddleWere=true,  reqOBJ=[], middleWere=[], ...
         UseMiddileWere boolen is for app.use (middlewere) this boolen by defulat is set to true  if set false it does not use middle were
     */ 
     // code to prevent entry of duplicate url
+    // "/" this route  is reset to "/index"
+    if (url === "/"){
+        url = "/index";
+    }
+
     for (let i = 0; i < reqOBJ.length; i++) {
         if(reqOBJ[i][0] == url){
             throw new Error(util.format("This url \"%s\" already exist, so duplication is not allowed", url));

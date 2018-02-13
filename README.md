@@ -1,10 +1,9 @@
 # jwt-http
 
-![verson](https://img.shields.io/badge/version-0.0.10-green.svg)
+![verson](https://img.shields.io/badge/version-1.0.0-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellowgreen.svg)
-![under development](https://img.shields.io/badge/Under-Developement-red.svg)
 
-# Under developement
+
 This is http frame work for developing rest api (back end) and also front end 
 Rest api backend responces are served by JSON.
 This is a light frame work unopinated supports the middlewere for adding functionlites
@@ -223,8 +222,7 @@ kindly check about this module from this link [user-groups-roles](https://www.np
 
 
 ## To do
-1. Need to fix bug at route "/" this is causing error.
-2. Need to fix the bug in setCookie method of cookies. 'res.end()' 
+1. Need to fix the bug in setCookie method of cookies. 'res.end()' 
 2. JWT still need to fix encryption and validation compatable with online tools
 3. user-groups-roles
 

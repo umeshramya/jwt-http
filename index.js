@@ -51,7 +51,12 @@ var middleWere = [];// this array of app.use middlewere
 
 
 var server = Http.createServer(function(req,res){
-    try {  
+    try {
+        //this presets the "/" to "/index"
+        if(req.url === "/"){
+            req.url = "/index"
+        }
+
         currentURL = req.url;// setting current url
         // GET method
         if(req.method== "GET"){
@@ -221,7 +226,7 @@ var setLoginRoute = function(loginMiddlewereMethod){
     //login post route
     postMethod("/login", false, loginMiddlewereMethod, function(req, res, previous){
         
-        var payload = {"user" : queryString.parse(req.body).user, "expDate" : Date()};
+        var payload = {"user" : queryString.parse(req.body).user, "createdDate" : Date()};
         JWT.setSecretKey("secret");
         JWT.createJWT(payload);
         var token = "JWTtoken="   + JWT.createJWT(payload)

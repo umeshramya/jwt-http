@@ -8,7 +8,7 @@ This is http frame work for developing rest api (back end) and also frontend.
 Rest api backend responces are served by JSON.
 This is a light frame work unopinated supports the middlewere for adding functionlites
 
-[video tutorial on youtuve](https://www.youtube.com/watch?v=hJGM7Nx6PDg&list=PLPn4lbmkQI4VHdMTA5Q1u0OJ4iAnwM9c_)
+[video tutorial on youtube](https://www.youtube.com/watch?v=hJGM7Nx6PDg&list=PLPn4lbmkQI4VHdMTA5Q1u0OJ4iAnwM9c_)
 ```
 recomended architure is 
 dir: app

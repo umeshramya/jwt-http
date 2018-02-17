@@ -1,4 +1,14 @@
 
+var checkUrl = function(methodOBJ, currentURL ){
+    curMethodOBJ = new RegExp(methodOBJ[index][0]);//this is url from the array
+    if(curMethodOBJ.test(currentURL)){
+        return true;
+    }else{
+        return false;
+    }
+    
+}
+
 exports.httpGet = function (req, res, currentURL, getOBJ, httpMsgs){
     //foundURL is by false if requested URL gets matched then it is set true
     // useful for 404 status

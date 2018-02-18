@@ -1,6 +1,6 @@
 # jwt-http
 
-![verson](https://img.shields.io/badge/version-1.0.1-green.svg)
+![verson](https://img.shields.io/badge/version-1.0.2-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellowgreen.svg)
 
 
@@ -8,13 +8,13 @@ This is http frame work for developing rest api (back end) and also frontend.
 Rest api backend responces are served by JSON.
 This is a light frame work unopinated supports the middlewere for adding functionlites
 
-[video tutorial on youtube](https://www.youtube.com/watch?v=hJGM7Nx6PDg&list=PLPn4lbmkQI4VHdMTA5Q1u0OJ4iAnwM9c_)
+[![](https://github.com/umeshramya/jwt-http/blob/master/maxresdefault%5B1%5D.jpg?raw=true)](https://www.youtube.com/watch?v=hJGM7Nx6PDg&list=PLPn4lbmkQI4VHdMTA5Q1u0OJ4iAnwM9c_)
 ```
 recomended architure is 
 dir: app
     dir:backend
         files/dir:routes //of backend usinf HTTPMsgs
-        dir:model database connection and bussiness loging
+        dir:model database connection and bussiness logic
     dir:frontend
         file/dir:HTML
         file/dir:routes // This routes for front and objects like html css and front javascript files
@@ -227,5 +227,6 @@ kindly check about this module from this link [user-groups-roles](https://www.np
 1. Need to fix the bug in setCookie method of cookies. 'res.end()' 
 2. JWT still need to fix encryption and validation compatable with online tools
 3. user-groups-roles
+4. write code for param urls i.e "/employ/:id"
 
 

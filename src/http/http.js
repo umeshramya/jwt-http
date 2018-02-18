@@ -1,24 +1,44 @@
+var util = require("util");
 
-var checkUrl = function(methodOBJ, currentURL ){
-    curMethodOBJ = new RegExp(methodOBJ[index][0]);//this is url from the array
-    if(curMethodOBJ.test(currentURL)){
-        return true;
-    }else{
-        return false;
+var checkUrl = function(req, res, curMethodURL, currentURL ){
+    //this method checks the matcing url from array return true if yes or false if no
+    var curReg = new RegExp(curMethodURL);//this is url from the array
+    var urlMatchArray = currentURL.match(curReg);
+    if(!util.isNull(urlMatchArray)){
+        if(urlMatchArray[0] == currentURL){
+            return true;
+        }
     }
+
+    // // code for param
+    // var paramURL = curMethodURL;
+    // paramURL.replace(/\:\w+/, "\\:\\w+");
+    // var paramReg = new RegExp(paramURL);
+    // var urlMatchParamArray = currentURL.match(paramReg);
+  
+    // if(!util.isNull(urlMatchParamArray)){
+    //     if(urlMatchParamArray[0] == currentURL)
+    //     var index = currentURL.search(/\:\w+/);
+    //     req.param = currentURL.substr(index + 1, currentURL.length);
+    //     return true;
+    // }
     
+    return false;
+    
+
 }
+
+
 
 exports.httpGet = function (req, res, currentURL, getOBJ, httpMsgs){
     //foundURL is by false if requested URL gets matched then it is set true
     // useful for 404 status
     var foundURL = false;// this variable stores the
     var previous = true // this variable is for checking weather to call next method in (Middle were)
-    var curGetOBJ;//this stores cur array inside array of getOBJ 
 
     for (let index = 0; index < getOBJ.length; index++) {
-        curGetOBJ = new RegExp (getOBJ[index][0]);//this is url from the array
-        if(curGetOBJ.test(currentURL)){
+     
+        if(checkUrl(req, res, getOBJ[index][0], currentURL)){
                 foundURL= true;// set the found var to true as url is found
             for (let i = 1; i < getOBJ[index].length; i++) {
                 previous = getOBJ[index][i](req, res, previous);
@@ -42,20 +62,16 @@ exports.httpGet = function (req, res, currentURL, getOBJ, httpMsgs){
 
 }
 
-
-
-
 exports.httpPOst = function(req, res, currentURL, postOBJ, httpMsgs){
      //foundURL is by false if requested URL gets matched then it is set true
     // useful for 404 status
     var foundURL = false;// this variable stores the
     var previous = true // this variable is for checking weather to call next method in (Middle were)
-    var curPostOBJ;// current postOBJ array inside array of postOBJ
+
     var reqBody ='';//this us reqbody sent
     var reqBodySize = true;//this var for checking the req body size 
     for (let index = 0; index < postOBJ.length; index++) {
-        curPostOBJ = new RegExp(postOBJ[index][0]);
-        if(curPostOBJ.test(currentURL)){
+        if(checkUrl(req, res, postOBJ[index][0], currentURL)){
             foundURL = true;// set this true if url is detected                
             req.on('data', function(data){
                 reqBody  += data

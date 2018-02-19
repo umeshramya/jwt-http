@@ -10,18 +10,24 @@ var checkUrl = function(req, res, curMethodURL, currentURL ){
         }
     }
 
-    // // code for param
-    // var paramURL = curMethodURL;
-    // paramURL.replace(/\:\w+/, "\\:\\w+");
-    // var paramReg = new RegExp(paramURL);
-    // var urlMatchParamArray = currentURL.match(paramReg);
-  
-    // if(!util.isNull(urlMatchParamArray)){
-    //     if(urlMatchParamArray[0] == currentURL)
-    //     var index = currentURL.search(/\:\w+/);
-    //     req.param = currentURL.substr(index + 1, currentURL.length);
-    //     return true;
-    // }
+    // code for param
+    if(curMethodURL.search(/\:\w+/) >=0){
+        var paramURL = curMethodURL.replace(/\:\w+/, "\\w+");
+        
+        var paramReg = new RegExp(paramURL);
+        var urlMatchParamArray = currentURL.match(paramReg);
+    
+        if(!util.isNull(urlMatchParamArray)){
+            if(urlMatchParamArray[0] == currentURL){
+                var index = paramURL.indexOf("\\w+");
+                req.param = currentURL.substr(index, currentURL.length);
+                return true;
+            }
+
+        }
+    }
+
+
     
     return false;
     

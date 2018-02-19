@@ -1,6 +1,6 @@
 # jwt-http
 
-![verson](https://img.shields.io/badge/version-1.0.2-green.svg)
+![verson](https://img.shields.io/badge/version-1.0.3-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellowgreen.svg)
 
 
@@ -71,6 +71,29 @@ dir: app
         app.HTTPMsgs.sendJSON(req, res, processed_data);   
     });
 ```
+
+## querystring and adding parmeters to url
+```
+//first passing seo and human friendly parmeters "/employ/:id"
+//above type routes can used where id is parmeter
+//req.param contains the parmeters passed
+app.getMethod("/employ/:id", false, function(req, res, previous){
+    app.httpMsgs.sendJSON(req, res, {"param" : req.param});
+});
+
+
+// querystring of url
+//app.queryExpression() this method extract the query string i.e ?name=Umesh&age=34&sex=45
+//app.getParsedQuery() this converts the query querystring in json
+var emp = function(req, res){
+    app.httpMsgs.sendJSON(req, res, app.getParsedQuery());
+}
+
+app.getMethod("/emp" + app.queryExpression(), true, emp);
+
+
+```
+
 ## Middlewere
 1. Middlewere are essentially functions. They process and passes the result to next middlewere or final function
 2. middle were can manipulate the req and res. When tthey return a value or values it gets stored in previous argument of next middlewere or final function. 
@@ -227,6 +250,6 @@ kindly check about this module from this link [user-groups-roles](https://www.np
 1. Need to fix the bug in setCookie method of cookies. 'res.end()' 
 2. JWT still need to fix encryption and validation compatable with online tools
 3. user-groups-roles
-4. write code for param urls i.e "/employ/:id"
+
 
 

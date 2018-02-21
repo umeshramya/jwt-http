@@ -25,7 +25,7 @@ var JWT = require("jwt-login");// login module
 module.exports.JWT = JWT;
 
 var roles = require("user-groups-roles");//user-groups-roles
-module.exports.ROLES = roles;
+module.exports.roles = roles;
 
 var httpjs = require("./src/http/http");//thss module for http
 var reqMet = require("./src/http/reqMethod")// this is for getMethod and postMethod
@@ -299,3 +299,13 @@ var setAssets = function(dir){
     }
    
 }
+
+/*
+    =========================
+        user groups and roles
+    =========================
+*/ 
+
+
+
+

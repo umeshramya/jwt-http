@@ -1,6 +1,6 @@
 # jwt-http
 
-![verson](https://img.shields.io/badge/version-1.0.3-green.svg)
+![verson](https://img.shields.io/badge/version-1.0.5-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellowgreen.svg)
 
 
@@ -251,7 +251,7 @@ kindly check about this module from this link [user-groups-roles](https://www.np
 2. JWT still need to fix encryption and validation compatable with online tools
 3. user-groups-roles
 4. file upload 
-5. admin UI
+
 
 
 

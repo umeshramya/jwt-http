@@ -97,7 +97,8 @@ module.exports.queryExpression = function(){
         this need to add to url for allowing adding query string 
         for example "/emp"+ app.queryExpression (in the consumer modules);
     */ 
-    return "((\\?|\\&)\\w+\\=\\w+)+"
+   return "\\?((\\w+|\\%)+(\\=)(\\w+|\\%)+|\\&)+"
+    // return "((\\?|\\&)\\w+\\=\\w+)+"
     
 }
 var getLastParsedQuery = function (){

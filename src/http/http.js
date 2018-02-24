@@ -40,8 +40,7 @@ exports.httpGet = function (req, res, currentURL, getOBJ, httpMsgs){
     //foundURL is by false if requested URL gets matched then it is set true
     // useful for 404 status
     var foundURL = false;// this variable stores the
-    var previous = true // this variable is for checking weather to call next method in (Middle were)
-
+    var previous = {} // this variable is for checking weather to call next method in (Middle were)
     for (let index = 0; index < getOBJ.length; index++) {
      
         if(checkUrl(req, res, getOBJ[index][0], currentURL)){
@@ -72,7 +71,7 @@ exports.httpPOst = function(req, res, currentURL, postOBJ, httpMsgs){
      //foundURL is by false if requested URL gets matched then it is set true
     // useful for 404 status
     var foundURL = false;// this variable stores the
-    var previous = true // this variable is for checking weather to call next method in (Middle were)
+    var previous = {} // this variable is for checking weather to call next method in (Middle were)
 
     var reqBody ='';//this us reqbody sent
     var reqBodySize = true;//this var for checking the req body size 

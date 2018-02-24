@@ -1,6 +1,6 @@
 # jwt-http
 
-![verson](https://img.shields.io/badge/version-1.0.5-green.svg)
+![verson](https://img.shields.io/badge/version-1.0.6-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellowgreen.svg)
 
 
@@ -106,7 +106,8 @@ app.getMethod("/emp" + app.queryExpression(), true, emp);
 ```   
     app.use(function(req, res, previous){
         //do the process of middle were here
-        console.log("general middle were");
+        previous.property_generic = "generic"
+  
         return previous
     });
 ```
@@ -114,8 +115,7 @@ app.getMethod("/emp" + app.queryExpression(), true, emp);
 ```
     //write middle were as function 
     var curMiddlewere = funtion(req, res, previous){
-        //code of selected middle were
-        console.log("seleted middle were");
+    previous.property_specific = "specific" 
         return previous;
     }
 
@@ -126,7 +126,8 @@ app.getMethod("/emp" + app.queryExpression(), true, emp);
         app.HTTPMsgs.sendJSON(req, res, {
             name : "Umesh Bilagi",
             age : 47,
-            sex : "male"
+            sex : "male",
+            middle : previous.property_specific
         });
         console.log(previous);//this is from previous middile were
     });

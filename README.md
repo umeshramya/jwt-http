@@ -1,6 +1,6 @@
 # jwt-http
 
-![verson](https://img.shields.io/badge/version-1.0.9-green.svg)
+![verson](https://img.shields.io/badge/version-1.0.10-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellowgreen.svg)
 
 
@@ -13,13 +13,21 @@ This is a light frame work unopinated supports the middlewere for adding functio
 recomended architure is 
 dir: app
     dir:backend
-        files/dir:routes //of backend usinf HTTPMsgs
+        files/dir:routes //routes of backend
         dir:model database connection and bussiness logic
+            file:con.js // database connection etc
     dir:frontend
-        file/dir:HTML
-        file/dir:routes // This routes for front and objects like html css and front javascript files
-        files/dir:javascript
-        file/dir:styles
+        dir:HTML
+            file:index.html
+        dir:assets
+            dir:scripts
+                file:style.css
+            dir:styles
+                file:script.js
+            dir:img
+                file:img.jpg
+
+        file/dir:routes//for front end
     index.js
     package.json
     package-lock.json

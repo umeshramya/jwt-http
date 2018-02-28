@@ -1,6 +1,6 @@
 # jwt-http
 
-![verson](https://img.shields.io/badge/version-1.0.10-green.svg)
+![verson](https://img.shields.io/badge/version-1.0.11-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellowgreen.svg)
 
 
@@ -260,6 +260,9 @@ kindly check about this module from this link [user-groups-roles](https://www.np
 2. JWT still need to fix encryption and validation compatable with online tools
 3. user-groups-roles
 4. file upload 
+5. forbidden httpMsg needed to be written
+6. 404.html and forbidden.html page loading options
+
 
 
 

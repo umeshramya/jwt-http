@@ -10,6 +10,7 @@ var queryString = require("querystring");//querystring require
 var fs = require("fs");
 var path = require("path");
 var render = require("render-html-async");
+var moment = require("moment"); //for manging date 
 
 
 
@@ -22,7 +23,6 @@ var httpMsgs = require("http-msgs");//httpMsgs require for local purpose
 module.exports.httpMsgs = httpMsgs;
 
 var JWT = require("jwt-login");// login module
-module.exports.JWT = JWT;
 
 var roles = require("user-groups-roles");//user-groups-roles
 module.exports.roles = roles;
@@ -223,15 +223,25 @@ module.exports.renderHTML= renderHTML;
 */ 
 
 
-var setLoginRoute = function(loginMiddlewereMethod){
+var setLoginRoute = function(loginMiddlewereMethod, secret, expireInMinutes=0){
     //login post route
     postMethod("/login", false, loginMiddlewereMethod, function(req, res, previous){
+        var data =  queryString.parse(req.body)// access the posted data
+        // checks for user prperty in req.body
+        if (!util.isNullOrUndefined(data.user))
+        var user = data.user;//sets to user var
+        else{
+            httpMsgs.send500(req, res, "user argment not set", true);// sends 500 if not set
+            return false;// end further running
+        }
+       
+        var curDate = moment();// gets the present time and date from moment node_module
         
-        var payload = {"user" : queryString.parse(req.body).user, "createdDate" : Date()};
-        JWT.setSecretKey("secret");
-        JWT.createJWT(payload);
-        var token = "JWTtoken="   + JWT.createJWT(payload)
-        httpMsgs.setCookie(req, res, "Login Successful",token, true);//res.end() is triggerd by setcooke method       
+        var payload = {"user" : user, "createdDate" : curDate, "expireInMinutes" : expireInMinutes};// creates the payload for JWT
+        JWT.setSecretKey(secret);// setting secret key
+        JWT.createJWT(payload);//create JWT  with payload
+        var token = "JWTtoken="   + JWT.createJWT(payload)// cooke string
+        httpMsgs.setCookie(req, res,token, "Login Successful",true);//res.end() is triggerd by setcooke method       
         
     });
 }
@@ -239,20 +249,34 @@ var setLoginRoute = function(loginMiddlewereMethod){
 exports.setLoginRoute = setLoginRoute;
 
 
-// validate_login middle were
+// validate_login middle ware
 var validate_login = function(req, res, previous){
-    var JWTtoken = httpMsgs.getCookie(req, res, "JWTtoken");
-    if(util.isUndefined(JWTtoken)){
-        return false
+    // this method varifies the JWT and expire time
+    var JWTtoken = httpMsgs.getCookie(req, res, "JWTtoken");// gets the cookie JWTtoken
+    if(util.isUndefined(JWTtoken)){// not allowed if JWTtoken is undefined
+        //write code for forbidden 
+        return false// terminates the routes also
     }else{
-        var valid_jwt = JWT.validateJWT(JWTtoken);
-        if (valid_jwt == false){
-            return false
-        }else{
-            req.jwt = valid_jwt;
+        var validJWT = JWT.validateJWT(JWTtoken);// check the authenticity of JET token
+        if (validJWT == false){// not allowed if invalid
+            //write code for forbidden
+            return false// terminate route
+        }else{// valid JWT token then
+            var createdDate = JSON.parse(validJWT).createdDate;// access carted time
+            var expireInMinutes = JSON.parse(validJWT).expireInMinutes; //  access expires durration in minutes
+
+            var ftime = moment(createdDate);// created time
+            var nowTime = moment();// now time 
+            var gapTime = moment(nowTime).diff(ftime, "minutes");// gaptime to compare event from created time
+
+            if ((gapTime > expireInMinutes) && (expireInMinutes > 0 )){
+                // if time si more or if expireInMinutes is set more than zero "zero and less means infinate expire time"
+                return false;
+            }
+            req.jwt = validJWT;// passe it route with user name careted time and expire
         }
     }
-}  
+}    
 exports.validate_login = validate_login; 
 
 /*

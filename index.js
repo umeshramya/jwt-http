@@ -53,25 +53,58 @@ var middleWere = [];// this array of app.use middlewere
 var setHtmlError = {
     html404    : "",
     html403    : "",
+    html405     : "",
     html413    : "",
     html500    : ""
 };
 
 var setHTML404 = function(html){
     // set routes the routes for 404 page
-    setHtmlError.html404 = html;
+    render.renderHTML(path, currentURL).then(function(renderData){
+        setHtmlError.html404  = renderData;
+    }).catch(function(message){
+        httpMsgs.send404(req, res);
+
+    });
 }
 module.exports.setHTML404 = setHTML404;
 
 var setHTML403 = function(html){
     // sets the route for 403
-    setHtmlError.html403 = html;
+    render.renderHTML(path, currentURL).then(function(renderData){
+        setHtmlError.html403  = renderData;
+    }).catch(function(message){
+        httpMsgs.send403(req, res);
+    });
 }
-module.exports.setHTML403 = setHTML403;
+module.exports.setHTML405 = setHTML405;
+var setHTML403 = function(html){
+    // sets the route for 405
+    render.renderHTML(path, currentURL).then(function(renderData){
+        setHtmlError.html405  = renderData;
+    }).catch(function(message){
+        httpMsgs.send403(req, res);
+    });
+}
+module.exports.setHTML405 = setHTML405;
+
+var setHTML413 = function(html){
+    // sets the route for 413
+    render.renderHTML(path, currentURL).then(function(renderData){
+        setHtmlError.html413  = renderData;
+    }).catch(function(message){
+        httpMsgs.send403(req, res);
+    });
+}
+module.exports.setHTML413 = setHTML413;
 
 var setHTML500 = function(html){
     // set the route for 500;
-    setHtmlError.html500 = html;
+    render.renderHTML(path, currentURL).then(function(renderData){
+        setHtmlError.html500  = renderData;
+    }).catch(function(message){
+        httpMsgs.send500(req, res);
+    });
 }
 module.exports.setHTML500 = setHTML500;
 
@@ -104,7 +137,7 @@ var server = Http.createServer(function(req,res){
         }else{
             // unsapported method
             if(setHtmlError.html413 == ""){
-                httpMsgs.send405(req,res);
+                httpMsgs.send405(req,res, setHtmlError);
 
             }else{
                 httpMsgs.send413(req, res, setHtmlError.html413);
@@ -116,11 +149,8 @@ var server = Http.createServer(function(req,res){
     } catch (error) {
         // checks the route for 500 error is declered it temaporarly
         // rediret to that page else sends json
-        if(setHtmlError.html500 == ""){
-            httpMsgs.send500(req, res, "Bad HTTP request "  + error.message);
-        }else{
-           httpMsgs.send500(req, res, "Bad HTTP request "+ error.message, setHtmlError.html500);
-        }
+
+        httpMsgs.send500(req, res, "Bad HTTP request "+ error.message, setHtmlError.html500);
         
             
     }

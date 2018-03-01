@@ -62,7 +62,7 @@ exports.httpGet = function (req, res, currentURL, getOBJ, httpMsgs, setRoutes){
 
     if(foundURL == false){//if false
         // send 404 message if requested url did not match
-        httpMsgs.send404(req,res);
+        httpMsgs.send404(req, res, setHtmlError.html404);
     }
 
 }
@@ -111,7 +111,7 @@ exports.httpPOst = function(req, res, currentURL, postOBJ, httpMsgs,  setRoutes)
 
     if (foundURL == false){
         // send 404 message if requested url did not match
-        httpMsgs.send404(req,res);
+        httpMsgs.send404(req, res, setHtmlError.html404);
     }
 
 }

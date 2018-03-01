@@ -254,6 +254,21 @@ kindly check about this module from this link [http-msgs](https://www.npmjs.com/
 ## user-groups-roles
 kindly check about this module from this link [user-groups-roles](https://www.npmjs.com/package/user-groups-roles)
 
+## handling 403, 404 and 500 status error 
+create route for these erro and setRoute403, setRoute404 and setRoute500 respectively
+```
+    app.renderHTML("/403", __dirname + "/html/403.html");
+    app.setRoute403("/403")
+
+    app.renderHTML("/404", __dirname + "/html/403.html");
+    app.setRoute403("/404");
+
+    app.renderHTML("/500", __dirname + "/html/500.html");
+    app.setRoute403("/500")
+
+    
+```
+
 
 ## To do
 1. Need to fix the bug in setCookie method of cookies. 'res.end()' 

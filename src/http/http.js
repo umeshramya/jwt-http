@@ -36,7 +36,7 @@ var checkUrl = function(req, res, curMethodURL, currentURL ){
 
 
 
-exports.httpGet = function (req, res, currentURL, getOBJ, httpMsgs){
+exports.httpGet = function (req, res, currentURL, getOBJ, httpMsgs, setRoutes){
     //foundURL is by false if requested URL gets matched then it is set true
     // useful for 404 status
     var foundURL = false;// this variable stores the
@@ -67,7 +67,7 @@ exports.httpGet = function (req, res, currentURL, getOBJ, httpMsgs){
 
 }
 
-exports.httpPOst = function(req, res, currentURL, postOBJ, httpMsgs){
+exports.httpPOst = function(req, res, currentURL, postOBJ, httpMsgs,  setRoutes){
      //foundURL is by false if requested URL gets matched then it is set true
     // useful for 404 status
     var foundURL = false;// this variable stores the

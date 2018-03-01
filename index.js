@@ -14,6 +14,8 @@ var moment = require("moment"); //for manging date
 
 
 
+
+
 /*
     ====================================
     Modules requried with re exports
@@ -41,6 +43,39 @@ var currentURL = "";//this stores the last url accesed;
 var getOBJ=[]; // this strores all get routes declred by consumer app
 var postOBJ=[];// this strors all post routes declred by consumer app
 var middleWere = [];// this array of app.use middlewere
+/*
+====================================================================
+                    404, 403 and 500  error routes
+ ===================================================================
+ 
+
+*/ 
+var setHtmlError = {
+    html404    : "",
+    html403    : "",
+    html413    : "",
+    html500    : ""
+};
+
+var setHTML404 = function(html){
+    // set routes the routes for 404 page
+    setHtmlError.html404 = html;
+}
+module.exports.setHTML404 = setHTML404;
+
+var setHTML403 = function(html){
+    // sets the route for 403
+    setHtmlError.html403 = html;
+}
+module.exports.setHTML403 = setHTML403;
+
+var setHTML500 = function(html){
+    // set the route for 500;
+    setHtmlError.html500 = html;
+}
+module.exports.setHTML500 = setHTML500;
+
+
 
 /*
 =======================================
@@ -60,20 +95,33 @@ var server = Http.createServer(function(req,res){
         currentURL = req.url;// setting current url
         // GET method
         if(req.method== "GET"){
-            httpjs.httpGet(req,res, currentURL,getOBJ,httpMsgs);
+            httpjs.httpGet(req,res, currentURL,getOBJ,httpMsgs,setHtmlError);
 
             // POST method
         }else if(req.method=="POST"){
-            httpjs.httpPOst(req,res, currentURL,postOBJ,httpMsgs);
+            httpjs.httpPOst(req,res, currentURL,postOBJ,httpMsgs,setHtmlError);
             
         }else{
-            // unsaported method
-            httpMsgs.send405(req,res);
+            // unsapported method
+            if(setHtmlError.html413 == ""){
+                httpMsgs.send405(req,res);
+
+            }else{
+                httpMsgs.send413(req, res, setHtmlError.html413);
+            }
+           
 
         }
 
     } catch (error) {
-        httpMsgs.send500(req, res, "Bad HTTP request "  + error.message);
+        // checks the route for 500 error is declered it temaporarly
+        // rediret to that page else sends json
+        if(setHtmlError.html500 == ""){
+            httpMsgs.send500(req, res, "Bad HTTP request "  + error.message);
+        }else{
+           httpMsgs.send500(req, res, "Bad HTTP request "+ error.message, setHtmlError.html500);
+        }
+        
             
     }
 

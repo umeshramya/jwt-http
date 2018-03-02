@@ -2,7 +2,7 @@
 
 ![verson](https://img.shields.io/badge/version-1.0.11-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellowgreen.svg)
-[![](https://github.com/umeshramya/jwt-http/blob/dev/logo.jpg?raw=true)]
+![](https://github.com/umeshramya/jwt-http/blob/dev/logo.jpg?raw=true)
 
 This is http frame work for developing rest api (back end) and also frontend.
 Rest api backend responces are served by JSON.

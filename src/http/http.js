@@ -36,7 +36,7 @@ var checkUrl = function(req, res, curMethodURL, currentURL ){
 
 
 
-exports.httpGet = function (req, res, currentURL, getOBJ, httpMsgs, setRoutes){
+exports.httpGet = function (req, res, currentURL, getOBJ, httpMsgs, HtmlErrors){
     //foundURL is by false if requested URL gets matched then it is set true
     // useful for 404 status
     var foundURL = false;// this variable stores the
@@ -48,7 +48,7 @@ exports.httpGet = function (req, res, currentURL, getOBJ, httpMsgs, setRoutes){
             for (let i = 1; i < getOBJ[index].length; i++) {
                 previous = getOBJ[index][i](req, res, previous);
                 if(previous == false){
-                    res.end();//end the responce in case of breaking the loop
+                    httpMsgs.send403(req, res, HtmlErrors.html403);//end the responce in case of breaking the loop
                     break;
                 }
             }
@@ -62,12 +62,12 @@ exports.httpGet = function (req, res, currentURL, getOBJ, httpMsgs, setRoutes){
 
     if(foundURL == false){//if false
         // send 404 message if requested url did not match
-        httpMsgs.send404(req, res, setHtmlError.html404);
+        httpMsgs.send404(req, res, HtmlErrors.html404);
     }
 
 }
 
-exports.httpPOst = function(req, res, currentURL, postOBJ, httpMsgs,  setRoutes){
+exports.httpPOst = function(req, res, currentURL, postOBJ, httpMsgs,  HtmlErrors){
      //foundURL is by false if requested URL gets matched then it is set true
     // useful for 404 status
     var foundURL = false;// this variable stores the
@@ -81,7 +81,7 @@ exports.httpPOst = function(req, res, currentURL, postOBJ, httpMsgs,  setRoutes)
             req.on('data', function(data){
                 reqBody  += data
                 if(reqBody.length > 1e7){//limiting size of data to less than 10mb
-                    httpMsgs.send413(req,res);
+                    httpMsgs.send413(req,res, HtmlErrors.html413);
                     reqBodySize = false;
                 }
             });//end req,on('data', function(data))
@@ -93,7 +93,7 @@ exports.httpPOst = function(req, res, currentURL, postOBJ, httpMsgs,  setRoutes)
                         previous = postOBJ[index][i](req, res, previous);
     
                     if(previous == false){
-                        res.end();//end the responce in case of breaking the loop
+                        httpMsgs.send403(req, res, HtmlErrors.html403);//end the responce in case of breaking the loop
                         break;
                     }
                 }
@@ -111,7 +111,7 @@ exports.httpPOst = function(req, res, currentURL, postOBJ, httpMsgs,  setRoutes)
 
     if (foundURL == false){
         // send 404 message if requested url did not match
-        httpMsgs.send404(req, res, setHtmlError.html404);
+        httpMsgs.send404(req, res, HtmlErrors.html404);
     }
 
 }

@@ -2,13 +2,13 @@
 
 ![verson](https://img.shields.io/badge/version-1.0.11-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellowgreen.svg)
-
+[![](https://github.com/umeshramya/jwt-http/blob/dev/logo.jpg?raw=true)]
 
 This is http frame work for developing rest api (back end) and also frontend.
 Rest api backend responces are served by JSON.
 This is a light frame work unopinated supports the middlewere for adding functionlites
 
-[![](https://github.com/umeshramya/jwt-http/blob/master/maxresdefault%5B1%5D.jpg?raw=true)](https://www.youtube.com/watch?v=hJGM7Nx6PDg&list=PLPn4lbmkQI4VHdMTA5Q1u0OJ4iAnwM9c_)
+[![](https://github.com/umeshramya/jwt-http/blob/master/maxresdefault%5B1%5D.jpg?raw=true)](https://www.youtube.com/watch?v=I3SXQ6dbO14&list=PLyGkjsZ-iU9YxEwfsZpfddXtSncVPTRwS)
 ```
 recomended architure is 
 dir: app
@@ -254,18 +254,14 @@ kindly check about this module from this link [http-msgs](https://www.npmjs.com/
 ## user-groups-roles
 kindly check about this module from this link [user-groups-roles](https://www.npmjs.com/package/user-groups-roles)
 
-## handling 403, 404 and 500 status error 
+## handling 403, 404, 413 and 500 status error with html pages
 create route for these erro and setRoute403, setRoute404 and setRoute500 respectively
+create file inthe mentioned path 
 ```
-    app.renderHTML("/403", __dirname + "/html/403.html");
-    app.setRoute403("/403")
-
-    app.renderHTML("/404", __dirname + "/html/403.html");
-    app.setRoute403("/404");
-
-    app.renderHTML("/500", __dirname + "/html/500.html");
-    app.setRoute403("/500")
-
+app.setHTML404(__dirname + "/403.html");
+app.setHTML404(__dirname + "/404.html");
+app.setHTML404(__dirname + "/413.html");
+app.setHTML500(__dirname + "/500.html");
     
 ```
 
@@ -275,8 +271,7 @@ create route for these erro and setRoute403, setRoute404 and setRoute500 respect
 2. JWT still need to fix encryption and validation compatable with online tools
 3. user-groups-roles
 4. file upload 
-5. forbidden httpMsg needed to be written
-6. 404.html and forbidden.html page loading options
+5. render-html-asyc create components 
 
 
 

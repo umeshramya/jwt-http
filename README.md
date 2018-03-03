@@ -19,6 +19,12 @@ dir: app
     dir:frontend
         dir:HTML
             file:index.html
+            dir:httmlerror
+                403.html
+                404.html
+                405.html
+                413.html
+                500.html
         dir:assets
             dir:scripts
                 file:style.css
@@ -272,7 +278,8 @@ app.setHTML500(__dirname + "/500.html");
 3. user-groups-roles
 4. file upload 
 5. render-html-asyc create components 
-
+6. https
+7. sanitazation and XSS
 
 
 

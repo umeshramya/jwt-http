@@ -20,11 +20,7 @@ dir: app
         dir:HTML
             file:index.html
             dir:httmlerror
-                403.html
                 404.html
-                405.html
-                413.html
-                500.html
         dir:assets
             dir:scripts
                 file:style.css

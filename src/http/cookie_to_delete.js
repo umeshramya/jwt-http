@@ -1,5 +1,7 @@
 /*
     This file deals with cookies
+    this file is deprecited ad cookies are ti served from node module
+    
 */ 
 var queryString = require("querystring");
 var setCookie = function(req, res, data, cookieString, resEnd = true){

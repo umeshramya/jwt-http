@@ -265,6 +265,13 @@ module.exports.renderHTML= renderHTML;
 ==========================
 
 */ 
+var setlogout = function(){
+    getMethod("/logout", false, function(req, res, previous){
+        httpMsgs.setCookie(req, res,"JWTtoken=''", "Yor are loged out", true);
+    });
+  
+}
+module.exports.setlogout = setlogout;
 
 
 var setLoginRoute = function(loginMiddlewereMethod, secret, expireInMinutes=0){

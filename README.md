@@ -211,7 +211,8 @@ Login route and its middle were
         }
 
     }
-app.setLoginRoute(loginMiddleWereMethod);
+app.setLoginRoute(loginMiddleWereMethod)
+app.logout()//this sets get method logout route setting jwt token = ""
 
 
 //validate  login use in bulit in middle were `validate_login`

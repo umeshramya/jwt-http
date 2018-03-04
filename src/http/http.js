@@ -48,7 +48,7 @@ exports.httpGet = function (req, res, currentURL, getOBJ, httpMsgs, HtmlErrors){
             for (let i = 1; i < getOBJ[index].length; i++) {
                 previous = getOBJ[index][i](req, res, previous);
                 if(previous == false){
-                    httpMsgs.send500(req, res,   error.message, HtmlErrors.html500);//end the responce in case of breaking the loop
+                    httpMsgs.send500(req, res,   error.message);//end the responce in case of breaking the loop
                     break;
                 }
             }
@@ -81,7 +81,7 @@ exports.httpPOst = function(req, res, currentURL, postOBJ, httpMsgs,  HtmlErrors
             req.on('data', function(data){
                 reqBody  += data
                 if(reqBody.length > 1e7){//limiting size of data to less than 10mb
-                    httpMsgs.send413(req,res, HtmlErrors.html413);
+                    httpMsgs.send413(req,res);
                     reqBodySize = false;
                 }
             });//end req,on('data', function(data))
@@ -93,7 +93,7 @@ exports.httpPOst = function(req, res, currentURL, postOBJ, httpMsgs,  HtmlErrors
                         previous = postOBJ[index][i](req, res, previous);
     
                     if(previous == false){
-                        httpMsgs.send500(req, res,   error.message, HtmlErrors.html500);//end the responce in case of breaking the loop
+                        httpMsgs.send500(req, res,   error.message);//end the responce in case of breaking the loop
                         break;
                     }
                 }

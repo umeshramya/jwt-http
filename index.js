@@ -75,32 +75,6 @@ var setHTML404 = function(htmlFilePath){
 }
 module.exports.setHTML404 = setHTML404;
 
-var setHTML403 = function(htmlFilePath){
-    // sets the route for 403
-    setHTMLErrors(htmlFilePath, 403);
-}
-module.exports.setHTML403 = setHTML403;
-
-var setHTML405 = function(htmlFilePath){
-    // sets the route for 405
-    setHTMLErrors(htmlFilePath, 405);
-}
-module.exports.setHTML405 = setHTML405;
-
-var setHTML413 = function(htmlFilePath){
-    // sets the route for 413
-    setHTMLErrors(htmlFilePath, 413);
-}
-module.exports.setHTML413 = setHTML413;
-
-
-var setHTML500 = function(htmlFilePath){
-    // set the route for 500;
-    setHTMLErrors(htmlFilePath, 500);
-}
-module.exports.setHTML500 = setHTML500;
-
-
 
 /*
 =======================================

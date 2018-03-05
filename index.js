@@ -11,6 +11,7 @@ var fs = require("fs");
 var path = require("path");
 var render = require("render-html-async");
 var moment = require("moment"); //for manging date 
+var formidable = require("formidable");
 
 
 
@@ -375,6 +376,26 @@ var setAssets = function(dir){
     }
    
 }
+/*
+    =======================
+        Upload file
+    =======================
+*/
+var setUploadFileFolder = function(uploladFolder){
+    postMethod("/upload", false, function(req, res, previous){
+        var form = new formidable.IncomingForm();
+        form.parse(req);
+        form.on('fileBegin', function (name, file){
+            file.path = uploladFolder + file.name;
+        });
+    
+        form.on('file', function (name, file){
+            httpMsgs.sendJSON(req, res, {file :  'Uploaded ' + file.name});
+        });
+    });
+ 
+}
+
 
 /*
     =========================

@@ -11,7 +11,7 @@ var fs = require("fs");
 var path = require("path");
 var render = require("render-html-async");
 var moment = require("moment"); //for manging date 
-var formidable = require("formidable");
+
 
 
 
@@ -83,7 +83,7 @@ module.exports.setHTML404 = setHTML404;
 =======================================
 */ 
 
-
+module.exports.setUpLoadFolder = httpjs.setUpLoadFolder;// this sets the upload folder 
 
 var server = Http.createServer(function(req,res){
     try {
@@ -99,8 +99,12 @@ var server = Http.createServer(function(req,res){
 
             // POST method
         }else if(req.method=="POST"){
-            httpjs.httpPOst(req,res, currentURL,postOBJ,httpMsgs, HtmlErrors);
-            
+            if(req.url == "/upload"){
+                // code to upload route
+                httpjs.upload(req, res, httpMsgs);// this method sets the upload route
+            }else{
+                httpjs.httpPOst(req,res, currentURL,postOBJ,httpMsgs, HtmlErrors);
+            }
         }else{
             // unsapported method
             if(HtmlErrors.html413 == ""){
@@ -109,20 +113,19 @@ var server = Http.createServer(function(req,res){
             }else{
                 httpMsgs.send413(req, res, HtmlErrors.html413);
             }
-           
-
         }
-
     } catch (error) {
         // checks the route for 500 error is declered it temaporarly
         // rediret to that page else sends json
-
         httpMsgs.send500(req, res, "Bad HTTP request "+ error.message, HtmlErrors.html500);
-        
-            
     }
 
 });
+
+
+
+
+
 
 module.exports.setPort  =  function(port){
     // this set port and also listen
@@ -375,25 +378,6 @@ var setAssets = function(dir){
         sendFile(fileRouteArry[i], "", fileNameArray[i]);
     }
    
-}
-/*
-    =======================
-        Upload file
-    =======================
-*/
-var setUploadFileFolder = function(uploladFolder){
-    postMethod("/upload", false, function(req, res, previous){
-        var form = new formidable.IncomingForm();
-        form.parse(req);
-        form.on('fileBegin', function (name, file){
-            file.path = uploladFolder + file.name;
-        });
-    
-        form.on('file', function (name, file){
-            httpMsgs.sendJSON(req, res, {file :  'Uploaded ' + file.name});
-        });
-    });
- 
 }
 
 

@@ -1,6 +1,6 @@
 # jwt-http
 
-![verson](https://img.shields.io/badge/version-1.0.15-green.svg)
+![verson](https://img.shields.io/badge/version-1.0.16-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellowgreen.svg)
 ![](https://github.com/umeshramya/jwt-http/blob/dev/logo.jpg?raw=true)
 
@@ -267,13 +267,23 @@ app.setHTML404(__dirname + "/413.html");
 app.setHTML500(__dirname + "/500.html");
     
 ```
-
+## file Upload
+1. set the upload folder `app.setUpLoadFolder(__dirname + "/uploads/");`
+2. from to upload 
+```
+html file code
+//postb route "/upload" can not be cheanges
+<form action="/upload" enctype="multipart/form-data" method="post">
+    <input type="file" name="upload" multiple>
+    <input type="submit" value="Upload">
+</form>
+```
 
 ## To do
 1. Need to fix the bug in setCookie method of cookies. 'res.end()' 
 2. JWT still need to fix encryption and validation compatable with online tools
 3. user-groups-roles
-4. file upload 
+4. file upload max file var
 5. render-html-asyc create components 
 6. https
 7. sanitazation and XSS

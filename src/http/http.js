@@ -1,4 +1,5 @@
 var util = require("util");
+var formidable = require("formidable"); //for uploading file
 
 var checkUrl = function(req, res, curMethodURL, currentURL ){
     //this method checks the matcing url from array return true if yes or false if no
@@ -115,3 +116,45 @@ exports.httpPOst = function(req, res, currentURL, postOBJ, httpMsgs,  HtmlErrors
     }
 
 }
+
+
+// this mthod set the upload folder:
+var uploadFolderPath = "";
+var setUpLoadFolder = function(UploadFolderPath){// setting the upload folder
+    uploadFolderPath =  UploadFolderPath;//var 
+}
+
+module.exports.setUpLoadFolder = setUpLoadFolder;
+
+var upload = function(req, res, httpMsgs){
+    // this method uses formidablet to upload file into
+        var form = new formidable.IncomingForm();//create new form
+        form.parse(req);//parse the form
+       if(form.bytesExpected > 200000){// set upper limit for file size
+           httpMsgs.send413(req,res);// send 413 error in case of large file size
+           return// exit  from this function
+       } 
+
+         form.on('fileBegin', function (name, file){//begin loading the file
+            uploadedfile = uploadFolderPath + file.name;
+            file.path = uploadedfile;// set the path to upload files
+            
+        });
+
+        form.on('error', function(err) {// send errpr in case
+            httpMsgs.send500(req, res, err);
+            return;
+        });
+
+        form.on('end',  function(){
+            httpMsgs.sendJSON(req, res, {// success send sendJSON
+                Upload   : "success"
+            });
+        });
+      
+    
+}
+
+module.exports.upload = upload;
+
+

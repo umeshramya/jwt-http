@@ -49,7 +49,9 @@ exports.httpGet = function (req, res, currentURL, getOBJ, httpMsgs, HtmlErrors){
             for (let i = 1; i < getOBJ[index].length; i++) {
                 previous = getOBJ[index][i](req, res, previous);
                 if(previous == false){
-                    httpMsgs.send500(req, res, "invalid Method");//end the responce in case of breaking the loop
+                    if(util.isUndefined(res.statusMessage)){
+                        httpMsgs.send500(req, res, "invalid Method");//end the responce in case of breaking the loop
+                    }                
                     break;
                 }
             }
@@ -94,7 +96,9 @@ exports.httpPOst = function(req, res, currentURL, postOBJ, httpMsgs,  HtmlErrors
                         previous = postOBJ[index][i](req, res, previous);
     
                     if(previous == false){
-                        httpMsgs.send500(req, res, "invalid Method");//end the responce in case of breaking the loop
+                        if(util.isUndefined(res.statusMessage)){
+                            httpMsgs.send500(req, res, "invalid Method");//end the responce in case of breaking the loop
+                        } 
                         break;
                     }
                 }

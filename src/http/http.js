@@ -40,6 +40,7 @@ var checkUrl = function(req, res, curMethodURL, currentURL ){
 exports.httpGet = function (req, res, currentURL, getOBJ, httpMsgs, HtmlErrors){
     //foundURL is by false if requested URL gets matched then it is set true
     // useful for 404 status
+   
     var foundURL = false;// this variable stores the
     var previous = {} // this variable is for checking weather to call next method in (Middle were)
     for (let index = 0; index < getOBJ.length; index++) {
@@ -48,6 +49,7 @@ exports.httpGet = function (req, res, currentURL, getOBJ, httpMsgs, HtmlErrors){
                 foundURL= true;// set the found var to true as url is found
             for (let i = 1; i < getOBJ[index].length; i++) {
                 previous = getOBJ[index][i](req, res, previous);
+               
                 if(previous == false){
                     if(util.isUndefined(res.statusMessage)){
                         httpMsgs.send500(req, res, "invalid Method");//end the responce in case of breaking the loop

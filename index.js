@@ -307,14 +307,19 @@ exports.setLoginRoute = setLoginRoute;
 // validate_login middle ware
 var validate_login = function(req, res, previous){
     // this method varifies the JWT and expire time
+    
     var JWTtoken = httpMsgs.getCookie(req, res, "JWTtoken");// gets the cookie JWTtoken
-    if(util.isUndefined(JWTtoken)){// not allowed if JWTtoken is undefined
+    console.log("tyty");
+    if(JWTtoken == ""){// not allowed if JWTtoken is undefined
         //write code for forbidden 
+        httpMsgs.send500(req, res, "Not allowed access this content");
         return false// terminates the routes also
     }else{
+        var JWTtoken = httpMsgs.getCookie(req, res, "JWTtoken");// gets the cookie JWTtoken
         var validJWT = JWT.validateJWT(JWTtoken);// check the authenticity of JET token
         if (validJWT == false){// not allowed if invalid
             //write code for forbidden
+            httpMsgs.send500(req, res, "Not allowed access this content");
             return false// terminate route
         }else{// valid JWT token then
             var createdDate = JSON.parse(validJWT).createdDate;// access carted time

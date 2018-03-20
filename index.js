@@ -99,13 +99,7 @@ var server = Http.createServer(function(req,res){
 
             // POST method
         }else if(req.method=="POST"){
-            httpjs.httpPOst(req,res, currentURL,postOBJ,httpMsgs, HtmlErrors)
-            // if(req.url == "/upload"){
-            //     // code to upload route
-            //     httpjs.upload(req, res, httpMsgs);// this method sets the upload route
-            // }else{
-            //     httpjs.httpPOst(req,res, currentURL,postOBJ,httpMsgs, HtmlErrors);
-            // }
+            httpjs.httpRequest(req,res, currentURL,postOBJ,httpMsgs, HtmlErrors)
         }else{
             // unsapported method
             if(HtmlErrors.html413 == ""){
@@ -310,7 +304,6 @@ var validate_login = function(req, res, previous){
     // this method varifies the JWT and expire time
     
     var JWTtoken = httpMsgs.getCookie(req, res, "JWTtoken");// gets the cookie JWTtoken
-    console.log("tyty");
     if(JWTtoken == ""){// not allowed if JWTtoken is undefined
         //write code for forbidden 
         httpMsgs.send500(req, res, "Not allowed access this content");

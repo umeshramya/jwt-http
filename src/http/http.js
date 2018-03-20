@@ -26,121 +26,69 @@ var checkUrl = function(req, res, curMethodURL, currentURL ){
 
         }
     }
-
-
-    
     return false;
-    
-
 }
 
 
 
-exports.httpRequest = function (req, res, currentURL, getOBJ, httpMsgs, HtmlErrors){
+exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  HtmlErrors){
     //foundURL is by false if requested URL gets matched then it is set true
-    // useful for 404 status
-   
-    var foundURL = false;// this variable stores the
-    var previous = {} // this variable is for checking weather to call next method in (Middle were)
-    for (let index = 0; index < getOBJ.length; index++) {
-     
-        if(checkUrl(req, res, getOBJ[index][0], currentURL)){
-                foundURL= true;// set the found var to true as url is found
-            for (let i = 1; i < getOBJ[index].length; i++) {
-                previous = getOBJ[index][i](req, res, previous);
-                if(previous == false){
-                    if(util.isUndefined(res.statusMessage)){
-                        httpMsgs.send500(req, res, "invalid Method");//end the responce in case of breaking the loop
-                    }                
-                    break;
-                }
-            }
-            if(previous !== false){
-                var contentType = req.headers["content-type"];
+   // useful for 404 status
+   var foundURL = false;// this variable stores the
+   var previous = {} // this variable is for checking weather to call next method in (Middle were)
+
+   var reqBody ='';//this us reqbody sent
+   var reqBodySize = true;//this var for checking the req body size 
+   for (let index = 0; index < requestOBJ.length; index++) {
+       if(checkUrl(req, res, requestOBJ[index][0], currentURL)){
+            foundURL = true;// set this true if url is detected
+            var contentType = req.headers["content-type"];
+            if(!util.isUndefined){
                 contentType = contentType.split(";")[0];
-                var reqBody;
-                if (contentType === "multipart/form-data"){
-                    // code for file upload 
-                }else{
-                    req.on('data', function(data){
-                        reqBody += data
-                        if(reqBody.length > 1e7){//limiting size of data to less than 10mb
-                            httpMsgs.send413(req,res);
-                            reqBodySize = false;
-                        }
-                    }).on("end", function(){
-                        req.body = reqBody
-                    });
-                }
-
             }
-
-        }
-
-        if (foundURL == true){//if true
-            break; // break loop as url is found
-        }
-        
-    }
-
-    if(foundURL == false){//if false
-        // send 404 message if requested url did not match
-        httpMsgs.send404(req, res, HtmlErrors.html404);
-    }
-
-}
-
-exports.httpPOst = function(req, res, currentURL, postOBJ, httpMsgs,  HtmlErrors){
-     //foundURL is by false if requested URL gets matched then it is set true
-    // useful for 404 status
-    var foundURL = false;// this variable stores the
-    var previous = {} // this variable is for checking weather to call next method in (Middle were)
-
-    var reqBody ='';//this us reqbody sent
-    var reqBodySize = true;//this var for checking the req body size 
-    for (let index = 0; index < postOBJ.length; index++) {
-        if(checkUrl(req, res, postOBJ[index][0], currentURL)){
-            foundURL = true;// set this true if url is detected                
-            req.on('data', function(data){
-                reqBody  += data
-                if(reqBody.length > 1e7){//limiting size of data to less than 10mb
-                    httpMsgs.send413(req,res);
-                    reqBodySize = false;
-                }
-            });//end req,on('data', function(data))
-
-            req.on("end", function(){
-                if (reqBodySize){
-                    for (let i = 1; i < postOBJ[index].length; i++) {
-                        req.body = reqBody
-                        previous = postOBJ[index][i](req, res, previous);
-    
-                    if(previous == false){
-                        if(util.isUndefined(res.statusMessage)){
-                            httpMsgs.send500(req, res, "invalid Method");//end the responce in case of breaking the loop
-                        } 
-                        break;
+            if(contentType === "multipart/form-data" ){
+                
+                
+            }else{
+                req.on('data', function(data){
+                    reqBody  += data
+                    if(reqBody.length > 1e7){//limiting size of data to less than 10mb
+                        httpMsgs.send413(req,res);
+                        reqBodySize = false;
                     }
-                }
-                
-                    
-                }//end of if (reqBodySize)
-                
-            })//end of req.on("end", function()
-            
-        } //end of if(curPostOBJ.test(currentURL))
-        if(foundURL == true){
-            break;//break further excuation of loop 
-        }     
-    }//end of for (let index = 0; index < postOBJ.length; index++)
+                });//end req,on('data', function(data))
 
-    if (foundURL == false){
-        // send 404 message if requested url did not match
-        httpMsgs.send404(req, res, HtmlErrors.html404);
-    }
+                req.on("end", function(){
+                    if (reqBodySize){
+                        for (let i = 1; i < requestOBJ[index].length; i++) {
+                            req.body = reqBody
+                            previous = requestOBJ[index][i](req, res, previous);
+
+                        if(previous == false){
+                            if(util.isUndefined(res.statusMessage)){
+                                httpMsgs.send500(req, res, "invalid Method");//end the responce in case of breaking the loop
+                            } 
+                            break;
+                        }
+                    }
+                            
+                    }//end of if (reqBodySize)
+                    
+                })//end of req.on("end", function()
+                
+            } //end of if(curPostOBJ.test(currentURL))
+            if(foundURL == true){
+                break;//break further excuation of loop 
+            }     
+        }
+
+    }//end of for (let index = 0; index < postOBJ.length; index++)
+    
+   if (foundURL == false){
+       // send 404 message if requested url did not match
+       httpMsgs.send404(req, res, HtmlErrors.html404);
+   }
 
 }
-
-
 
 

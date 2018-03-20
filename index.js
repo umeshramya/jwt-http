@@ -95,16 +95,17 @@ var server = Http.createServer(function(req,res){
         currentURL = req.url;// setting current url
         // GET method
         if(req.method== "GET"){
-            httpjs.httpGet(req,res, currentURL,getOBJ,httpMsgs, HtmlErrors);
+            httpjs.httpRequest(req,res, currentURL,getOBJ,httpMsgs, HtmlErrors);
 
             // POST method
         }else if(req.method=="POST"){
-            if(req.url == "/upload"){
-                // code to upload route
-                httpjs.upload(req, res, httpMsgs);// this method sets the upload route
-            }else{
-                httpjs.httpPOst(req,res, currentURL,postOBJ,httpMsgs, HtmlErrors);
-            }
+            httpjs.httpPOst(req,res, currentURL,postOBJ,httpMsgs, HtmlErrors)
+            // if(req.url == "/upload"){
+            //     // code to upload route
+            //     httpjs.upload(req, res, httpMsgs);// this method sets the upload route
+            // }else{
+            //     httpjs.httpPOst(req,res, currentURL,postOBJ,httpMsgs, HtmlErrors);
+            // }
         }else{
             // unsapported method
             if(HtmlErrors.html413 == ""){

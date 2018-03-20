@@ -1,4 +1,5 @@
 var util = require("util");
+var formidable = require("formidable"); //for uploading file
 
 var checkUrl = function(req, res, curMethodURL, currentURL ){
     //this method checks the matcing url from array return true if yes or false if no
@@ -36,7 +37,7 @@ var checkUrl = function(req, res, curMethodURL, currentURL ){
 
 
 
-exports.httpRequest = function (req, res, currentURL, getOBJ, httpMsgs, HtmlErrors){
+exports.httpGet = function (req, res, currentURL, getOBJ, httpMsgs, HtmlErrors){
     //foundURL is by false if requested URL gets matched then it is set true
     // useful for 404 status
    
@@ -48,6 +49,7 @@ exports.httpRequest = function (req, res, currentURL, getOBJ, httpMsgs, HtmlErro
                 foundURL= true;// set the found var to true as url is found
             for (let i = 1; i < getOBJ[index].length; i++) {
                 previous = getOBJ[index][i](req, res, previous);
+               
                 if(previous == false){
                     if(util.isUndefined(res.statusMessage)){
                         httpMsgs.send500(req, res, "invalid Method");//end the responce in case of breaking the loop
@@ -55,26 +57,6 @@ exports.httpRequest = function (req, res, currentURL, getOBJ, httpMsgs, HtmlErro
                     break;
                 }
             }
-            if(previous !== false){
-                var contentType = req.headers["content-type"];
-                contentType = contentType.split(";")[0];
-                var reqBody;
-                if (contentType === "multipart/form-data"){
-                    // code for file upload 
-                }else{
-                    req.on('data', function(data){
-                        reqBody += data
-                        if(reqBody.length > 1e7){//limiting size of data to less than 10mb
-                            httpMsgs.send413(req,res);
-                            reqBodySize = false;
-                        }
-                    }).on("end", function(){
-                        req.body = reqBody
-                    });
-                }
-
-            }
-
         }
 
         if (foundURL == true){//if true

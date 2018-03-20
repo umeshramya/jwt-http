@@ -294,7 +294,7 @@ var setLoginRoute = function(loginMiddlewereMethod, secret, expireInMinutes=0){
         var payload = {"user" : user, "createdDate" : curDate, "expireInMinutes" : expireInMinutes};// creates the payload for JWT
         JWT.setSecretKey(secret);// setting secret key
         JWT.createJWT(payload);//create JWT  with payload
-        var token = "JWTtoken="   + JWT.createJWT(payload)// cooke string
+        var token = httpMsgs.setCookieString(req, res, "JWTtoken",  JWT.createJWT(payload),'', 86400,true, false ); //htttps is set false till https module not incuded   
         httpMsgs.setCookie(req, res,token, "Login Successful",true);//res.end() is triggerd by setcooke method       
         
     });

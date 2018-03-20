@@ -16,9 +16,9 @@
   "devDependencies": {},
   "dependencies": {
     "http-msgs": "^1.0.7",
-    "jwt-login": "0.0.2",
-    "moment": "^2.20.1",
-    "render-html-async": "0.0.5",
+    "jwt-login": "^0.0.2",
+    "moment": "2.20.1",
+    "render-html-async": "^0.0.5",
     "user-groups-roles": "^2.0.0"
   },
   "repository": {

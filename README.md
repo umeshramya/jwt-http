@@ -265,16 +265,8 @@ app.setHTML404(__dirname + "/404.html");
     
 ```
 ## file Upload
-1. set the upload folder `app.setUpLoadFolder(__dirname + "/uploads/");`
-2. from to upload 
-```
-html file code
-//postb route "/upload" can not be cheanges
-<form action="/upload" enctype="multipart/form-data" method="post">
-    <input type="file" name="upload" multiple>
-    <input type="submit" value="Upload">
-</form>
-```
+use third party uploader like multer or formidable
+
 
 ## To do
 1. user-groups-roles

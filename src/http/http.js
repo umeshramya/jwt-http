@@ -42,7 +42,7 @@ exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  Html
    for (let index = 0; index < requestOBJ.length; index++) {
        if(checkUrl(req, res, requestOBJ[index][0], currentURL)){
             foundURL = true;// set this true if url is detected
-            //lookfor content type for purpose "multipart/form-data"
+            //look for content type for purpose "multipart/form-data"(file upload)
             var contentType = req.headers["content-type"];
             if(!util.isUndefined(contentType)){
                 contentType = contentType.split(";")[0];
@@ -51,7 +51,11 @@ exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  Html
             req.on('data', function(data){
                 reqBody  += data
                 if(contentType !== "multipart/form-data" ){
-                    if(reqBody.length > 1e7){//limiting size of data to less than 10mb
+                    //exmpt mesurment of length for file upload 
+                    //set size limit from third party software(multer)
+                    if(reqBody.length > 1e7){
+                        //limiting size of data to less than 10mb 
+                        // for non multipart/form-data
                         httpMsgs.send413(req,res);
                         reqBodySize = false;
                     }

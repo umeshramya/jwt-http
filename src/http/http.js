@@ -42,28 +42,27 @@ exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  Html
    for (let index = 0; index < requestOBJ.length; index++) {
        if(checkUrl(req, res, requestOBJ[index][0], currentURL)){
             foundURL = true;// set this true if url is detected
-
-            var contentType = req.headers["content-type"];//lookfor content type for purpose "multipart/form-data"
+            //lookfor content type for purpose "multipart/form-data"
+            var contentType = req.headers["content-type"];
             if(!util.isUndefined(contentType)){
                 contentType = contentType.split(";")[0];
             }                
-                
-            // }else{
-                req.on('data', function(data){
-                    reqBody  += data
-                    if(contentType !== "multipart/form-data" ){
-                        if(reqBody.length > 1e7){//limiting size of data to less than 10mb
-                            httpMsgs.send413(req,res);
-                            reqBodySize = false;
-                        }
+            // code req.on
+            req.on('data', function(data){
+                reqBody  += data
+                if(contentType !== "multipart/form-data" ){
+                    if(reqBody.length > 1e7){//limiting size of data to less than 10mb
+                        httpMsgs.send413(req,res);
+                        reqBodySize = false;
                     }
-                });//end req,on('data', function(data))
+                }
+            });//end req,on('data', function(data))
 
-                req.on("end", function(){
-                    if (reqBodySize){
-                        for (let i = 1; i < requestOBJ[index].length; i++) {
-                            req.body = reqBody
-                            previous = requestOBJ[index][i](req, res, previous);
+            req.on("end", function(){
+                if (reqBodySize){
+                    for (let i = 1; i < requestOBJ[index].length; i++) {
+                        req.body = reqBody
+                        previous = requestOBJ[index][i](req, res, previous);
 
                         if(previous == false){
                             if(util.isUndefined(res.statusMessage)){
@@ -71,15 +70,10 @@ exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  Html
                             } 
                             break;
                         }
-                    }
-                            
-                    }//end of if (reqBodySize)
-                    
-                })//end of req.on("end", function()
+                    }       
+                }//end of if (reqBodySize)
                 
-            // } //end of if(contentType === "multipart/form-data" ){
-
-
+            })//end of req.on("end", function()
             if(foundURL == true){
                 break;//break further excuation of loop 
             }     

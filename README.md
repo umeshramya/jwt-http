@@ -41,13 +41,13 @@ dir: app
 ## Feutures
 1. JWT
 2. user, roles and permssions
-3. http
-
+3. http, https
+4. GET, POST, PUT, DELETE
+5. file upload
 
 ### Requiring the jwt-http
 ### http set up
 ```
-
     // require jet-http
     var app = require("jwt-http");
     app.setPort(8002); //this sets the port number and also listens the server at specified port

@@ -42,19 +42,20 @@ exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  Html
    for (let index = 0; index < requestOBJ.length; index++) {
        if(checkUrl(req, res, requestOBJ[index][0], currentURL)){
             foundURL = true;// set this true if url is detected
-            var contentType = req.headers["content-type"];
-            if(!util.isUndefined){
+
+            var contentType = req.headers["content-type"];//lookfor content type for purpose "multipart/form-data"
+            if(!util.isUndefined(contentType)){
                 contentType = contentType.split(";")[0];
-            }
-            if(contentType === "multipart/form-data" ){
+            }                
                 
-                
-            }else{
+            // }else{
                 req.on('data', function(data){
                     reqBody  += data
-                    if(reqBody.length > 1e7){//limiting size of data to less than 10mb
-                        httpMsgs.send413(req,res);
-                        reqBodySize = false;
+                    if(contentType !== "multipart/form-data" ){
+                        if(reqBody.length > 1e7){//limiting size of data to less than 10mb
+                            httpMsgs.send413(req,res);
+                            reqBodySize = false;
+                        }
                     }
                 });//end req,on('data', function(data))
 
@@ -76,7 +77,7 @@ exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  Html
                     
                 })//end of req.on("end", function()
                 
-            } //end of if(contentType === "multipart/form-data" ){
+            // } //end of if(contentType === "multipart/form-data" ){
 
 
             if(foundURL == true){

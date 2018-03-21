@@ -1,6 +1,6 @@
 # jwt-http
 
-![verson](https://img.shields.io/badge/version-1.0.18-green.svg)
+![verson](https://img.shields.io/badge/version-1.0.19-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellowgreen.svg)
 ![](https://github.com/umeshramya/jwt-http/blob/dev/logo.jpg?raw=true)
 
@@ -257,36 +257,25 @@ kindly check about this module from this link [http-msgs](https://www.npmjs.com/
 ## user-groups-roles
 kindly check about this module from this link [user-groups-roles](https://www.npmjs.com/package/user-groups-roles)
 
-## handling 403, 404, 413 and 500 status error with html pages
-create route for these erro and setRoute403, setRoute404 and setRoute500 respectively
+## handling 404
+create route for these and by this method  setRoute404 
 create file inthe mentioned path 
 ```
-app.setHTML404(__dirname + "/403.html");
 app.setHTML404(__dirname + "/404.html");
-app.setHTML404(__dirname + "/413.html");
-app.setHTML500(__dirname + "/500.html");
     
 ```
 ## file Upload
-1. set the upload folder `app.setUpLoadFolder(__dirname + "/uploads/");`
-2. from to upload 
-```
-html file code
-//postb route "/upload" can not be cheanges
-<form action="/upload" enctype="multipart/form-data" method="post">
-    <input type="file" name="upload" multiple>
-    <input type="submit" value="Upload">
-</form>
-```
+use third party uploader like multer or formidable
+
 
 ## To do
-1. Need to fix the bug in setCookie method of cookies. 'res.end()' 
-2. JWT still need to fix encryption and validation compatable with online tools
-3. user-groups-roles
-4. file upload max file var
-5. render-html-asyc create components 
-6. https
-7. sanitazation and XSS
+1. user-groups-roles
+2. file upload opened user (needs testing)
+3. render-html-asyc create components 
+4. https and associted cookie
+5. sanitazation and XSS
+6. remove recurssion function for assets and put route matching path directory got by setting 
+
 
 
 

@@ -4,18 +4,15 @@ var exports = module.exports = {};//export set up
             REQUIRED MODULES
 =================================================================
 */ 
-var Http = require("http");//http require
+var http = require("http");//http require
+var https = require("https");
+
 var util = require('util');
 var queryString = require("querystring");//querystring require
 var fs = require("fs");
 var path = require("path");
 var render = require("render-html-async");
 var moment = require("moment"); //for manging date 
-
-
-
-
-
 
 /*
     ====================================
@@ -85,35 +82,11 @@ module.exports.setHTML404 = setHTML404;
 
 module.exports.setUpLoadFolder = httpjs.setUpLoadFolder;// this sets the upload folder 
 
-var server = Http.createServer(function(req,res){
+
+
+var httpServer = http.createServer(function(req,res){
     try {
-        //this presets the "/" to "/index"
-        if(req.url === "/"){
-            req.url = "/index"
-        }
-
-        currentURL = req.url;// setting current url
-        // GET method
-        if(req.method== "GET"){
-            httpjs.httpGet(req,res, currentURL,getOBJ,httpMsgs, HtmlErrors);
-
-            // POST method
-        }else if(req.method=="POST"){
-            if(req.url == "/upload"){
-                // code to upload route
-                httpjs.upload(req, res, httpMsgs);// this method sets the upload route
-            }else{
-                httpjs.httpPOst(req,res, currentURL,postOBJ,httpMsgs, HtmlErrors);
-            }
-        }else{
-            // unsapported method
-            if(HtmlErrors.html413 == ""){
-                httpMsgs.send405(req,res, HtmlErrors);
-
-            }else{
-                httpMsgs.send413(req, res, HtmlErrors.html413);
-            }
-        }
+        createServer(req, res);
     } catch (error) {
         // checks the route for 500 error is declered it temaporarly
         // rediret to that page else sends json
@@ -123,13 +96,39 @@ var server = Http.createServer(function(req,res){
 });
 
 
+var createServer = function(req, res){
+    //this presets the "/" to "/index"
+    if(req.url === "/"){
+        req.url = "/index"
+    }
+
+    currentURL = req.url;// setting current url
+    // GET method
+    if(req.method== "GET"){
+        httpjs.httpRequest(req,res, currentURL,getOBJ,httpMsgs, HtmlErrors);
+
+        // POST method
+    }else if(req.method=="POST"){
+        httpjs.httpRequest(req,res, currentURL,postOBJ,httpMsgs, HtmlErrors)
+    }else{
+        // unsapported method
+        if(HtmlErrors.html413 == ""){
+            httpMsgs.send405(req,res, HtmlErrors);
+
+        }else{
+            httpMsgs.send413(req, res, HtmlErrors.html413);
+        }
+    }
+}
+
+
 
 
 
 
 module.exports.setPort  =  function(port){
     // this set port and also listen
-    server.listen(port);
+    httpServer.listen(port);
     console.log ("server is listing at port " + port);//console message for sending port numbe
 }
 
@@ -295,7 +294,7 @@ var setLoginRoute = function(loginMiddlewereMethod, secret, expireInMinutes=0){
         var payload = {"user" : user, "createdDate" : curDate, "expireInMinutes" : expireInMinutes};// creates the payload for JWT
         JWT.setSecretKey(secret);// setting secret key
         JWT.createJWT(payload);//create JWT  with payload
-        var token = "JWTtoken="   + JWT.createJWT(payload)// cooke string
+        var token = httpMsgs.setCookieString(req, res, "JWTtoken",  JWT.createJWT(payload),'', 86400,true, false ); //htttps is set false till https module not incuded   
         httpMsgs.setCookie(req, res,token, "Login Successful",true);//res.end() is triggerd by setcooke method       
         
     });
@@ -309,7 +308,6 @@ var validate_login = function(req, res, previous){
     // this method varifies the JWT and expire time
     
     var JWTtoken = httpMsgs.getCookie(req, res, "JWTtoken");// gets the cookie JWTtoken
-    console.log("tyty");
     if(JWTtoken == ""){// not allowed if JWTtoken is undefined
         //write code for forbidden 
         httpMsgs.send500(req, res, "Not allowed access this content");

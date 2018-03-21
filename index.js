@@ -94,7 +94,30 @@ var httpServer = http.createServer(function(req,res){
     }
 
 });
+// https server
+var options = {
+    key : '',
+    cert : ''
+};
+var setHttpsOptions = function(key, cert){
+    options.key = key;
+    options.cert = cert;
+}
+module.exports.setHttpsOptions = setHttpsOptions;
 
+if(option.key != "" && options != ""){
+    var httpsServer = https.createServer(options, function(req,res){
+        try {
+            createServer(req, res);
+        } catch (error) {
+            // checks the route for 500 error is declered it temaporarly
+            // rediret to that page else sends json
+            httpMsgs.send500(req, res, "Bad HTTP request "+ error.message, HtmlErrors.html500);
+        }
+    
+    });
+
+}
 
 var createServer = function(req, res){
     //this presets the "/" to "/index"
@@ -129,7 +152,11 @@ var createServer = function(req, res){
 module.exports.setPort  =  function(port){
     // this set port and also listen
     httpServer.listen(port);
-    console.log ("server is listing at port " + port);//console message for sending port numbe
+        console.log ("http server is listing at port " + port);//console message for sending port number
+    if(option.key != "" && options != ""){
+    httpsServer.listen(port);
+        console.log ("https server is listing at port " + port);//console message for sending port number
+    }
 }
 
 

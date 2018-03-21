@@ -76,7 +76,9 @@ exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  Html
                     
                 })//end of req.on("end", function()
                 
-            } //end of if(curPostOBJ.test(currentURL))
+            } //end of if(contentType === "multipart/form-data" ){
+
+
             if(foundURL == true){
                 break;//break further excuation of loop 
             }     

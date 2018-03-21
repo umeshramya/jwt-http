@@ -94,7 +94,31 @@ app.setHttpsServer(options, 8000);//8000 is port number
         var processed_data = JSON.stringify(data)
         app.HTTPMsgs.sendJSON(req, res, processed_data);   
     });
+
 ```
+## PUT method routing
+```
+app.putMethod("/put", true, function(req, res, previous){
+    var data = querystring.parse(req.body);
+    console.log(data);
+    app.httpMsgs.sendJSON(req, res, {
+        done : "done"
+    });
+})
+
+```
+
+## DELETE method routing
+```
+app.deleteMethod ("/delete/:id", true, function(req, res, previous){
+    var id = req.param
+    app.httpMsgs.sendJSON(req, res, {
+        deleted_id : id
+    });
+});
+```
+
+
 
 ## querystring and adding parmeters to url
 ```
@@ -286,9 +310,8 @@ use third party uploader like multer or formidable
 1. user-groups-roles
 2. file upload opened user (needs testing)
 3. render-html-asyc create components 
-4. https and associted cookie
-5. sanitazation and XSS
-6. remove recurssion function for assets and put route matching path directory got by setting 
+4. sanitazation and XSS
+5. remove recurssion function for assets and put route matching path directory got by setting 
 
 
 

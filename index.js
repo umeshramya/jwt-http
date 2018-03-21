@@ -4,8 +4,8 @@ var exports = module.exports = {};//export set up
             REQUIRED MODULES
 =================================================================
 */ 
-var http = require("http");//http require
-var https = require("https");
+const http = require("http");//http require
+const https = require("https");
 
 var util = require('util');
 var queryString = require("querystring");//querystring require
@@ -86,7 +86,7 @@ module.exports.setUpLoadFolder = httpjs.setUpLoadFolder;// this sets the upload 
 
 var httpServer = http.createServer(function(req,res){
     try {
-        createServer(req, res);
+        router(req, res);
     } catch (error) {
         // checks the route for 500 error is declered it temaporarly
         // rediret to that page else sends json
@@ -94,9 +94,39 @@ var httpServer = http.createServer(function(req,res){
     }
 
 });
+// https server
 
 
-var createServer = function(req, res){
+var setHttpsServer = function(keyPath, certPath, port){
+    var options = {
+        key  : fs.readFileSync(keyPath),
+        cert : fs.readFileSync(certPath)
+    };
+    https.createServer(options, function(req, res){
+        try {
+            router(req, res);
+        } catch (error) {
+            // checks the route for 500 error is declered it temaporarly
+            // rediret to that page else sends json
+            httpMsgs.send500(req, res, "Bad HTTP request "+ error.message, HtmlErrors.html500);
+        }
+    }).listen(port,"", function(){
+        console.log ("https server is listing at port " + port);//console message for sending port number  
+    });
+}
+
+module.exports.setHttpsServer = setHttpsServer;
+
+
+module.exports.setPort  =  function(port){
+    // this set port and also listen
+    httpServer.listen(port);
+    console.log ("http server is listing at port " + port);//console message for sending port number  
+  
+}
+
+
+var router = function(req, res){
     //this presets the "/" to "/index"
     if(req.url === "/"){
         req.url = "/index"
@@ -124,13 +154,6 @@ var createServer = function(req, res){
 
 
 
-
-
-module.exports.setPort  =  function(port){
-    // this set port and also listen
-    httpServer.listen(port);
-    console.log ("server is listing at port " + port);//console message for sending port numbe
-}
 
 
 module.exports.getURL= function(){

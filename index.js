@@ -85,6 +85,7 @@ module.exports.setUpLoadFolder = httpjs.setUpLoadFolder;// this sets the upload 
 
 
 var httpServer = http.createServer(function(req,res){
+    req.protocol = "http";
     try {
         router(req, res);
     } catch (error) {
@@ -97,12 +98,10 @@ var httpServer = http.createServer(function(req,res){
 // https server
 
 
-var setHttpsServer = function(keyPath, certPath, port){
-    var options = {
-        key  : fs.readFileSync(keyPath),
-        cert : fs.readFileSync(certPath)
-    };
+var setHttpsServer = function(options, port){
+// options means value of key and cert i.e
     https.createServer(options, function(req, res){
+        req.protocol = "https";
         try {
             router(req, res);
         } catch (error) {
@@ -317,7 +316,14 @@ var setLoginRoute = function(loginMiddlewereMethod, secret, expireInMinutes=0){
         var payload = {"user" : user, "createdDate" : curDate, "expireInMinutes" : expireInMinutes};// creates the payload for JWT
         JWT.setSecretKey(secret);// setting secret key
         JWT.createJWT(payload);//create JWT  with payload
-        var token = httpMsgs.setCookieString(req, res, "JWTtoken",  JWT.createJWT(payload),'', 86400,true, false ); //htttps is set false till https module not incuded   
+        
+        if (req.protocol === "https"){
+            // req.protocol is custom property for setting https versus http
+            var secure = true
+        }else if(req.protocol === "http"){
+            var secure = false
+        }
+        var token = httpMsgs.setCookieString(req, res, "JWTtoken",  JWT.createJWT(payload),'', 86400,true, secure ); 
         httpMsgs.setCookie(req, res,token, "Login Successful",true);//res.end() is triggerd by setcooke method       
         
     });

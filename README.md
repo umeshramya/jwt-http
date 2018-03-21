@@ -45,10 +45,24 @@ dir: app
 
 
 ### Requiring the jwt-http
+### http set up
 ```
+
     // require jet-http
     var app = require("jwt-http");
     app.setPort(8002); //this sets the port number and also listens the server at specified port
+```
+
+### https setup
+```
+place private key and certificate or public in the project folder
+var options = {
+    key : fs.readFileSync(path.join(__dirname, "/key.pem")),
+    cert : fs.readFileSync(path.join(__dirname, "/cert.pem"))
+}
+
+app.setHttpsServer(options, 8000);//8000 is port number
+
 ```
 
 ### GET method routing

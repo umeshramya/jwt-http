@@ -29,8 +29,6 @@ var checkUrl = function(req, res, curMethodURL, currentURL ){
     return false;
 }
 
-
-
 exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  HtmlErrors){
     //foundURL is by false if requested URL gets matched then it is set true
    // useful for 404 status
@@ -61,7 +59,6 @@ exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  Html
                     }
                 }
             });//end req,on('data', function(data))
-
             req.on("end", function(){
                 if (reqBodySize){
                     for (let i = 1; i < requestOBJ[index].length; i++) {
@@ -91,5 +88,3 @@ exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  Html
    }
 
 }
-
-

@@ -40,6 +40,8 @@ var reqMet = require("./src/http/reqMethod")// this is for getMethod and postMet
 var currentURL = "";//this stores the last url accesed;
 var getOBJ=[]; // this strores all get routes declred by consumer app
 var postOBJ=[];// this strors all post routes declred by consumer app
+var putOBJ = []// this strors all put routes declred by consumer app
+var deleteOBJ=[]// this strors all delete routes declred by consumer app
 var middleWere = [];// this array of app.use middlewere
 /*
 ====================================================================
@@ -132,13 +134,15 @@ var router = function(req, res){
     }
 
     currentURL = req.url;// setting current url
-    // GET method
+ 
     if(req.method== "GET"){
-        httpjs.httpRequest(req,res, currentURL,getOBJ,httpMsgs, HtmlErrors);
-
-        // POST method
+        httpjs.httpRequest(req,res, currentURL,getOBJ, httpMsgs, HtmlErrors);
     }else if(req.method=="POST"){
-        httpjs.httpRequest(req,res, currentURL,postOBJ,httpMsgs, HtmlErrors)
+        httpjs.httpRequest(req,res, currentURL,postOBJ, httpMsgs, HtmlErrors)
+    }else if(req.method=="PUT"){
+        httpjs.httpRequest(req,res, currentURL,putOBJ, httpMsgs, HtmlErrors)
+    }else if(req.method=="DELETE"){
+        httpjs.httpRequest(req,res, currentURL, deleteOBJ, httpMsgs, HtmlErrors)
     }else{
         // unsapported method
         if(HtmlErrors.html413 == ""){
@@ -197,7 +201,7 @@ module.exports.use= function(mWere){
 
 /*
 ===========================================
-            // GET RELEVENT METHODS
+         GET POST PUT DELETE
 ===========================================
 */ 
 
@@ -206,30 +210,39 @@ var getMethod = function (url,  UseMiddleWere = true, ...callbacks){
         this adds array of getOBJ 
         UseMiddileWere boolen is for app.use (middlewere) this boolen by defulat is set to true  if set false it does not use middle were
     */ 
-    
     reqMet.reqMethod(url,UseMiddleWere,getOBJ,middleWere, ...callbacks);
-
 }
 
 module.exports.getMethod= getMethod;
 
-
-/*
-=============================
-    POST RELEVENT METHODS
-=============================
-*/ 
 var postMethod = function(url,  UseMiddleWere = true ,...callbacks){
     /*
-        this adds array of getOBJ 
+        this adds array of postOBJ 
         UseMiddileWere boolen is for app.use (middlewere) this boolen by defulat is set to true  if set false it does not use middle were
     */ 
-    
     reqMet.reqMethod(url,UseMiddleWere,postOBJ,middleWere, ...callbacks);
-
 }
 
 module.exports.postMethod = postMethod;
+
+var putMethod = function(url,  UseMiddleWere = true ,...callbacks){
+    /*
+        this adds array of putOBJ 
+        UseMiddileWere boolen is for app.use (middlewere) this boolen by defulat is set to true  if set false it does not use middle were
+    */ 
+    reqMet.reqMethod(url,UseMiddleWere, putOBJ,middleWere, ...callbacks);
+}
+
+module.exports.putMethod = putMethod;
+
+var deleteMethod = function(url,  UseMiddleWere = true ,...callbacks){
+    /*
+        this adds array of deleteOBJ 
+        UseMiddileWere boolen is for app.use (middlewere) this boolen by defulat is set to true  if set false it does not use middle were
+    */ 
+    reqMet.reqMethod(url,UseMiddleWere, deleteOBJ, middleWere, ...callbacks);
+}
+module.exports.deleteMethod = deleteMethod;
 
 
 /*

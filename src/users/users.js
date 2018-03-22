@@ -1,4 +1,11 @@
 var user = require("user-groups-roles");
+var routesecure = (user, url)=>{
+    // this method route from url check in privivalges return the value for user
+    
+    }
+
+// testing 
+
 user.createNewPrivileges(["/article", "POST"], "artcile", false);
 user.createNewPrivileges(["/article", "GET"], "access aricle", false);
 user.createNewPrivileges(["/article", "PUT"], "edit article", false);
@@ -37,8 +44,4 @@ user.addPrivilegeToRole("subscriber", ["/article", "GET"], true);
 user.addPrivilegeToRole("subscriber", ["/article", "PUT"], false);
 user.addPrivilegeToRole("subscriber", ["/article", "DELETE"], false);
 
-
-var routesecure = (user, url)=>{
-// this method route from url check in privivalges return the value for user
-
-}
+console.log(user.getRolePrivileges("admin"));

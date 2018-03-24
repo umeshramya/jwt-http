@@ -15,7 +15,7 @@
   "license": "MIT",
   "devDependencies": {},
   "dependencies": {
-    "http-msgs": "^1.0.7",
+    "http-msgs": "^1.0.8",
     "jwt-login": "^0.0.2",
     "moment": "2.20.1",
     "render-html-async": "^0.0.5",

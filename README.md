@@ -41,13 +41,13 @@ dir: app
 ## Feutures
 1. JWT
 2. user, roles and permssions
-3. http
-
+3. http, https
+4. GET, POST, PUT, DELETE
+5. file upload
 
 ### Requiring the jwt-http
 ### http set up
 ```
-
     // require jet-http
     var app = require("jwt-http");
     app.setPort(8002); //this sets the port number and also listens the server at specified port
@@ -304,6 +304,31 @@ app.setHTML404(__dirname + "/404.html");
 ```
 ## file Upload
 use third party uploader like multer or formidable
+file upload use `enctype="multipart/form-data"`
+```
+example of formidable
+
+app.postMethod("/upload", true, app.validate_login,  function(req, res, previous){
+	var form = new formidable.IncomingForm();
+    form.parse(req);
+
+    form.on('fileBegin', function (name, file){
+        file.path = __dirname + '/uploads/' + file.name;
+    });
+
+    form.on('file', function (name, file){
+        console.log('Uploaded ' + file.name);
+	});
+	form.on("error", function(error){
+		app.httpMsgs.send500(req, res, error);
+	})
+	form.on("end", function(){
+		app.httpMsgs.sendHTML(req, res, "uploded");
+	});
+});
+
+
+```
 
 
 ## To do

@@ -1,7 +1,7 @@
 /*
     module for getMethos and postMethod
 */ 
-
+var util = require("util");
 var reqMethod = function(url, UseMiddleWere=true,  reqOBJ=[], middleWere=[], ...callbacks){
         /*
         this adds array of reqOBJ 

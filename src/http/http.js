@@ -29,8 +29,6 @@ var checkUrl = function(req, res, curMethodURL, currentURL ){
     return false;
 }
 
-
-
 exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  HtmlErrors){
     //foundURL is by false if requested URL gets matched then it is set true
    // useful for 404 status
@@ -42,43 +40,57 @@ exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  Html
    for (let index = 0; index < requestOBJ.length; index++) {
        if(checkUrl(req, res, requestOBJ[index][0], currentURL)){
             foundURL = true;// set this true if url is detected
+            //look for content type for purpose "multipart/form-data"(file upload)
             var contentType = req.headers["content-type"];
-            if(!util.isUndefined){
+            if(!util.isUndefined(contentType)){
                 contentType = contentType.split(";")[0];
             }
-            if(contentType === "multipart/form-data" ){
-                
-                
-            }else{
-                req.on('data', function(data){
-                    reqBody  += data
-                    if(reqBody.length > 1e7){//limiting size of data to less than 10mb
-                        httpMsgs.send413(req,res);
-                        reqBodySize = false;
-                    }
-                });//end req,on('data', function(data))
-
-                req.on("end", function(){
-                    if (reqBodySize){
-                        for (let i = 1; i < requestOBJ[index].length; i++) {
-                            req.body = reqBody
-                            previous = requestOBJ[index][i](req, res, previous);
-
+            if(contentType == "multipart/form-data" ){
+               
+                // write code for uploads
+                // req.on("end", function(){
+                    for (let i = 1; i < requestOBJ[index].length; i++) {
+                        previous = requestOBJ[index][i](req, res, previous);
                         if(previous == false){
                             if(util.isUndefined(res.statusMessage)){
                                 httpMsgs.send500(req, res, "invalid Method");//end the responce in case of breaking the loop
                             } 
                             break;
                         }
-                    }
-                            
+                    }     
+                // })
+            }else{                
+            // code req.on
+                req.on('data', function(data){
+                    reqBody  += data
+                    
+                        //exmpt mesurment of length for file upload 
+                        //set size limit from third party software(multer)
+                        if(reqBody.length > 1e7){
+                            //limiting size of data to less than 10mb 
+                            // for non multipart/form-data
+                            httpMsgs.send413(req,res);
+                            reqBodySize = false;
+                        }
+                    
+                });//end req,on('data', function(data))
+                req.on("end", function(){
+                    if (reqBodySize){
+                        for (let i = 1; i < requestOBJ[index].length; i++) {
+                            req.body = reqBody
+                            previous = requestOBJ[index][i](req, res, previous);
+
+                            if(previous == false){
+                                if(util.isUndefined(res.statusMessage)){
+                                    httpMsgs.send500(req, res, "invalid Method");//end the responce in case of breaking the loop
+                                } 
+                                break;
+                            }
+                        }       
                     }//end of if (reqBodySize)
                     
                 })//end of req.on("end", function()
-                
-            } //end of if(contentType === "multipart/form-data" ){
-
-
+        }
             if(foundURL == true){
                 break;//break further excuation of loop 
             }     
@@ -92,5 +104,3 @@ exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  Html
    }
 
 }
-
-

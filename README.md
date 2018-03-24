@@ -304,6 +304,25 @@ app.setHTML404(__dirname + "/404.html");
 ```
 ## file Upload
 use third party uploader like multer or formidable
+file upload use `enctype="multipart/form-data"`
+```
+example of formidable
+app.postMethod("/upload", true, function(req, res, previous){
+	var form = new formidable.IncomingForm();
+    form.parse(req);
+
+    form.on('fileBegin', function (name, file){
+        file.path = __dirname + '/uploads/' + file.name;
+    });
+
+    form.on('file', function (name, file){
+        console.log('Uploaded ' + file.name);
+	});
+	form.on("end", function(){
+		app.httpMsgs.sendHTML(req, res, "uploded");
+	});
+});
+```
 
 
 ## To do

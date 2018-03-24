@@ -44,37 +44,53 @@ exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  Html
             var contentType = req.headers["content-type"];
             if(!util.isUndefined(contentType)){
                 contentType = contentType.split(";")[0];
-            }                
-            // code req.on
-            req.on('data', function(data){
-                reqBody  += data
-                if(contentType !== "multipart/form-data" ){
-                    //exmpt mesurment of length for file upload 
-                    //set size limit from third party software(multer)
-                    if(reqBody.length > 1e7){
-                        //limiting size of data to less than 10mb 
-                        // for non multipart/form-data
-                        httpMsgs.send413(req,res);
-                        reqBodySize = false;
-                    }
-                }
-            });//end req,on('data', function(data))
-            req.on("end", function(){
-                if (reqBodySize){
+            }
+            if(contentType == "multipart/form-data" ){
+               
+                // write code for uploads
+                // req.on("end", function(){
                     for (let i = 1; i < requestOBJ[index].length; i++) {
-                        req.body = reqBody
                         previous = requestOBJ[index][i](req, res, previous);
-
                         if(previous == false){
                             if(util.isUndefined(res.statusMessage)){
                                 httpMsgs.send500(req, res, "invalid Method");//end the responce in case of breaking the loop
                             } 
                             break;
                         }
-                    }       
-                }//end of if (reqBodySize)
-                
-            })//end of req.on("end", function()
+                    }     
+                // })
+            }else{                
+            // code req.on
+                req.on('data', function(data){
+                    reqBody  += data
+                    
+                        //exmpt mesurment of length for file upload 
+                        //set size limit from third party software(multer)
+                        if(reqBody.length > 1e7){
+                            //limiting size of data to less than 10mb 
+                            // for non multipart/form-data
+                            httpMsgs.send413(req,res);
+                            reqBodySize = false;
+                        }
+                    
+                });//end req,on('data', function(data))
+                req.on("end", function(){
+                    if (reqBodySize){
+                        for (let i = 1; i < requestOBJ[index].length; i++) {
+                            req.body = reqBody
+                            previous = requestOBJ[index][i](req, res, previous);
+
+                            if(previous == false){
+                                if(util.isUndefined(res.statusMessage)){
+                                    httpMsgs.send500(req, res, "invalid Method");//end the responce in case of breaking the loop
+                                } 
+                                break;
+                            }
+                        }       
+                    }//end of if (reqBodySize)
+                    
+                })//end of req.on("end", function()
+        }
             if(foundURL == true){
                 break;//break further excuation of loop 
             }     

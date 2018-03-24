@@ -307,7 +307,8 @@ use third party uploader like multer or formidable
 file upload use `enctype="multipart/form-data"`
 ```
 example of formidable
-app.postMethod("/upload", true, function(req, res, previous){
+
+app.postMethod("/upload", true, app.validate_login,  function(req, res, previous){
 	var form = new formidable.IncomingForm();
     form.parse(req);
 
@@ -318,10 +319,15 @@ app.postMethod("/upload", true, function(req, res, previous){
     form.on('file', function (name, file){
         console.log('Uploaded ' + file.name);
 	});
+	form.on("error", function(error){
+		app.httpMsgs.send500(req, res, error);
+	})
 	form.on("end", function(){
 		app.httpMsgs.sendHTML(req, res, "uploded");
 	});
 });
+
+
 ```
 
 

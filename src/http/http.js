@@ -29,6 +29,8 @@ var checkUrl = function(req, res, curMethodURL, currentURL ){
     return false;
 }
 
+module.exports.checkUrl =checkUrl
+
 exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  HtmlErrors){
     //foundURL is by false if requested URL gets matched then it is set true
    // useful for 404 status

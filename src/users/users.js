@@ -1,8 +1,18 @@
 var user = require("user-groups-roles");
-var routesecure = (user, url)=>{
-    // this method route from url check in privivalges return the value for user
-    
-    }
+
+
+module.exports.routesecure = (role, url, method)=>{
+    // this method retuns the route value of the  privilege in case it is present 
+    // or return not in array if not present
+   var privileges =  user.getRolePrivileges(role);
+   for (let index = 0; index < privileges.length; index++) {
+        if(url == privileges[index][0][0] && method == privileges[index][0][1]){
+            return privileges[index][1]
+        }
+       break;
+   }
+
+}
 
 // testing 
 // user.createNewPrivileges("create user", "This creats the new", false);
@@ -21,10 +31,8 @@ var routesecure = (user, url)=>{
 // console.log(user.getRolePrivileges("admin"));
 
 
-
-user.createNewPrivileges({route :"/article", method : "POST"}, "artcile", false);
-user.createNewPrivileges("/article", "artcile", false);
-user.createNewPrivileges(["/article", "GET"], "access aricle", false);
+user.createNewPrivileges(["/article", "POST"], "access article", false);
+user.createNewPrivileges(["/article", "GET"], "access article", false);
 user.createNewPrivileges(["/article", "PUT"], "edit article", false);
 user.createNewPrivileges(["/article", "DELETE"], "delete article", false);
 
@@ -33,8 +41,6 @@ user.createNewRole("editor");
 user.createNewRole("author");
 user.createNewRole("contributor");
 user.createNewRole("subscriber");
-
-
 
 user.addPrivilegeToRole("admin", ["/article", "POST"], true);
 user.addPrivilegeToRole("admin", ["/article", "GET"], true);
@@ -62,4 +68,8 @@ user.addPrivilegeToRole("admin", ["/article", "DELETE"], true);
 // user.addPrivilegeToRole("subscriber", ["/article", "PUT"], false);
 // user.addPrivilegeToRole("subscriber", ["/article", "DELETE"], false);
 
-// console.log(user.getRolePrivileges("admin"));
+console.log(user.getRolePrivileges("admin"));
+
+
+
+

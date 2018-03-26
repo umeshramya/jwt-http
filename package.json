@@ -19,7 +19,7 @@
     "jwt-login": "^0.0.2",
     "moment": "2.20.1",
     "render-html-async": "^0.0.5",
-    "user-groups-roles": "^2.0.1"
+    "user-groups-roles": "^2.0.2"
   },
   "repository": {
     "type": "git",

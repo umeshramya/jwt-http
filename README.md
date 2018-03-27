@@ -266,6 +266,37 @@ app.getMethod("/ramya",true, app.validate_login, function (req, res, previous){
         
     });
 ```
+## user-groups-roles
+
+
+### user-groups-roles can be used in senriores.
+1. Inside route
+2. Inside the model (business logic)
+
+### process of setting
+1. create roles (common for both scenarios)
+exmple `createNewRole("admin");`
+2. create previlages
+3. set add privileges to roles
+
+### Inside route
+#### Createing privileges
+ex: `createNewPrivileges(["/article", "POST"], "article", false);`
+#### add privilges to roles
+ex: `addPrivilegeToRole("admin", ["/article", "POST"], true);`
+From above code `Login Code useing middlewere` app.validate_login middleware returns req.jwt this contains a payload with user.
+Access role of the user from your database.
+call this function `getRoleRoutePrivilegeValue = (role, url, method)`. This returns the value of the route privilege
+
+### Inside the model (bussiness logic).
+#### Createing privileges
+ex: `createNewPrivileges("secureFunctionPrivilege", "this is secured function", false);`
+#### add privilges to roles
+ex: `addPrivilegeToRole("admin", "secureFunctionPrivilege", true);`.
+call this function inside business logic`getRolePrivilegeValue = (role, privilge)`. This returns the value of the  privilege
+
+
+
 ## Assets routes creatation 
 1. `assets` folder conatins the script files, css file or image files
 2. This can contain sub folder inside.
@@ -292,8 +323,7 @@ httpMsgs.setCookie
 ## httpMsgs
 kindly check about this module from this link [http-msgs](https://www.npmjs.com/package/http-msgs)
 
-## user-groups-roles
-kindly check about this module from this link [user-groups-roles](https://www.npmjs.com/package/user-groups-roles)
+
 
 ## handling 404
 create route for these and by this method  setRoute404 

@@ -267,8 +267,6 @@ app.getMethod("/ramya",true, app.validate_login, function (req, res, previous){
     });
 ```
 ## user-groups-roles
-
-
 ### user-groups-roles can be used in senriores.
 1. Inside route
 2. Inside the model (business logic)
@@ -310,13 +308,15 @@ call this function inside business logic`getRolePrivilegeValue = (role, privilge
 ```
 
 ## Cookie
-This is part of httpMsgs has two methods set and get cookies .
-from this link [http-msgs](https://www.npmjs.com/package/http-msgs)
-) 
-```
-httpMsgs.getCookie
-httpMsgs.setCookie
-```
+### First create cookistring 
+`var cookieString =setCookieString(req, res, name, value, expires ,maxAge, httponly=true,https=false, SameSite="Strict");`
+
+### call setcookie method
+`setCookie(req, res, cookieString, data="",  resEnd=true);`
+
+### call getcookie method access cookie 
+`var cuCokkie = getCookie(req, res, curCookie);`
+
 
 
 ---

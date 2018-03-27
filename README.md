@@ -9,7 +9,7 @@ Rest api backend responces are served by JSON.
 This is a light frame work unopinated supports the middlewere for adding functionlites
 
 [![](https://github.com/umeshramya/jwt-http/blob/master/maxresdefault%5B1%5D.jpg?raw=true)](https://www.youtube.com/watch?v=I3SXQ6dbO14&list=PLyGkjsZ-iU9YxEwfsZpfddXtSncVPTRwS)
-```
+```javscript
 recomended architure is 
 dir: app
     dir:backend
@@ -47,26 +47,35 @@ dir: app
 
 ### Requiring the jwt-http
 ### http set up
-```
+```javscript
     // require jet-http
     var app = require("jwt-http");
     app.setPort(8002); //this sets the port number and also listens the server at specified port
 ```
 
 ### https setup
-```
+```javscript
 place private key and certificate or public in the project folder
 var options = {
     key : fs.readFileSync(path.join(__dirname, "/key.pem")),
     cert : fs.readFileSync(path.join(__dirname, "/cert.pem"))
 }
 
+
+options ={ key : keyPath,
+    cert : certPath
+}
+
 app.setHttpsServer(options, 8000);//8000 is port number
+
+
+
+
 
 ```
 
 ### GET method routing
-```
+```javscript
 // routing
     app.getMethod("/umesh", true,function(req, res){
         app.HTTPMsgs.sendJSON(req, res, JSON.stringify(({
@@ -85,7 +94,7 @@ app.setHttpsServer(options, 8000);//8000 is port number
     });
 ```
 ## POST method routing
-```
+```javscript
     app.postMethod("/mypost", true,function(req, res, reqBody){
         var data= querystring.parse(req.body);//reqBody is data received
         // now use posted data as per need
@@ -97,7 +106,7 @@ app.setHttpsServer(options, 8000);//8000 is port number
 
 ```
 ## PUT method routing
-```
+```javscript
 app.putMethod("/put", true, function(req, res, previous){
     var data = querystring.parse(req.body);
     console.log(data);
@@ -109,7 +118,7 @@ app.putMethod("/put", true, function(req, res, previous){
 ```
 
 ## DELETE method routing
-```
+```javscript
 app.deleteMethod ("/delete/:id", true, function(req, res, previous){
     var id = req.param
     app.httpMsgs.sendJSON(req, res, {
@@ -121,7 +130,7 @@ app.deleteMethod ("/delete/:id", true, function(req, res, previous){
 
 
 ## querystring and adding parmeters to url
-```
+```javscript
 //first passing seo and human friendly parmeters "/employ/:id"
 //above type routes can used where id is parmeter
 //req.param contains the parmeters passed
@@ -151,7 +160,7 @@ app.getMethod("/emp" + app.queryExpression(), true, emp);
 6. Generic applies all backend routes, unless useMiddleWere argument is set false while getMethod and postMethod is being set.
 
 ###  Middle for all routes (Generic)
-```   
+```javscript   
     app.use(function(req, res, previous){
         //do the process of middle were here
         previous.property_generic = "generic"
@@ -160,7 +169,7 @@ app.getMethod("/emp" + app.queryExpression(), true, emp);
     });
 ```
 ### Middle were for selected routes (specific)
-```
+```javscript
     //write middle were as function 
     var curMiddlewere = funtion(req, res, previous){
     previous.property_specific = "specific" 
@@ -190,7 +199,7 @@ app.sendFile(url, contentType ,path);
 2. contentType is Content-Type i.e text/html, text/javascript, text/css
 2. path is actual place of file
 
-```
+```javscript
 //html
 app.sendFile("/index","text/html", __dirname + "/index.html");
 
@@ -234,7 +243,7 @@ app.renderHTML(url, path);
 
 ## Login Code useing middlewere
 Login route and its middle were 
-```
+```javscript
 
     var loginMiddleWereMethod = function(req, res, previous){
         var data = queryString.parse(req.body);
@@ -335,7 +344,7 @@ app.setHTML404(__dirname + "/404.html");
 ## file Upload
 use third party uploader like multer or formidable
 file upload use `enctype="multipart/form-data"`
-```
+```javscript
 example of formidable
 
 app.postMethod("/upload", true, app.validate_login,  function(req, res, previous){

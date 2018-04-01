@@ -82,10 +82,6 @@ module.exports.setHTML404 = setHTML404;
 =======================================
 */ 
 
-module.exports.setUpLoadFolder = httpjs.setUpLoadFolder;// this sets the upload folder 
-
-
-
 var httpServer = http.createServer(function(req,res){
     req.protocol = "http";
     try {
@@ -136,6 +132,16 @@ var router = function(req, res){
     currentURL = req.url;// setting current url
  
     if(req.method== "GET"){
+        if(publicFolder !== ""){
+            // creating routes for public folder based on url
+            var patt = `/${publicFolder}/(\w+/)+\w+\.\w+`;
+            var curReg = new RegExp(patt);
+            if(curReg.test(url)){
+                sendFile(url,'', path.join(__dirname, url));
+                return;
+            }
+        }
+
         httpjs.httpRequest(req,res, currentURL,getOBJ, httpMsgs, HtmlErrors);
     }else if(req.method=="POST"){
         httpjs.httpRequest(req,res, currentURL,postOBJ, httpMsgs, HtmlErrors)
@@ -425,12 +431,13 @@ var setAssets = function(dir){
    
 }
 
-
-/*
-    =========================
-        user groups and roles
-    =========================
-*/ 
+// uploadfolder
+var publicFolder = '';
+var setPublicFolder = function(dir){
+    // this method is for setting the public folder for
+    // adding uploads, javascript file, images styles etc
+    publicFolder = dir;
+}
 
 
 

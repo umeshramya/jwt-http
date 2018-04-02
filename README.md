@@ -1,6 +1,6 @@
 # jwt-http
 
-![verson](https://img.shields.io/badge/version-1.0.20-green.svg)
+![verson](https://img.shields.io/badge/version-1.0.21-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellowgreen.svg)
 ![](https://github.com/umeshramya/jwt-http/blob/dev/logo.jpg?raw=true)
 
@@ -315,6 +315,13 @@ call this function inside business logic`getRolePrivilegeValue = (role, privilge
     app.setAssetDirRoutes(__dirname + "/assets");
 
 ```
+## setPublicFolder 
+This method set the public folder simlier to setAssetDirRoutes. but files can be dynamically added hear like uploadinf files and routes creation
+1. this method is for setting the public folder
+2. adding uploads, javascript file, images styles etc
+3. example  app.setPublicFolder('public', __dirname)
+4. routes for accessing files from public folder exmple http://www.example.com/public/*/*/file.type
+
 
 ## Cookie
 ### First create cookistring 

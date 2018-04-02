@@ -121,6 +121,23 @@ module.exports.setPort  =  function(port){
     console.log ("http server is listing at port " + port);//console message for sending port number  
   
 }
+/*
+========================
+    SET UPLOAD FOlder
+========================
+*/ 
+
+var publicFolder = '';// name of public folder 
+var publicFolderpath =''; //__dirname value from child application
+var setPublicFolder = function(dir, path){
+    // this method is for setting the public folder for
+    // adding uploads, javascript file, images styles etc
+    // example  app.setPublicFolder('public', __dirname)
+    // routes for accessing files from public folder exmple http://www.example.com/public/*/*/file.type
+    publicFolder = dir;
+    publicFolderpath=path;
+}
+module.exports.setPublicFolder = setPublicFolder;
 
 
 var router = function(req, res){
@@ -134,13 +151,24 @@ var router = function(req, res){
     if(req.method== "GET"){
         if(publicFolder !== ""){
             // creating routes for public folder based on url
-            var patt = `/${publicFolder}/(\w+/)+\w+\.\w+`;
+            var patt = `/${publicFolder}/(\\w+/)+\\w+\\.\\w+`;//create reg ex for takinling files
             var curReg = new RegExp(patt);
-            if(curReg.test(url)){
-                sendFile(url,'', path.join(__dirname, url));
-                return;
-            }
-        }
+            if(curReg.test(currentURL)){//check the current for file types loads
+                var curpublicFolderPath = publicFolderpath  + currentURL
+    
+                fs.readFile(curpublicFolderPath, null, function(err, data){
+                    if(err){//send 404 for err
+                        httpMsgs.send404(req, res);
+                    }else{//else send 200 data to client
+                        res.writeHead(200);
+                        res.write(data);
+                        res.end();
+                    }
+            
+                });//fs.readFile(curpublicFolderPath, null, function(err, data){
+                return;// come ot of loop
+            }//  if(curReg.test(currentURL)){
+        }//if(publicFolder !== ""){
 
         httpjs.httpRequest(req,res, currentURL,getOBJ, httpMsgs, HtmlErrors);
     }else if(req.method=="POST"){
@@ -431,13 +459,7 @@ var setAssets = function(dir){
    
 }
 
-// uploadfolder
-var publicFolder = '';
-var setPublicFolder = function(dir){
-    // this method is for setting the public folder for
-    // adding uploads, javascript file, images styles etc
-    publicFolder = dir;
-}
+
 
 
 

@@ -380,7 +380,7 @@ app.postMethod("/upload", true, app.validate_login,  function(req, res, previous
 ## To do
 1. render-html-asyc create components 
 2. sanitazation and XSS
-3. remove recurssion function for assets and put route matching path directory got by setting 
+
 
 
 

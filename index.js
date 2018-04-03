@@ -107,7 +107,9 @@ var setHttpsServer = function(options, port){
             // rediret to that page else sends json
             httpMsgs.send500(req, res, "Bad HTTP request "+ error.message, HtmlErrors.html500);
         }
-    }).listen(port,"", function(){
+    });
+    
+    return https.listen(port,"", function(){
         console.log ("https server is listing at port " + port);//console message for sending port number  
     });
 }
@@ -117,9 +119,9 @@ module.exports.setHttpsServer = setHttpsServer;
 
 module.exports.setPort  =  function(port){
     // this set port and also listen
-    httpServer.listen(port);
-    console.log ("http server is listing at port " + port);//console message for sending port number  
-  
+    return httpServer.listen(port, '', function(){
+        console.log ("http server is listing at port " + port);//console message for sending port number  
+    });
 }
 /*
 ========================

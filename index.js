@@ -153,9 +153,12 @@ var router = function(req, res){
     if(req.method== "GET"){
         if(publicFolder !== ""){
             // creating routes for public folder based on url
-            var patt = `/${publicFolder}/(\\w+/)+\\w+\\.\\w+`;//create reg ex for takinling files
+            // var patt = `/${publicFolder}/(\\w+/)+\\w+\\.\\w+`;//create reg ex for takinling files
+          var patt = `/${publicFolder}(/(\\w|\\-|\\%|\\&|\\@)+)+\\.\\w+`;//create reg ex for takinling files
             var curReg = new RegExp(patt);
+           
             if(curReg.test(currentURL)){//check the current for file types loads
+
                 var curpublicFolderPath = publicFolderpath  + currentURL
     
                 fs.readFile(curpublicFolderPath, null, function(err, data){

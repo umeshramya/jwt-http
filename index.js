@@ -97,7 +97,7 @@ var httpServer = http.createServer(function(req,res){
 
 
 var setHttpsServer = function(options, port){
-// options means value of key and cert i.e
+    // options means value of key and cert i.e
     https.createServer(options, function(req, res){
         req.protocol = "https";
         try {
@@ -140,7 +140,6 @@ var setPublicFolder = function(dir, path){
     publicFolderpath=path;
 }
 module.exports.setPublicFolder = setPublicFolder;
-
 
 var router = function(req, res){
     //this presets the "/" to "/index"
@@ -192,11 +191,6 @@ var router = function(req, res){
         }
     }
 }
-
-
-
-
-
 
 module.exports.getURL= function(){
     /*

@@ -78,25 +78,16 @@ exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  Html
                 });//end req,on('data', function(data))
                 req.on("end", function(){
                     if (reqBodySize){
-                        var myPromise = new Promise(function(reslove, reject){});
                         for (let i = 1; i < requestOBJ[index].length; i++) {
                             req.body = reqBody
-                            myPromise.then(function(previous){
-                                 previous = requestOBJ[index][i](req, res, previous);
-                            }).catch(
-                                function(err){
-                                    if(previous == false){
-                                        if(util.isUndefined(res.statusMessage)){
-                                            httpMsgs.send500(req, res, "invalid Method");//end the responce in case of breaking the loop
-                                        } 
-                                        // break;
-                                    }
-
-                                }                           
-                            )
-                            
-
-
+                            previous = requestOBJ[index][i](req, res, previous);
+                            console.log(previous);
+                            if(previous == false){
+                                if(util.isUndefined(res.statusMessage)){
+                                    httpMsgs.send500(req, res, "invalid Method");//end the responce in case of breaking the loop
+                                } 
+                                break;
+                            }
                         }       
                     }//end of if (reqBodySize)
                     
@@ -115,4 +106,5 @@ exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  Html
    }
 
 }
+
 

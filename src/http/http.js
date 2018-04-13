@@ -81,7 +81,7 @@ exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  Html
                         for (let i = 1; i < requestOBJ[index].length; i++) {
                             req.body = reqBody
                             previous = requestOBJ[index][i](req, res, previous);
-                            console.log(previous);
+
                             if(previous == false){
                                 if(util.isUndefined(res.statusMessage)){
                                     httpMsgs.send500(req, res, "invalid Method");//end the responce in case of breaking the loop
@@ -106,5 +106,4 @@ exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  Html
    }
 
 }
-
 

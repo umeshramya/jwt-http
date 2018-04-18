@@ -8,7 +8,6 @@ This is http frame work for developing rest api (back end) and also frontend.
 Rest api backend responces are served by JSON.
 This is a light frame work unopinated supports the middlewere for adding functionlites
 
-[![](https://github.com/umeshramya/jwt-http/blob/master/maxresdefault%5B1%5D.jpg?raw=true)](https://www.youtube.com/watch?v=I3SXQ6dbO14&list=PLyGkjsZ-iU9YxEwfsZpfddXtSncVPTRwS)
 
 ```
 recomended architure is 

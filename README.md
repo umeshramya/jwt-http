@@ -85,7 +85,7 @@ app.setHttpsServer(options, 8000);//8000 is port number
         }));
     });
 
-    app.getMethod("/ramya" , true,function(req, res){
+    app.getMethod("/ramya" , true, function(req, res){
         app.HTTPMsgs.sendJSON(req, res, JSON.stringify({
             name : "Ramya Bilagi",
             age : 35,
@@ -95,7 +95,7 @@ app.setHttpsServer(options, 8000);//8000 is port number
 ```
 ## POST method routing
 ```javscript
-    app.postMethod("/mypost", true,function(req, res, reqBody){
+    app.postMethod("/mypost", true,function(req, res){
         var data= querystring.parse(req.body);//reqBody is data received
         // now use posted data as per need
         // after processing, if data need to send back to client
@@ -107,7 +107,7 @@ app.setHttpsServer(options, 8000);//8000 is port number
 ```
 ## PUT method routing
 ```javscript
-app.putMethod("/put", true, function(req, res, previous){
+app.putMethod("/put", true, function(req, res){
     var data = querystring.parse(req.body);
     console.log(data);
     app.httpMsgs.sendJSON(req, res, {
@@ -119,7 +119,7 @@ app.putMethod("/put", true, function(req, res, previous){
 
 ## DELETE method routing
 ```javscript
-app.deleteMethod ("/delete/:id", true, function(req, res, previous){
+app.deleteMethod ("/delete/:id", true, function(req, res){
     var id = req.param
     app.httpMsgs.sendJSON(req, res, {
         deleted_id : id
@@ -134,7 +134,7 @@ app.deleteMethod ("/delete/:id", true, function(req, res, previous){
 //first passing seo and human friendly parmeters "/employ/:id"
 //above type routes can used where id is parmeter
 //req.param contains the parmeters passed
-app.getMethod("/employ/:id", false, function(req, res, previous){
+app.getMethod("/employ/:id", false, function(req, res){
     app.httpMsgs.sendJSON(req, res, {"param" : req.param});
 });
 
@@ -153,32 +153,32 @@ app.getMethod("/emp" + app.queryExpression(), true, emp);
 
 ## Middlewere
 1. Middlewere are essentially functions. They process and passes the result to next middlewere or final function
-2. middle were can manipulate the req and res. When tthey return a value or values it gets stored in previous argument of next middlewere or final function. 
-3. if the midddle were returns false then `res.end()` will be triger a stop to further process next function or middlewere.
+2. middle were can manipulate the req and res.
+3. next(req, res, next) will triger further process next function or middlewere.
 4. *Middle were are to writen before routes declaration starts*
 5. Middlewere can be classified into two types generic and specific. 
 6. Generic applies all backend routes, unless useMiddleWere argument is set false while getMethod and postMethod is being set.
 
 ###  Middle for all routes (Generic)
 ```javscript   
-    app.use(function(req, res, previous){
+    app.use(function(req, res, next){
         //do the process of middle were here
-        previous.property_generic = "generic"
+        req.property_generic = "generic"
   
-        return previous
+        next(req, res, next);
     });
 ```
 ### Middle were for selected routes (specific)
 ```javscript
     //write middle were as function 
-    var curMiddlewere = funtion(req, res, previous){
-    previous.property_specific = "specific" 
-        return previous;
+    var curMiddlewere = funtion(req, res, next){
+    req.property_specific = "specific" 
+        next(req, res, next);
     }
 
     //route using middle were
     //second option in this set false so general middle were is not used but specific middlewere can be used
-    app.getMethod("/umesh", false, curMiddlewere, function(req, res, previous){
+    app.getMethod("/umesh", false, curMiddlewere, function(req, res, next){
         //code to send sendjson
         app.HTTPMsgs.sendJSON(req, res, {
             name : "Umesh Bilagi",
@@ -245,13 +245,13 @@ app.renderHTML(url, path);
 Login route and its middle were 
 ```javscript
 
-    var loginMiddleWereMethod = function(req, res, previous){
+    var loginMiddleWereMethod = function(req, res, next){
         var data = queryString.parse(req.body);
         var user = data.user;
         var password = data.password;
         var login; // processs the code from database and using user and password set to true if succusful
         if(login){
-            return true
+            next(req, res, next);
         }else{
             app.HTTPMsgs.send500(req, res, "invalid user and password", false);
             return false
@@ -263,10 +263,10 @@ app.logout()//this sets get method logout route setting jwt token = ""
 
 
 //validate  login use in bulit in middle were `validate_login`
-//return false in case of failure and return payload if succusful paylod is present in previous var
+//return false in case of failure and return payload if succusful paylod is present in previous middleware 
 it contains {"user":"username","expDate":"Sun Jan 28 2018 10:45:08 GMT+0530 (India Standard Time)"}
 
-app.getMethod("/ramya",true, app.validate_login, function (req, res, previous){
+app.getMethod("/ramya",true, app.validate_login, function (req, res, next){
         app.httpMsgs.sendJSON(req, res, ({
             name : "Ramya Bilagi",
             age : 35,
@@ -354,7 +354,7 @@ file upload use `enctype="multipart/form-data"`
 ```javscript
 example of formidable
 
-app.postMethod("/upload", true, app.validate_login,  function(req, res, previous){
+app.postMethod("/upload", true, app.validate_login,  function(req, res, next){
 	var form = new formidable.IncomingForm();
     form.parse(req);
 

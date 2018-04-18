@@ -1,27 +1,31 @@
-const connect = require("connect");
-const app = connect();
-const httpMsgs = require("http-msgs");
-const fs = require("fs");
-const http = require("http");
+let previous = {};
+let req = {};
+let res = {};
+let reqOGJ = [];
 
-const https = require("https");
+reqOGJ.push("/route");
+reqOGJ.push(function(req, res, previous){
+    previous.first = "first";
+    next(req, res, previous);
+})
 
+reqOGJ.pus[Symbol.iterator]();h(function(req, res, previous){
+    previous.second = "second";
+    next(req, res, previous);
+})
 
+reqOGJ.push(function(req, res, previous){
+    console.log(previous);
+})
 
+let itre= reqOGJ
+itre.next();
 
+let next = function(req, res, previous){
+    itre.next().value(req, res, previous);
+};
 
-
-function read (req, res, next){
-    fs.readFile(__dirname + "/package.json", "utf8", function(err, data){
-        if(err){
-            httpMsgs.send500(req, res, err);
-        }else{
-            req.file = data;
-            next();
-        }
-    })
-}
-app.use(read);
+next(req, res, previous);
 
 
 

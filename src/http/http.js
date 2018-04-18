@@ -1,4 +1,5 @@
 var util = require("util");
+let reqOBJItretor;// this is the itertor for reqOBJ object to be used inside next() function
 
 var checkUrl = function(req, res, curMethodURL, currentURL ){
     //this method checks the matcing url from array return true if yes or false if no
@@ -36,7 +37,7 @@ exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  Html
    // useful for 404 status
    var foundURL = false;// this variable stores the
    var previous = {} // this variable is for checking weather to call next method in (Middle were)
-
+   reqOBJItretor="";
    var reqBody ='';//this us reqbody sent
    var reqBodySize = true;//this var for checking the req body size 
    for (let index = 0; index < requestOBJ.length; index++) {
@@ -78,17 +79,10 @@ exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  Html
                 });//end req,on('data', function(data))
                 req.on("end", function(){
                     if (reqBodySize){
-                        for (let i = 1; i < requestOBJ[index].length; i++) {
-                            req.body = reqBody
-                            previous = requestOBJ[index][i](req, res, previous);
-
-                            if(previous == false){
-                                if(util.isUndefined(res.statusMessage)){
-                                    httpMsgs.send500(req, res, "invalid Method");//end the responce in case of breaking the loop
-                                } 
-                                break;
-                            }
-                        }       
+                        reqOBJItretor = requestOBJ[index][Symbol.iterator]();//creat itrator
+                        reqOBJItretor.next();//this the router 
+                        next(req, res, next);
+       
                     }//end of if (reqBodySize)
                     
                 })//end of req.on("end", function()
@@ -107,3 +101,6 @@ exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  Html
 
 }
 
+var next = (req, res, next)=>{
+    reqOBJItretor.next().value(req, res, next);
+}

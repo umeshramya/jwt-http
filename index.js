@@ -347,7 +347,7 @@ module.exports.setlogout = setlogout;
 
 var setLoginRoute = function(loginMiddlewereMethod, secret, expireInMinutes=0){
     //login post route
-    postMethod("/login", false, loginMiddlewereMethod, function(req, res, previous){
+    postMethod("/login", false, loginMiddlewereMethod, function(req, res){
         var data =  queryString.parse(req.body)// access the posted data
         // checks for user prperty in req.body
         if (!util.isNullOrUndefined(data.user))
@@ -379,7 +379,7 @@ exports.setLoginRoute = setLoginRoute;
 
 
 // validate_login middle ware
-var validate_login = function(req, res, previous){
+var validate_login = function(req, res, next){
     // this method varifies the JWT and expire time
     
     var JWTtoken = httpMsgs.getCookie(req, res, "JWTtoken");// gets the cookie JWTtoken
@@ -407,6 +407,7 @@ var validate_login = function(req, res, previous){
                 return false;
             }
             req.jwt = validJWT;// passe it route with user name careted time and expire
+            next(req, res, next);
         }
     }
 }    

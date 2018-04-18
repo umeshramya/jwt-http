@@ -1,6 +1,6 @@
 # jwt-http
 
-![verson](https://img.shields.io/badge/version-1.0.21-green.svg)
+![verson](https://img.shields.io/badge/version-2.0.0.Beta-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellowgreen.svg)
 ![](https://github.com/umeshramya/jwt-http/blob/dev/logo.jpg?raw=true)
 

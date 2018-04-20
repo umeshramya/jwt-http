@@ -28,7 +28,7 @@ var checkUrl = function(req, res, curMethodURL, currentURL ){
                 paramOBJ[arraMethodUrl[index]]=arraCurrentURL[index];
             } 
 
-            req.param=paramOBJ
+            req.params=paramOBJ
             return true
 
         }

@@ -121,7 +121,7 @@ app.putMethod("/put", true, function(req, res){
 ## DELETE method routing
 ```js
 app.deleteMethod ("/delete/:id", true, function(req, res){
-    var id = req.param
+    var id = req.params
     app.httpMsgs.sendJSON(req, res, {
         deleted_id : id
     });

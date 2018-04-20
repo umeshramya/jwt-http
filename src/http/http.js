@@ -1,5 +1,6 @@
 var util = require("util");
 let reqOBJItretor;// this is the itertor for reqOBJ object to be used inside next() function
+var reqBody ='';//this us reqbody sent
 
 var checkUrl = function(req, res, curMethodURL, currentURL ){
     //this method checks the matcing url from array return true if yes or false if no
@@ -38,7 +39,7 @@ exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  Html
    var foundURL = false;// this variable stores the
    var previous = {} // this variable is for checking weather to call next method in (Middle were)
    reqOBJItretor="";
-   var reqBody ='';//this us reqbody sent
+   reqBody ='';//this us reqbody sent
    var reqBodySize = true;//this var for checking the req body size 
    for (let index = 0; index < requestOBJ.length; index++) {
        if(checkUrl(req, res, requestOBJ[index][0], currentURL)){
@@ -102,5 +103,6 @@ exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  Html
 }
 
 var next = (req, res, next)=>{
+    req.body = reqBody;
     reqOBJItretor.next().value(req, res, next);
 }

@@ -1,33 +1,21 @@
-let previous = {};
-let req = {};
-let res = {};
-let reqOGJ = [];
-
-reqOGJ.push("/route");
-reqOGJ.push(function(req, res, previous){
-    previous.first = "first";
-    next(req, res, previous);
-})
-
-reqOGJ.pus[Symbol.iterator]();h(function(req, res, previous){
-    previous.second = "second";
-    next(req, res, previous);
-})
-
-reqOGJ.push(function(req, res, previous){
-    console.log(previous);
-})
-
-let itre= reqOGJ
-itre.next();
-
-let next = function(req, res, previous){
-    itre.next().value(req, res, previous);
-};
-
-next(req, res, previous);
 
 
+let req= {};
+req.params= "params";
+
+let methodurl = '/parameter/:id/:name/:age'
+let cururl = '/parameter/24/Radha/28'
+let arra = methodurl.split("/:");
+let curur = cururl.split("/");
+
+let indexForCurUrlStart = curur.length - arra.length
+console.log(arra[1])
+console.log(arra.length);
+console.log(curur.length);
+console.log(indexForCurUrlStart + 1);
+
+req.params[arra[1]] = curur[indexForCurUrlStart + 1];
+console.log(req.params.id);
 
 
 

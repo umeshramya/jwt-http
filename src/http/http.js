@@ -13,18 +13,23 @@ var checkUrl = function(req, res, curMethodURL, currentURL ){
     }
 
     // code for param
-    if(curMethodURL.search(/\:\w+/) >=0){
-        var paramURL = curMethodURL.replace(/\:\w+/, "\\w+");
+    if(curMethodURL.search(/(\:\w+)+/) >=0){
+        let paramURL = curMethodURL.replace(/\:\w+/g, "\\w+");
         
-        var paramReg = new RegExp(paramURL);
-        var urlMatchParamArray = currentURL.match(paramReg);
-    
+        let paramReg = new RegExp(paramURL);
+        let urlMatchParamArray = currentURL.match(paramReg);
+        let paramOBJ = {};
         if(!util.isNull(urlMatchParamArray)){
-            if(urlMatchParamArray[0] == currentURL){
-                var index = paramURL.indexOf("\\w+");
-                req.param = currentURL.substr(index, currentURL.length);
-                return true;
-            }
+            let arraMethodUrl = curMethodURL.split("/:");
+            let arraCurrentURL = currentURL.split("/");
+            let startIndex = arraCurrentURL - arraMethodUrl + 1;
+            for (let index = 1; index < arraMethodUrl.length; index++) {
+                
+                paramOBJ[arraMethodUrl[index]]=arraCurrentURL[index];
+            } 
+
+            req.param=paramOBJ
+            return true
 
         }
     }

@@ -1,6 +1,6 @@
 # jwt-http
 
-![verson](https://img.shields.io/badge/version-2.0.0.Beta-green.svg)
+![verson](https://img.shields.io/badge/version-2.0.1.Beta-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellowgreen.svg)
 ![](https://github.com/umeshramya/jwt-http/blob/dev/logo.jpg?raw=true)
 
@@ -47,14 +47,15 @@ dir: app
 
 ### Requiring the jwt-http
 ### http set up
-```javscript
-    // require jet-http
-    var app = require("jwt-http");
-    app.setPort(8002); //this sets the port number and also listens the server at specified port
+
+```js
+// require jet-http
+var app = require("jwt-http");
+app.setPort(8002); //this sets the port number and also listens the server at specified port
 ```
 
 ### https setup
-```javscript
+```js
 place private key and certificate or public in the project folder
 var options = {
     key : fs.readFileSync(path.join(__dirname, "/key.pem")),
@@ -75,7 +76,7 @@ app.setHttpsServer(options, 8000);//8000 is port number
 ```
 
 ### GET method routing
-```javscript
+```js
 // routing
     app.getMethod("/umesh", true,function(req, res){
         app.HTTPMsgs.sendJSON(req, res, JSON.stringify(({
@@ -94,7 +95,7 @@ app.setHttpsServer(options, 8000);//8000 is port number
     });
 ```
 ## POST method routing
-```javscript
+```js
     app.postMethod("/mypost", true,function(req, res){
         var data= querystring.parse(req.body);//reqBody is data received
         // now use posted data as per need
@@ -106,7 +107,7 @@ app.setHttpsServer(options, 8000);//8000 is port number
 
 ```
 ## PUT method routing
-```javscript
+```js
 app.putMethod("/put", true, function(req, res){
     var data = querystring.parse(req.body);
     console.log(data);
@@ -118,7 +119,7 @@ app.putMethod("/put", true, function(req, res){
 ```
 
 ## DELETE method routing
-```javscript
+```js
 app.deleteMethod ("/delete/:id", true, function(req, res){
     var id = req.param
     app.httpMsgs.sendJSON(req, res, {
@@ -130,7 +131,7 @@ app.deleteMethod ("/delete/:id", true, function(req, res){
 
 
 ## querystring and adding parmeters to url
-```javscript
+```js
 //first passing seo and human friendly parmeters "/employ/:id"
 //above type routes can used where id is parmeter
 //req.param contains the parmeters passed
@@ -160,7 +161,7 @@ app.getMethod("/emp" + app.queryExpression(), true, emp);
 6. Generic applies all backend routes, unless useMiddleWere argument is set false while getMethod and postMethod is being set.
 
 ###  Middle for all routes (Generic)
-```javscript   
+```js   
     app.use(function(req, res, next){
         //do the process of middle were here
         req.property_generic = "generic"
@@ -169,7 +170,7 @@ app.getMethod("/emp" + app.queryExpression(), true, emp);
     });
 ```
 ### Middle were for selected routes (specific)
-```javscript
+```js
     //write middle were as function 
     var curMiddlewere = funtion(req, res, next){
     req.property_specific = "specific" 
@@ -199,7 +200,7 @@ app.sendFile(url, contentType ,path);
 2. contentType is Content-Type i.e text/html, text/javascript, text/css
 2. path is actual place of file
 
-```javscript
+```js
 //html
 app.sendFile("/index","text/html", __dirname + "/index.html");
 
@@ -243,7 +244,7 @@ app.renderHTML(url, path);
 
 ## Login Code useing middlewere
 Login route and its middle were 
-```javscript
+```js
 
     var loginMiddleWereMethod = function(req, res, next){
         var data = queryString.parse(req.body);
@@ -351,7 +352,7 @@ app.setHTML404(__dirname + "/404.html");
 ## file Upload
 use third party uploader like multer or formidable
 file upload use `enctype="multipart/form-data"`
-```javscript
+```js
 example of formidable
 
 app.postMethod("/upload", true, app.validate_login,  function(req, res, next){

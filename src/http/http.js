@@ -49,30 +49,18 @@ exports.httpRequest = function(req, res, currentURL, requestOBJ, httpMsgs,  Html
             if(!util.isUndefined(contentType)){
                 contentType = contentType.split(";")[0];
             }
-            if(contentType == "multipart/form-data" ){
-               
-                // write code for uploads
-                // req.on("end", function(){
-                    for (let i = 1; i < requestOBJ[index].length; i++) {
-                        previous = requestOBJ[index][i](req, res, previous);
-                        if(previous == false){
-                            if(util.isUndefined(res.statusMessage)){
-                                httpMsgs.send500(req, res, "invalid Method");//end the responce in case of breaking the loop
-                            } 
-                            break;
-                        }
-                    }     
-                // })
+            if(contentType == "multipart/form-data" ){              
+                // for uploads file 
+                reqOBJItretor = requestOBJ[index][Symbol.iterator]();//creat itrator
+                reqOBJItretor.next();//this the router 
+                next(req, res, next);
+
             }else{                
             // code req.on
                 req.on('data', function(data){
                     reqBody  += data
-                    
-                        //exmpt mesurment of length for file upload 
-                        //set size limit from third party software(multer)
                         if(reqBody.length > 1e7){
                             //limiting size of data to less than 10mb 
-                            // for non multipart/form-data
                             httpMsgs.send413(req,res);
                             reqBodySize = false;
                         }

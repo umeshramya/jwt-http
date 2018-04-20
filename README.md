@@ -355,7 +355,7 @@ file upload use `enctype="multipart/form-data"`
 ```js
 example of formidable
 
-app.postMethod("/upload", true, app.validate_login,  function(req, res, next){
+app.postMethod("/upload", true,  function(req, res, next){
 	var form = new formidable.IncomingForm();
     form.parse(req);
 

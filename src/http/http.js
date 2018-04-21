@@ -22,12 +22,12 @@ var checkUrl = function(req, res, curMethodURL, currentURL ){
         if(!util.isNull(urlMatchParamArray)){
             let arraMethodUrl = curMethodURL.split("/:");
             let arraCurrentURL = currentURL.split("/");
-            let startIndex = arraCurrentURL - arraMethodUrl + 1;
+          
+            let startIndex = arraCurrentURL.length - arraMethodUrl.length ;
             for (let index = 1; index < arraMethodUrl.length; index++) {
                 
-                paramOBJ[arraMethodUrl[index]]=arraCurrentURL[index];
+                paramOBJ[arraMethodUrl[index]]=arraCurrentURL[index + startIndex];
             } 
-
             req.params=paramOBJ
             return true
 

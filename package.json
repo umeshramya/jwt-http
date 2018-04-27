@@ -1,7 +1,7 @@
 {
   "name": "jwt-http",
-  "version": "2.0.2",
-  "description": "This is jwt for security of web application",
+  "version": "2.0.3",
+  "description": "This light weight node js framework for developing web application with inbuilt jwt and user groups and roles",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -18,7 +18,7 @@
     "http-msgs": "^1.0.9",
     "jwt-login": "^0.0.2",
     "moment": "2.20.1",
-    "render-html-async": "^0.0.5",
+    "render-html-async": "^0.0.6",
     "user-groups-roles": "^2.0.4"
   },
   "repository": {

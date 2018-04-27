@@ -1,6 +1,6 @@
 # jwt-http
 
-![verson](https://img.shields.io/badge/version-2.0.2.Beta-green.svg)
+![verson](https://img.shields.io/badge/version-2.0.3.Beta-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellowgreen.svg)
 ![](https://github.com/umeshramya/jwt-http/blob/dev/logo.jpg?raw=true)
 
@@ -121,7 +121,7 @@ app.putMethod("/put", true, function(req, res){
 ## DELETE method routing
 ```js
 app.deleteMethod ("/delete/:id", true, function(req, res){
-    var id = req.params
+    var id = req.params.id
     app.httpMsgs.sendJSON(req, res, {
         deleted_id : id
     });
@@ -134,9 +134,9 @@ app.deleteMethod ("/delete/:id", true, function(req, res){
 ```js
 //first passing seo and human friendly parmeters "/employ/:id"
 //above type routes can used where id is parmeter
-//req.param contains the parmeters passed
+//req.params contains the parmeters passed
 app.getMethod("/employ/:id", false, function(req, res){
-    app.httpMsgs.sendJSON(req, res, {"param" : req.param});
+    app.httpMsgs.sendJSON(req, res, {"params" : req.params});
 });
 
 

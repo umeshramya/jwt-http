@@ -42,7 +42,7 @@ var getOBJ=[]; // this strores all get routes declred by consumer app
 var postOBJ=[];// this strors all post routes declred by consumer app
 var putOBJ = []// this strors all put routes declred by consumer app
 var deleteOBJ=[]// this strors all delete routes declred by consumer app
-var middleWere = [];// this array of app.use middlewere
+var middleWare = [];// this array of app.use middleware
 /*
 ====================================================================
                     404, 403 and 500  error routes
@@ -228,7 +228,7 @@ module.exports.getParsedQuery = getLastParsedQuery
 
 module.exports.use= function(mWere){
     // ADD GENERAL MIDDLE WERE
-    middleWere.push(mWere);
+    middleWare.push(mWere);
 }
 
 
@@ -241,9 +241,9 @@ module.exports.use= function(mWere){
 var getMethod = function (url,  UseMiddleWere = true, ...callbacks){
     /*
         this adds array of getOBJ 
-        UseMiddileWere boolen is for app.use (middlewere) this boolen by defulat is set to true  if set false it does not use middle were
+        UseMiddileWere boolen is for app.use (middleware) this boolen by defulat is set to true  if set false it does not use middle were
     */ 
-    reqMet.reqMethod(url,UseMiddleWere,getOBJ,middleWere, ...callbacks);
+    reqMet.reqMethod(url,UseMiddleWere,getOBJ,middleWare, ...callbacks);
 }
 
 module.exports.getMethod= getMethod;
@@ -251,9 +251,9 @@ module.exports.getMethod= getMethod;
 var postMethod = function(url,  UseMiddleWere = true ,...callbacks){
     /*
         this adds array of postOBJ 
-        UseMiddileWere boolen is for app.use (middlewere) this boolen by defulat is set to true  if set false it does not use middle were
+        UseMiddileWere boolen is for app.use (middleware) this boolen by defulat is set to true  if set false it does not use middle were
     */ 
-    reqMet.reqMethod(url,UseMiddleWere,postOBJ,middleWere, ...callbacks);
+    reqMet.reqMethod(url,UseMiddleWere,postOBJ,middleWare, ...callbacks);
 }
 
 module.exports.postMethod = postMethod;
@@ -261,9 +261,9 @@ module.exports.postMethod = postMethod;
 var putMethod = function(url,  UseMiddleWere = true ,...callbacks){
     /*
         this adds array of putOBJ 
-        UseMiddileWere boolen is for app.use (middlewere) this boolen by defulat is set to true  if set false it does not use middle were
+        UseMiddileWere boolen is for app.use (middleware) this boolen by defulat is set to true  if set false it does not use middle were
     */ 
-    reqMet.reqMethod(url,UseMiddleWere, putOBJ,middleWere, ...callbacks);
+    reqMet.reqMethod(url,UseMiddleWere, putOBJ,middleWare, ...callbacks);
 }
 
 module.exports.putMethod = putMethod;
@@ -271,9 +271,9 @@ module.exports.putMethod = putMethod;
 var deleteMethod = function(url,  UseMiddleWere = true ,...callbacks){
     /*
         this adds array of deleteOBJ 
-        UseMiddileWere boolen is for app.use (middlewere) this boolen by defulat is set to true  if set false it does not use middle were
+        UseMiddileWere boolen is for app.use (middleware) this boolen by defulat is set to true  if set false it does not use middle were
     */ 
-    reqMet.reqMethod(url,UseMiddleWere, deleteOBJ, middleWere, ...callbacks);
+    reqMet.reqMethod(url,UseMiddleWere, deleteOBJ, middleWare, ...callbacks);
 }
 module.exports.deleteMethod = deleteMethod;
 
@@ -288,7 +288,7 @@ module.exports.deleteMethod = deleteMethod;
 var sendFile = function(url,contentType , path){
     /*
         This is method for serving files to front end . html, javascript, css, jpeg, png etc
-        This method uses getmethod bypasses middlewere
+        This method uses getmethod bypasses middleware
         makes asychronous file read from module httpFiles.js
         url :- url to beused to call from front end
         contentType :- type of content html, css, javascript
@@ -345,9 +345,9 @@ var setlogout = function(){
 module.exports.setlogout = setlogout;
 
 
-var setLoginRoute = function(loginMiddlewereMethod, secret, expireInMinutes=0){
+var setLoginRoute = function(loginMiddlewareMethod, secret, expireInMinutes=0){
     //login post route
-    postMethod("/login", false, loginMiddlewereMethod, function(req, res){
+    postMethod("/login", false, loginMiddlewareMethod, function(req, res){
         var data =  queryString.parse(req.body)// access the posted data
         // checks for user prperty in req.body
         if (!util.isNullOrUndefined(data.user))

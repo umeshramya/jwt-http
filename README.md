@@ -6,7 +6,7 @@
 
 This is http frame work for developing rest api (back end) and also frontend.
 Rest api backend responces are served by JSON.
-This is a light frame work unopinated supports the middlewere for adding functionlites
+This is a light frame work unopinated supports the middleware for adding functionlites
 
 
 ```
@@ -63,15 +63,12 @@ var options = {
 }
 
 
-options ={ key : keyPath,
+options ={ 
+    key : keyPath,
     cert : certPath
 }
 
 app.setHttpsServer(options, 8000);//8000 is port number
-
-
-
-
 
 ```
 
@@ -134,7 +131,7 @@ app.deleteMethod ("/delete/:id", true, function(req, res){
 ```js
 //first passing seo and human friendly parmeters "/employ/:id"
 //above type routes can used where id is parmeter
-//req.params contains the parmeters passed
+//req.params contains conatains key value pairs of params and it values;
 app.getMethod("/employ/:id", false, function(req, res){
     app.httpMsgs.sendJSON(req, res, {"params" : req.params});
 });
@@ -152,13 +149,13 @@ app.getMethod("/emp" + app.queryExpression(), true, emp);
 
 ```
 
-## Middlewere
-1. Middlewere are essentially functions. They process and passes the result to next middlewere or final function
+## Middleware
+1. Middleware are essentially functions. They process and passes the result to next middleware or final function
 2. middle were can manipulate the req and res.
-3. next(req, res, next) will triger further process next function or middlewere.
-4. *Middle were are to writen before routes declaration starts*
-5. Middlewere can be classified into two types generic and specific. 
-6. Generic applies all backend routes, unless useMiddleWere argument is set false while getMethod and postMethod is being set.
+3. next(req, res, next) will triger further process next function or middleware.
+4. *Middle ware are to writen before routes declaration starts*
+5. Middleware can be classified into two types generic and specific. 
+6. Generic applies all backend routes, unless usemiddleware argument is set false while getMethod and postMethod is being set.
 
 ###  Middle for all routes (Generic)
 ```js   
@@ -172,14 +169,14 @@ app.getMethod("/emp" + app.queryExpression(), true, emp);
 ### Middle were for selected routes (specific)
 ```js
     //write middle were as function 
-    var curMiddlewere = funtion(req, res, next){
+    var curmiddleware = funtion(req, res, next){
     req.property_specific = "specific" 
         next(req, res, next);
     }
 
     //route using middle were
-    //second option in this set false so general middle were is not used but specific middlewere can be used
-    app.getMethod("/umesh", false, curMiddlewere, function(req, res, next){
+    //second option in this set false so general middle were is not used but specific middleware can be used
+    app.getMethod("/umesh", false, curmiddleware, function(req, res, next){
         //code to send sendjson
         app.HTTPMsgs.sendJSON(req, res, {
             name : "Umesh Bilagi",
@@ -242,11 +239,11 @@ app.renderHTML(url, path);
 
 ```
 
-## Login Code useing middlewere
+## Login Code useing middleware
 Login route and its middle were 
 ```js
 
-    var loginMiddleWereMethod = function(req, res, next){
+    var loginMiddleWareMethod = function(req, res, next){
         var data = queryString.parse(req.body);
         var user = data.user;
         var password = data.password;
@@ -259,7 +256,7 @@ Login route and its middle were
         }
 
     }
-app.setLoginRoute(loginMiddleWereMethod)
+app.setLoginRoute(loginMiddleWareMethod)
 app.logout()//this sets get method logout route setting jwt token = ""
 
 
@@ -292,7 +289,7 @@ exmple `createNewRole("admin");`
 ex: `createNewPrivileges(["/article", "POST"], "article", false);`
 #### add privilges to roles
 ex: `addPrivilegeToRole("admin", ["/article", "POST"], true);`
-From above code `Login Code useing middlewere` app.validate_login middleware returns req.jwt this contains a payload with user.
+From above code `Login Code useing middleware` app.validate_login middleware returns req.jwt this contains a payload with user.
 Access role of the user from your database.
 call this function `getRoleRoutePrivilegeValue = (role, url, method)`. This returns the value of the route privilege
 

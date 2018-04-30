@@ -12,6 +12,7 @@ var queryString = require("querystring");//querystring require
 var fs = require("fs");
 var path = require("path");
 var render = require("render-html-async");
+module.exports.render = render;// make all method avalible to app;
 var moment = require("moment"); //for manging date 
 
 /*

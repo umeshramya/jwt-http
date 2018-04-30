@@ -387,8 +387,7 @@ app.postMethod("/upload", true,  function(req, res, next){
 
 
 ## To do
-1. render-html-asyc create components 
-2. sanitazation and XSS
+1. sanitazation and XSS
 
 
 

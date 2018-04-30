@@ -210,15 +210,25 @@ app.sendFile("/styles","text/css", __dirname + "/style.css");
 ```
 
 ## Render HTML using inbult templeting engine
-app.renderHTML(url, path);
+use partials like header.html and footer.html similiar to wordpress `render.addPartials`
+typecal html with partials is
+```html
+    {{get(header)}}
+    <!-- body of main document here -->
+    {{get(footer)}}
+```
+for detailed documentation of render html check npm render-html-async node module
+
+app.renderHTML(url, path, useMiddleware, specificMiddleWare);
 1. url is route 
 2. path is actual place of file
+3. middlWare
 ```
  //url for index.html see below
  http://localhost:9000/index?name=umesh&age=45&sex=male&occ=doctor
 
  //route for  index.html see below
- app.renderHTML("/index" + app.queryExpression() , __dirname + "/index.html", useMiddleware=true, specific_
+ app.renderHTML("/index" + app.queryExpression() , __dirname + "/index.html", true, specific_
  middleWare);
 
 // below is index.html page 

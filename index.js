@@ -313,19 +313,21 @@ var sendFile = function(url,contentType , path){
 
 module.exports.sendFile = sendFile;
 
-var renderHTML = function(url, path){
-    getMethod(url,false,function(req,res){
-        render.renderHTML(path, currentURL).then(function(renderData){
-            res.writeHead(200, {"Content-Type" : "text/html"});//write head
-            res.write(renderData);//write html string
-            res.end();//end res
-    
-        }).catch(function(message){
-            httpMsgs.send404(req, res);
-        });
+var renderHTML = function(url, path, useMiddleWare=true, ...functions){
+    let finalFunction = function(req, res){
+        render.renderHTML(path, currentURL, function(err, data){
+            if(err){
+                throw Error(err);
+            }else{
+                res.writeHead(200, {"Content-Type" : "text/html"});//write head
+                res.write(data);//write html string
+                res.end();//end res
+            }
 
-    });
-
+        })
+    }
+    functions.push(finalFunction);// addd final function
+    getMethod(url, useMiddleWare, ...functions)// this get method
 }
 
 module.exports.renderHTML= renderHTML;

@@ -18,7 +18,7 @@
     "http-msgs": "^1.0.9",
     "jwt-login": "^0.0.2",
     "moment": "2.20.1",
-    "render-html-async": "^0.0.6",
+    "render-html-async": "^1.0.0",
     "user-groups-roles": "^2.0.4"
   },
   "repository": {

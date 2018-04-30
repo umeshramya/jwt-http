@@ -1,6 +1,6 @@
 # jwt-http
 
-![verson](https://img.shields.io/badge/version-2.0.3.Beta-green.svg)
+![verson](https://img.shields.io/badge/version-2.0.4.Beta-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellowgreen.svg)
 ![](https://github.com/umeshramya/jwt-http/blob/dev/logo.jpg?raw=true)
 
@@ -218,7 +218,8 @@ app.renderHTML(url, path);
  http://localhost:9000/index?name=umesh&age=45&sex=male&occ=doctor
 
  //route for  index.html see below
- app.renderHTML("/index" + app.queryExpression() , __dirname + "/index.html");
+ app.renderHTML("/index" + app.queryExpression() , __dirname + "/index.html", useMiddleware=true, specific_
+ middleWare);
 
 // below is index.html page 
 <!DOCTYPE html>

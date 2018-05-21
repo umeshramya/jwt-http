@@ -117,13 +117,16 @@ var setHttpsServer = function(options, port){
 
 module.exports.setHttpsServer = setHttpsServer;
 
-
-module.exports.setPort  =  function(port){
+let defualtHttp = function(port, options){
     // this set port and also listen
-    return httpServer.listen(port, '', function(){
+    return httpServer.listen(port, '', function(port){
         console.log ("http server is listing at port " + port);//console message for sending port number  
     });
 }
+
+module.exports.setPort  =  function(port, options, httpType=defualtHttp){
+    httpType(port, options);
+};
 /*
 ========================
     SET UPLOAD FOlder

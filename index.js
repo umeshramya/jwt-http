@@ -161,19 +161,8 @@ var router = function(req, res){
             var curReg = new RegExp(patt);
            
             if(curReg.test(currentURL)){//check the current for file types loads
-
                 var curpublicFolderPath = publicFolderpath  + currentURL
-    
-                fs.readFile(curpublicFolderPath, null, function(err, data){
-                    if(err){//send 404 for err
-                        httpMsgs.send404(req, res);
-                    }else{//else send 200 data to client
-                        res.writeHead(200);
-                        res.write(data);
-                        res.end();
-                    }
-            
-                });//fs.readFile(curpublicFolderPath, null, function(err, data){
+                fs.createReadStream(curpublicFolderPath).pipe(res);//fs.readFile(curpublicFolderPath, null, function(err, data){
                 return;// come ot of loop
             }//  if(curReg.test(currentURL)){
         }//if(publicFolder !== ""){

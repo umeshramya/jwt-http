@@ -6,7 +6,7 @@
 
 This is http frame work for developing rest api (back end) and also frontend.
 Rest api backend responces are served by JSON.
-This is a light frame work unopinated supports the middleware for adding functionlites
+This is a light weight frame work, unopinated supports the middleware for adding functionlites
 
 
 ```
@@ -21,7 +21,7 @@ dir: app
             file:index.html
             dir:httmlerror
                 404.html
-        dir:assets
+        dir:assets(public folder)
             dir:scripts
                 file:style.css
             dir:styles
@@ -36,7 +36,7 @@ dir: app
     node_nodules
 ```
 
-***for backend routes advise is /backend/\*\* so that frontend routes do not conflict***
+***for backend routes advise is /backend/\*\* or /api/\*\* so that frontend routes do not conflict***
 
 ## Feutures
 1. JWT
@@ -182,16 +182,15 @@ app.getMethod("/emp" + app.queryExpression(), true, emp);
             name : "Umesh Bilagi",
             age : 47,
             sex : "male",
-            middle : previous.property_specific
+            middle : req.property_specific
         });
-        console.log(previous);//this is from previous middile ware
     });
 
     
 ```
 
 ## Front end 
-Front end assets also are to be routed in order to be included in html pages
+Front end assets can also be routed in order to be included in html pages but advice is use public folder method see below
 app.sendFile(url, contentType ,path);
 1. url is route 
 2. contentType is Content-Type i.e text/html, text/javascript, text/css
@@ -210,7 +209,7 @@ app.sendFile("/styles","text/css", __dirname + "/style.css");
 ```
 
 ## Render HTML using inbult templeting engine
-use partials like header.html and footer.html similiar to wordpress `render.addPartials`
+use partials like header.html and footer.html similiar to wordpress `app.render.addPartials`
 example below
 ```html
     {{get(header)}}
@@ -268,7 +267,7 @@ Login route and its middle ware
 
     }
     
-app.setLoginRoute(loginMiddleWareMethod,"topsecret", 1); //second arg is secrete key  third arg is expire of token in minites
+app.setLoginRoute(loginMiddleWareMethod,"topsecret", 1); //second arg is secrete key and third arg is expire of token in minites
 app.setlogout();//this sets get method logout route setting jwt token = "" and route is `/logout`
 
 
@@ -290,7 +289,7 @@ app.getMethod("/ramya",true, app.validate_login, function (req, res, next){
     });
 ```
 ## user-groups-roles
-### user-groups-roles can be used in senriores.
+### user-groups-roles can be used in these senriores.
 1. Inside route
 2. Inside the model (business logic)
 
@@ -330,11 +329,11 @@ call this function inside business logic`getRolePrivilegeValue = (role, privilge
 
 ```
 ## setPublicFolder 
-This method set the public folder simlier to setAssetDirRoutes. but files can be dynamically added hear like uploadinf files and routes creation
+This method set the public folder simlier to setAssetDirRoutes. but files can be  added dynamically hear (i.e at run time) like uploading files and routes creation for them 
 1. this method is for setting the public folder
 2. adding uploads, javascript file, images styles etc
 3. example  app.setPublicFolder('public', __dirname)
-4. routes for accessing files from public folder exmple http://www.example.com/public/subfolder//file.type
+4. routes for accessing files from public folder exmple http://www.example.com/public/subfolder/file.type
 
 
 ## Cookie
@@ -342,7 +341,7 @@ This method set the public folder simlier to setAssetDirRoutes. but files can be
 `var cookieString =setCookieString(req, res, name, value, expires ,maxAge, httponly=true,https=false, SameSite="Strict");`
 
 ### call setcookie method
-`setCookie(req, res, cookieString, data="",  resEnd=true);`
+`app.setCookie(req, res, cookieString, data="",  resEnd=true);`
 
 ### call getcookie method access cookie 
 `var cuCokkie = getCookie(req, res, curCookie);`

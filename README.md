@@ -315,7 +315,7 @@ ex: `createNewPrivileges("secureFunctionPrivilege", "this is secured function", 
 ex: `addPrivilegeToRole("admin", "secureFunctionPrivilege", true);`.
 call this function inside business logic`getRolePrivilegeValue = (role, privilge)`. This returns the value of the  privilege
 
-
+ 
 
 ## Assets routes creatation 
 1. `assets` folder conatins the script files, css file or image files

@@ -341,10 +341,10 @@ This method set the public folder simlier to setAssetDirRoutes. but files can be
 `var cookieString =setCookieString(req, res, name, value, expires ,maxAge, httponly=true,https=false, SameSite="Strict");`
 
 ### call setcookie method
-`app.setCookie(req, res, cookieString, data="",  resEnd=true);`
+`app.httpMsgs.setCookie(req, res, cookieString, data="",  resEnd=true);`
 
 ### call getcookie method access cookie 
-`var cuCokkie = getCookie(req, res, curCookie);`
+`var cuCokkie = app.httpMsgs.getCookie(req, res, curCookie);`
 
 
 

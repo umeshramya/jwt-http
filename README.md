@@ -1,6 +1,6 @@
 # jwt-http
 
-![verson](https://img.shields.io/badge/version-2.0.4.Beta-green.svg)
+![verson](https://img.shields.io/badge/version-2.0.5-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellowgreen.svg)
 ![](https://github.com/umeshramya/jwt-http/blob/dev/logo.jpg?raw=true)
 
@@ -15,7 +15,7 @@ dir: app
     dir:backend
         files/dir:routes //routes of backend
         dir:model database connection and bussiness logic
-            file:con.js // database connection etc
+            file:conn.js // database connection etc
     dir:frontend
         dir:HTML
             file:index.html
@@ -151,31 +151,31 @@ app.getMethod("/emp" + app.queryExpression(), true, emp);
 
 ## Middleware
 1. Middleware are essentially functions. They process and passes the result to next middleware or final function
-2. middle were can manipulate the req and res.
+2. middle ware can manipulate the req and res.
 3. next(req, res, next) will triger further process next function or middleware.
-4. *Middle ware are to writen before routes declaration starts*
+4. *Middleware are to be writen before routes declaration starts*
 5. Middleware can be classified into two types generic and specific. 
-6. Generic applies all backend routes, unless usemiddleware argument is set false while getMethod and postMethod is being set.
+6. Generic applies all routes, unless usemiddleware argument is set false while route methods (getMethod, postMethod, putMethod, deleteMethod and renderHTML) is being set.
 
 ###  Middle for all routes (Generic)
 ```js   
     app.use(function(req, res, next){
-        //do the process of middle were here
+        //do the process of middle ware here
         req.property_generic = "generic"
   
         next(req, res, next);
     });
 ```
-### Middle were for selected routes (specific)
+### Middle ware for selected routes (specific)
 ```js
-    //write middle were as function 
+    //write middle ware as function 
     var curmiddleware = funtion(req, res, next){
     req.property_specific = "specific" 
         next(req, res, next);
     }
 
-    //route using middle were
-    //second option in this set false so general middle were is not used but specific middleware can be used
+    //route using middle ware
+    //second option in this set false so general middle ware is not used but specific middleware can be used
     app.getMethod("/umesh", false, curmiddleware, function(req, res, next){
         //code to send sendjson
         app.HTTPMsgs.sendJSON(req, res, {
@@ -184,7 +184,7 @@ app.getMethod("/emp" + app.queryExpression(), true, emp);
             sex : "male",
             middle : previous.property_specific
         });
-        console.log(previous);//this is from previous middile were
+        console.log(previous);//this is from previous middile ware
     });
 
     
@@ -211,7 +211,7 @@ app.sendFile("/styles","text/css", __dirname + "/style.css");
 
 ## Render HTML using inbult templeting engine
 use partials like header.html and footer.html similiar to wordpress `render.addPartials`
-typecal html with partials is
+example below
 ```html
     {{get(header)}}
     <!-- body of main document here -->
@@ -251,7 +251,7 @@ app.renderHTML(url, path, useMiddleware, specificMiddleWare);
 ```
 
 ## Login Code useing middleware
-Login route and its middle were 
+Login route and its middle ware 
 ```js
 
     var loginMiddleWareMethod = function(req, res, next){
@@ -267,13 +267,18 @@ Login route and its middle were
         }
 
     }
-app.setLoginRoute(loginMiddleWareMethod)
-app.logout()//this sets get method logout route setting jwt token = ""
+    
+app.setLoginRoute(loginMiddleWareMethod,"topsecret", 1); //second arg is secrete key  third arg is expire of token in minites
+app.setlogout();//this sets get method logout route setting jwt token = "" and route is `/logout`
 
 
-//validate  login use in bulit in middle were `validate_login`
+//validate  login use in bulit in middle ware `validate_login`
 //return false in case of failure and return payload if succusful paylod is present in previous middleware 
-it contains {"user":"username","expDate":"Sun Jan 28 2018 10:45:08 GMT+0530 (India Standard Time)"}
+{
+  "user": "username",
+  "createdDate": "2018-05-25T05:21:01.482Z",
+  "expireInMinutes": 1//integer 
+}
 
 app.getMethod("/ramya",true, app.validate_login, function (req, res, next){
         app.httpMsgs.sendJSON(req, res, ({
@@ -329,7 +334,7 @@ This method set the public folder simlier to setAssetDirRoutes. but files can be
 1. this method is for setting the public folder
 2. adding uploads, javascript file, images styles etc
 3. example  app.setPublicFolder('public', __dirname)
-4. routes for accessing files from public folder exmple http://www.example.com/public/*/*/file.type
+4. routes for accessing files from public folder exmple http://www.example.com/public/subfolder//file.type
 
 
 ## Cookie

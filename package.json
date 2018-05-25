@@ -1,6 +1,6 @@
 {
   "name": "jwt-http",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "This light weight node js framework for developing web application with inbuilt jwt and user groups and roles",
   "main": "index.js",
   "scripts": {

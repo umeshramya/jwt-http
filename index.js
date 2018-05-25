@@ -119,7 +119,7 @@ module.exports.setHttpsServer = setHttpsServer;
 
 let defualtHttp = function(port, options){
     // this set port and also listen
-    return httpServer.listen(port, '', function(port){
+    httpServer.listen(port,  function(){
         console.log ("http server is listing at port " + port);//console message for sending port number  
     });
 }

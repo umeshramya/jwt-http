@@ -392,6 +392,7 @@ app.postMethod("/upload", true,  function(req, res, next){
 
 ## To do
 1. sanitazation and XSS
+2. HTTP2
 
 
 

@@ -1,6 +1,6 @@
 # jwt-http
 
-![verson](https://img.shields.io/badge/version-2.0.5-green.svg)
+![verson](https://img.shields.io/badge/version-2.0.6-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellowgreen.svg)
 ![](https://github.com/umeshramya/jwt-http/blob/dev/logo.jpg?raw=true)
 
@@ -76,7 +76,7 @@ app.setHttpsServer(options, 8000);//8000 is port number
 ```js
 // routing
     app.getMethod("/umesh", true,function(req, res){
-        app.HTTPMsgs.sendJSON(req, res, JSON.stringify(({
+        app.httpMsgs.sendJSON(req, res, JSON.stringify(({
             name : "Umesh Bilagi",
             age : 47,
             sex : "male"
@@ -84,7 +84,7 @@ app.setHttpsServer(options, 8000);//8000 is port number
     });
 
     app.getMethod("/ramya" , true, function(req, res){
-        app.HTTPMsgs.sendJSON(req, res, JSON.stringify({
+        app.httpMsgs.sendJSON(req, res, JSON.stringify({
             name : "Ramya Bilagi",
             age : 35,
             sex : "female"
@@ -99,7 +99,7 @@ app.setHttpsServer(options, 8000);//8000 is port number
         // after processing, if data need to send back to client
 
         var processed_data = JSON.stringify(data)
-        app.HTTPMsgs.sendJSON(req, res, processed_data);   
+        app.httpMsgs.sendJSON(req, res, processed_data);   
     });
 
 ```
@@ -178,7 +178,7 @@ app.getMethod("/emp" + app.queryExpression(), true, emp);
     //second option in this set false so general middle ware is not used but specific middleware can be used
     app.getMethod("/umesh", false, curmiddleware, function(req, res, next){
         //code to send sendjson
-        app.HTTPMsgs.sendJSON(req, res, {
+        app.httpMsgs.sendJSON(req, res, {
             name : "Umesh Bilagi",
             age : 47,
             sex : "male",
@@ -261,7 +261,7 @@ Login route and its middle ware
         if(login){
             next(req, res, next);
         }else{
-            app.HTTPMsgs.send500(req, res, "invalid user and password", false);
+            app.httpMsgs.send500(req, res, "invalid user and password", false);
             return false
         }
 
